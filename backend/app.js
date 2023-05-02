@@ -3,7 +3,8 @@ const cookieParser = require('cookie-parser')
 const errorMiddleware = require('./middlewares/errors');
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
-
+const path = require('path')
+const fs = require('fs');
 const app = express();
 // REQUIRED FOR UPLOADING LARGE IMAGE
 app.use(express.json({ limit: '10mb' }));
