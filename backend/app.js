@@ -59,4 +59,35 @@ app.use('/api/v1', message);
 app.use(errorMiddleware);
 
 
+if (process.env.NODE_ENV === 'PRODUCTION') {
+
+    const __dirname1 = path.resolve();
+    //server Static Assets
+    const joinedPath = path.join(__dirname1, '/frontend/build');
+    app.use(express.static(joinedPath));
+
+
+
+    //Return the main html page for all routess
+    const joinedPathIndex = path.join(__dirname1, "frontend", "build", "index.html");
+    app.get('*', (req, res) => {
+        res.sendFile(joinedPathIndex)
+    })
+
+    // if (fs.existsSync(joinedPathIndex)) {
+    //     console.log('The joined path exists.');
+    // } else {
+    //     console.log('The joined path does not exist.');
+    // }
+
+    console.log('prod nga ito')
+} else {
+
+    app.get("/", (req, res) => {
+        res.send("API is Running Successfully");
+        console.log('kaya pala')
+    })
+}
+
+
 module.exports = app
