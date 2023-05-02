@@ -1,0 +1,56 @@
+// import React, { Fragment, useRef, useState } from 'react'
+// import { Route, Link } from 'react-router-dom'
+// import { FaBars, FaTimes } from 'react-icons/fa'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { useAlert } from 'react-alert'
+// import { logout } from '../../actions/userActions'
+
+// // import Search from './Search'
+// import '../../App.css'
+
+// // import Header from "./Header";
+
+// const Header = () => {
+//     const [isMobile, setIsMobile] = useState(false);
+
+//     return (
+//         <nav className="navbar">
+//             <Link className='logo' to="/">
+
+//                 <img className='servi_logo' src="../images/ServiFind.png" />
+//             </Link>
+
+//             <ul className={isMobile ? "nav-links-mobile" : "nav-links"} onClick={() => setIsMobile(false)}>
+//                 <Link to="/">
+//                     <li>HOME</li>
+//                 </Link>
+//                 <Link to="/about">
+//                     <li>ABOUT</li>
+//                 </Link>
+//                 <Link to="/contact">
+//                     <li>CONTACT US</li>
+//                 </Link>
+//                 {/* <Link to="/contact">Meet Our Team</Link> */}
+//                 <Link to="/register">
+//                     <li>SIGN UP</li>
+//                 </Link>
+
+
+
+
+
+
+//                 <Link to="/login"><li><button className='nav-button'>SIGN IN</button></li></Link>
+
+//             </ul>
+
+//             <button className="mobile-menu-icon" onClick={() => setIsMobile(!isMobile)}>
+//                 {isMobile ? (<i ><FaTimes></FaTimes></i>)
+//                     :
+//                     (<i ><FaBars></FaBars></i>)}
+//             </button>
+//         </nav>
+//     )
+// };
+
+// export default Header;
