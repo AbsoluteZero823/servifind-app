@@ -2,7 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser')
 const errorMiddleware = require('./middlewares/errors');
 const fileUpload = require('express-fileupload')
-
+const cors = require('cors')
 
 const app = express();
 // REQUIRED FOR UPLOADING LARGE IMAGE
@@ -16,6 +16,18 @@ app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
+
+
+
+app.use(
+    cors({
+        origin: "https://servifind-app.onrender.com",
+        // origin: "http://localhost:3000",
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+
+    })
+);
 
 
 const service = require('./routes/service');
