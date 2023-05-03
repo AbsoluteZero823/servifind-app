@@ -49,10 +49,13 @@ exports.newService = async (req, res, next) => {
 
 exports.getServices = async (req, res, next) => {
     const servicesCount = await Service.countDocuments();
+    // const apiFeatures = new APIFeatures(Service.find({ 'freelancer_id.status': 'approved', 'freelancer_id.availability': true }).populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
+
     const apiFeatures = new APIFeatures(Service.find().populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
 
 
-    const services = await apiFeatures.query;
+    const servicess = await apiFeatures.query;
+    const services = servicess.filter(service => service.freelancer_id.availability === true, service => service.freelancer_id.status === 'approved').sort((a, b) => Number(b.freelancer_id.isPremium) - Number(a.freelancer_id.isPremium));
     let filteredServicesCount = services.length;
 
     // Fetch ratings for each service
@@ -132,6 +135,39 @@ exports.getFreelancerServices = async (req, res, next) => {
     res.status(200).json({
         success: true,
         services
+    })
+
+}
+
+
+exports.getServicesToDisplay = async (req, res, next) => {
+    const servicesCount = await Service.countDocuments();
+    const apiFeatures = new APIFeatures(Service.find().populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
+
+    // const filteredServices = apiFeatures.find( apiFeatures.freelancer_id.status === 'approved', apiFeatures.freelancer_id.availability === true);
+    const services = await apiFeatures.query;
+    let filteredServicesCount = services.length;
+
+    // Fetch ratings for each service
+    const serviceIds = services.map(service => service._id);
+    const ratings = await Rating.find({ service_id: { $in: serviceIds } }).populate('user');
+
+    // Merge ratings with services
+    const servicesWithRatings = services.map(service => {
+        const serviceRatings = ratings.filter(rating => rating.service_id.toString() === service._id.toString());
+        const avgRating = serviceRatings.reduce((acc, rating) => acc + rating.rating, 0) / serviceRatings.length;
+        return {
+            ...service.toJSON(),
+            ratings: serviceRatings,
+            avgRating
+        };
+    });
+
+    res.status(200).json({
+        success: true,
+        servicesCount,
+        filteredServicesCount,
+        services: servicesWithRatings
     })
 
 }

@@ -321,13 +321,13 @@ exports.availabiltyUpdate = async (req, res, next) => {
         let freelancerData = {
 
         }
-        if (req.user.freelancer_id.availability === 'true') {
+        if (req.user.freelancer_id.availability === true) {
             freelancerData = {
-                availability: 'false'
+                availability: false
             }
         } else {
             freelancerData = {
-                availability: 'true'
+                availability: true
             }
         }
 

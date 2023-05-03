@@ -26,8 +26,8 @@ import moment from 'moment/moment'
 import io from 'socket.io-client'
 import Swal from 'sweetalert2';
 
-// const ENDPOINT = "http://localhost:4002";
-const ENDPOINT = "https://servifind-app.onrender.com"
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
 var socket, selectedChatCompare;
 
 
@@ -196,7 +196,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         if (event.key === "Enter" && newMessage) {
             event.preventDefault()
             socket.emit('stop typing', selectedChat._id);
-          
+
             try {
                 const config = {
                     headers: {

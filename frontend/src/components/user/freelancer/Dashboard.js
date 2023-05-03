@@ -28,7 +28,7 @@ const Dashboard = () => {
 
     useEffect(() => {
 
-        if (user.freelancer_id.availability === 'true') {
+        if (user.freelancer_id.availability === true) {
             console.log('available')
             $("#myCheck").prop("checked", true);
             setActiveSlider(0)
@@ -201,18 +201,18 @@ const Dashboard = () => {
 
 
                     <div className='dashboardContent'>
-
-                        <div className='premiumCard' >
-                            <div className='content'>
-                                <h1>Go Premium</h1>
-                                <p>Post more Services and Earn more with lifetime mermbership</p>
-                                <Link to="/premium" ><button className='premiumBtn'><span>Connect Now</span> </button></Link>
+                        {user && user.freelancer_id && user.freelancer_id.isPremium === "false" && (
+                            <div className='premiumCard' >
+                                <div className='content'>
+                                    <h1>Go Premium</h1>
+                                    <p>Post more Services and Earn more with lifetime mermbership</p>
+                                    <Link to="/premium" ><button className='premiumBtn'><span>Connect Now</span> </button></Link>
+                                </div>
+                                <div className='picContainer' >
+                                    <img className='pic' src='../images/8-03.png' />
+                                </div>
                             </div>
-                            <div className='picContainer' >
-                                <img className='pic' src='../images/8-03.png' />
-                            </div>
-                        </div>
-
+                        )}
                         <div className='charts' >
                             <div className='smallCardContainer' style={{ marginRight: '10px' }}>
                                 <h5>Progress</h5>
@@ -259,7 +259,8 @@ const Dashboard = () => {
                             </div>
                             <div className='profileInfo'>
                                 <h3>{user.name}</h3>
-                                <p>{user.role}</p>
+                                <p>{user.role} -
+                                    {user.freelancer_id.isPremium ? 'Premium' : 'Basic'}</p>
                                 {user.role === 'freelancer' && user.freelancer_id.gcash_num && (
                                     <a name='' className={activeSlider === 1 ? `selection` : "selection active"} >Availability
                                         <label className="switch" style={{ justifyContent: 'center', margin: '0px 5px' }}>

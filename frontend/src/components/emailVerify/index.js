@@ -17,8 +17,8 @@ const EmailVerify = () => {
     useEffect(() => {
         const verifyEmailUrl = async () => {
             try {
-                // const url = `http://localhost:3000/api/v1/user/${param.id}/verify/${param.token}`;
-                const url = `https://servifind-app.onrender.com/api/v1/user/${param.id}/verify/${param.token}`;
+                // const url = `http://localhost:3000/api/v1/user/${param.id}/verify/${param.token}`; //localhost
+                const url = `https://servifind-app.onrender.com/api/v1/user/${param.id}/verify/${param.token}`; //website
                 const { data } = await axios.get(url);
                 console.log(data);
                 setValidUrl(true)
