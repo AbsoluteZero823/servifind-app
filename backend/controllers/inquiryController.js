@@ -9,9 +9,9 @@ const Category = require('../models/category');
 
 exports.newInquiry = async (req, res, next) => {
 
-
+  req.body.customer = req.user.id;
     const inquiry = await Inquiry.create(req.body);
-    req.body.customer = req.user.id;
+  
     res.status(201).json({
         success: true,
         inquiry
