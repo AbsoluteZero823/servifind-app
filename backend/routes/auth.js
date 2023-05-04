@@ -39,7 +39,7 @@ router.route('/create').post(createUser);
 
 router.route('/login').post(loginUser);
 
-router.route('/password/forgot').post(isAuthenticatedUser, forgotPassword);
+router.route('/password/forgot').post(forgotPassword);
 router.route('/password/reset/:token').put(isAuthenticatedUser, resetPassword);
 
 router.route('/logout').get(logout);
