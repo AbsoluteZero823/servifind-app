@@ -268,8 +268,8 @@ const SingleService = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div class="profile-container">
-                        <div class="profile-content">
+                    {/* <div className="profile-container">
+                        <div className="profile-content">
                             <img
                                 src={service.user && service.user.avatar.url}
                                 alt={service.user && service.user.name}
@@ -279,23 +279,23 @@ const SingleService = () => {
                             style={{ marginTop: '30px' }}
                             />
 
-                            <div class="profile-info">
+                            <div className="profile-info">
                                 <h4>Profile Information:</h4>
-                                <div class="name">Name: {service.user && service.user.name}</div>
-                                <div class="age">Age: {service.user && service.user.age}</div>
-                                <div class="gender">Gender: {service.user && service.user.gender}</div>
-                                <div class="address">Address: Mansanas St. Taguig City</div>
-                                <div class="contact">09221213534</div>
+                                <div className="name">Name: {service.user && service.user.name}</div>
+                                <div className="age">Age: {service.user && service.user.age}</div>
+                                <div className="gender">Gender: {service.user && service.user.gender}</div>
+                                <div className="address">Address: Mansanas St. Taguig City</div>
+                                <div className="contact">09221213534</div>
                             </div>
-                            <div class="button-profile">
+                            <div className="button-profile">
                                 <button>Inquire</button>
                                 <button>Read More</button>
                             </div>
                         </div>
-                        <div class="service-details">
+                        <div className="service-details">
                             <h1>Nail Treatments</h1>
-                            <div class="list-of-service__container">
-                                <div class="list-of-service">
+                            <div className="list-of-service__container">
+                                <div className="list-of-service">
                                     <h2>List of Services</h2>
                                     <ul>
                                         <li>Manicure and Pedicure</li>
@@ -309,12 +309,12 @@ const SingleService = () => {
                                 <div className="customer-ratings">
                                     <img src="chelson-tamares-vtQHwU4F13s-unsplash.jpg" alt="" />
                                     <h2>Customer reviews</h2>
-                                    <div class='rating'>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star checked"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
+                                    <div className='rating'>
+                                        <span className="fa fa-star checked"></span>
+                                        <span className="fa fa-star checked"></span>
+                                        <span className="fa fa-star checked"></span>
+                                        <span className="fa fa-star"></span>
+                                        <span className="fa fa-star"></span>
                                     </div>
                                     <span>6 customer ratings</span>
                                 </div>

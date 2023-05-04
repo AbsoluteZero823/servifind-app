@@ -46,31 +46,43 @@ const Service = ({ service }) => {
 
     return (
 
+        // <div className="service__container">
+        //     <div className="movie-card">
+        //         <a href="#" className="movie-browse-link">
+        //             <img className='movie-img' src={service.images.url} alt="" />
+        //             <div className="movie-card-content">
+        //                 <i className="fa-solid fa-star"></i>
+        //                 <div className="movie-rating">7.5 / 10</div>
+        //                 <div className="genre">
+        //                     <span>Action</span>
+        //                     <span>Adventure</span>
+        //                 </div>
+        //                 <button>View Details</button>
+        //             </div>
+        //         </a>
+        //         <a href="#" className="bottom-link-movie">
+        //             <div className="movie-card__title">The Pope's Exorcist</div>
+        //             <div className="movie-card__date">2023</div>
+        //         </a>
+        //     </div>
+
+
+
+        // </div>
 
         <div className="card" style={{}}>
-            <img className='imgcard' src={service.image} style={{ maxWidth: '160px' }}></img>
+            <img className='imgcard' src={service.images.url} style={{ maxWidth: '160px' }}></img>
 
 
-            {/* <div className='freelancer-info'>
-        <img
-            src={service.user.avatar && service.user.avatar.url}
-            alt={service.user && service.user.name}
-            key={service._id}
-            className="rounded-img"
-        />
-    
-        <a className='black-name'>{service.user.name}</a>
-        
-    </div> */}
 
             <div className="card__content">
                 <div className="card__label" style={{ fontSize: '12px' }}>{service.category.name}</div>
                 <h4><a href="https://konrad.design" className="card__link" target="_blank">services</a></h4>
-                {/* <p>{service.title}</p> */}
+
 
                 <p><span className="fw7">{service.name}</span></p>
 
-                {/* picture and name */}
+
                 <div className='row' style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between !important' }}>
                     <div style={{
                         width: 25,
@@ -88,7 +100,7 @@ const Service = ({ service }) => {
                     <center className="justified" href="" style={{ fontSize: '10px' }}>{service.user.name}</center>
                 </div>
 
-                {/* end picture and name */}
+
                 <div className="card__cta-container">
                     <button className="card__cta">
                         {(!user && !isAuthenticated) &&

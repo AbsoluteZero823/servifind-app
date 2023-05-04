@@ -2,27 +2,27 @@ const nodemailer = require('nodemailer');
 // const handlebars = require('nodemailer-handlebars');
 
 module.exports = async (email, subject, text, name) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.HOST,
-            service: process.env.SERVICE,
-            port: Number(process.env.EMAIL_PORT),
-            secure: Boolean(process.env.SECURE),
-            auth: {
-                user: 'servifind2023@gmail.com',
-                pass: 'koigyzkpyogjmarm'
-            }
-        })
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.HOST,
+      service: process.env.SERVICE,
+      port: Number(process.env.EMAIL_PORT),
+      secure: Boolean(process.env.SECURE),
+      auth: {
+        user: 'servifind2023@gmail.com',
+        pass: 'koigyzkpyogjmarm'
+      }
+    })
 
 
 
 
-        await transporter.sendMail({
-            from: process.env.USER,
-            to: email,
-            subject: subject,
-            text: 'nice',
-            html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: email,
+      subject: subject,
+      text: 'nice',
+      html: `<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <!--[if gte mso 9]>
@@ -250,13 +250,13 @@ table, td { color: #000000; } #u_body a { color: #01499d; text-decoration: under
 
 </html>
 `
-        });
-        console.log("Email sent Successfully");;
+    });
+    console.log("Email sent Successfully");;
 
-    } catch (error) {
-        console.log("Email not sent");
-        console.log(error);
-    }
+  } catch (error) {
+    console.log("Email not sent");
+    console.log(error);
+  }
 }
 
 

@@ -158,9 +158,9 @@ function App() {
                   } exact="true" />
 
                   <Route path="/service/new" element={
-                    <ProtectedRoute isAdmin={true}>
-                      <NewService />
-                    </ProtectedRoute>
+
+                    <NewService />
+
                   } exact="true" />
 
 

@@ -35,7 +35,8 @@ const Sidebar = () => {
                     {user && user.role === "admin" && (
                         <li>
                             <a href="#productSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">
-                                <i className="fa fa-users"></i> Users</a>
+                                <i className="fa fa-users"></i> Users
+                            </a>
                             <ul className="collapse list-unstyled" id="productSubmenu">
                                 <li>
                                     <Link to="/users"><i className="fa fa-clipboard"></i> All</Link>

@@ -300,7 +300,7 @@ const Dashboard = () => {
                         <div className='servicesDisplay'>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <h4 style={{ fontWeight: 'bold', marginTop: "20px" }}>My Services</h4>
-                                <Link to={`/services/${user.freelancer_id._id}`} style={{ marginTop: '20px' }} ><a >see all</a></Link>
+                                <Link to={`/services/${user.freelancer_id._id}`} style={{ marginTop: '20px' }} ><span >see all</span></Link>
 
                             </div>
                             <div className='servicesContainer'>

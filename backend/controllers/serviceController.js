@@ -9,6 +9,7 @@ const Freelancer = require('../models/freelancer');
 const cloudinary = require('cloudinary')
 //create new service
 exports.newService = async (req, res, next) => {
+    // console.log(req.body)
     try {
         const userId = req.user._id;
 
@@ -26,23 +27,24 @@ exports.newService = async (req, res, next) => {
             }
         }
 
-        const result = await cloudinary.v2.uploader.upload(req.body.image, {
-            folder: 'servifind/avatar',
+        const result = await cloudinary.v2.uploader.upload(req.body.images, {
+            folder: 'servifind/freelancer/service',
             width: 150,
             crop: "scale"
         });
 
         req.body.images = { public_id: result.public_id, url: result.secure_url };
         req.body.user = userId;
-
+        req.body.freelancer_id = req.user.freelancer_id._id
+        console.log(req.body);
         const service = await Service.create(req.body);
 
         res.status(201).json({
             success: true,
             service
         });
-    } catch (err) {
-        next(err);
+    } catch (error) {
+        next(error);
     }
 };
 

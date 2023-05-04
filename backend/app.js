@@ -7,9 +7,10 @@ const path = require('path')
 const fs = require('fs');
 const app = express();
 // REQUIRED FOR UPLOADING LARGE IMAGE
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb' }));
-
+// app.use(express.json({ limit: '10mb' }));
+// app.use(express.urlencoded({ limit: '10mb' }));
+app.use(express.json());
+app.use(express.urlencoded());
 
 
 
@@ -23,8 +24,8 @@ app.use(fileUpload());
 app.use(
     cors({
 
-        origin: "https://servifind-app.onrender.com", //website
-        // origin: "http://localhost:3000", //localhost
+        // origin: "https://servifind-app.onrender.com", //website
+        origin: "http://localhost:3000", //localhost
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
 

@@ -104,7 +104,7 @@ export const getServiceDetails = (id) => async (dispatch) => {
 
 
 
-export const newService = (serviceData) => async (dispatch) => {
+export const newService = (formData) => async (dispatch) => {
     try {
 
         dispatch({ type: NEW_SERVICES_REQUEST })
@@ -115,7 +115,7 @@ export const newService = (serviceData) => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.post('/api/v1/service/new', serviceData, config)
+        const { data } = await axios.post('/api/v1/service/new', formData, config)
 
         dispatch({
             type: NEW_SERVICES_SUCCESS,

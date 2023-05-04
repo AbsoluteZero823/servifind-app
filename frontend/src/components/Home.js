@@ -57,85 +57,85 @@ const Home = () => {
       <MetaData title={'Home'} />
       <div className='landing-page_container'>
         <div className="hero-container">
-          <div class="hero-greet">
-            <div class="hero-greet_text">
+          <div className="hero-greet">
+            <div className="hero-greet_text">
               <h1>Welcome to ServiFind</h1>
               <p>Where you can find the best service in the right time on the right person</p>
-              <a href="/login">Get Started <i class="fa fa-arrow-right"></i></a>
+              <a href="/login">Get Started <i className="fa fa-arrow-right"></i></a>
             </div>
           </div>
           <div className="mobile-version">
-            <img class="mobile-ver-img" src="../images/mobile-servifind.png" alt="" />
-            <a class="app-btn blu flex vert"
+            <img className="mobile-ver-img" src="../images/mobile-servifind.png" alt="" />
+            <a className="app-btn blu flex vert"
               href="https://expo.dev/artifacts/eas/764RGoPNVLqw33DgWvSQcf.apk">
               <img src="../images/android.png" alt="" />
-              <p>Get it on <br /> <span class="big-txt">Google Play</span></p>
+              <p>Get it on <br /> <span className="big-txt">Google Play</span></p>
             </a>
           </div>
         </div>
-        <div class="services-container">
+        <div className="services-container">
           <h1>Our Services</h1>
-          <div class="getry">
-            <div class="trypotangina">
-              <div class="services__one-info info-services">
+          <div className="getry">
+            <div className="trypotangina">
+              <div className="services__one-info info-services">
                 {/* <!-- <h1>01.</h1> --> */}
                 <h2>Writing & Translation</h2>
               </div>
             </div>
-            <div class="trypotangina1">
-              <div class="services__one-info1 info-services">
+            <div className="trypotangina1">
+              <div className="services__one-info1 info-services">
                 {/* <!-- <h1>02.</h1> --> */}
                 <h2>Graphic Design & Multimedia</h2>
               </div>
             </div>
           </div>
-          <div class="getry">
-            <div class="trypotangina3">
-              <div class="services__one-info info-services">
+          <div className="getry">
+            <div className="trypotangina3">
+              <div className="services__one-info info-services">
                 {/* <!-- <h1>03.</h1> --> */}
                 <h2>Programming & IT</h2>
               </div>
             </div>
-            <div class="trypotangina4">
-              <div class="services__one-info1 info-services">
+            <div className="trypotangina4">
+              <div className="services__one-info1 info-services">
                 {/* <!-- <h1>04.</h1> --> */}
                 <h2>Creative & Artistic</h2>
               </div>
             </div>
           </div>
-          <div class="getry">
-            <div class="trypotangina5">
-              <div class="services__one-info info-services">
+          <div className="getry">
+            <div className="trypotangina5">
+              <div className="services__one-info info-services">
                 {/* <!-- <h1>05.</h1> --> */}
                 <h2>Engineering & Architecture</h2>
               </div>
             </div>
-            <div class="trypotangina6">
-              <div class="services__one-info1 info-services">
+            <div className="trypotangina6">
+              <div className="services__one-info1 info-services">
                 {/* <!-- <h1>06.</h1> --> */}
                 <h2>Education & Training</h2>
               </div>
             </div>
           </div>
         </div>
-        <div class="feature-container" id='features'>
+        <div className="feature-container" id='features'>
           <h1>Features</h1>
-          <div class="feature-card">
-            <div class="fcard">
-              <div class="feature-card-title">
+          <div className="feature-card">
+            <div className="fcard">
+              <div className="feature-card-title">
                 <img src="images/icons8-search-60.png" alt="" />
                 Search
               </div>
-              <div class="feature-text">
+              <div className="feature-text">
                 The ServiFind application has a search function where users can search desired services.
               </div>
             </div>
-            <div class="fcard">
-              <div class="feature-card-title">
+            <div className="fcard">
+              <div className="feature-card-title">
                 <img src="images/icons8-chat-96.png" alt="" />
                 Chat
               </div>
-              <div class="feature-text">The ServiFind application come up with this feature for both users can
+              <div className="feature-text">The ServiFind application come up with this feature for both users can
                 communicate and
                 negotiate to
                 each other by
@@ -143,23 +143,23 @@ const Home = () => {
                 cater.
               </div>
             </div>
-            <div class="fcard">
-              <div class="feature-card-title">
+            <div className="fcard">
+              <div className="feature-card-title">
                 <img src="images/icons8-post-68.png" alt="" />
                 Feed
               </div>
-              <div class="feature-text">
+              <div className="feature-text">
                 The ServiFind application has a 2-way post feed, both users can post on feed either finding
                 a
                 freelancer or a client.
               </div>
             </div>
-            <div class="fcard">
-              <div class="feature-card-title">
+            <div className="fcard">
+              <div className="feature-card-title">
                 <img src="images/icons8-payment-64.png" alt="" />
                 Payment
               </div>
-              <div class="feature-text">
+              <div className="feature-text">
                 The ServiFind application primarily promotes the social distancing and paying online can be
                 done
                 at
@@ -174,11 +174,11 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div class="subscription__plan-container">
+        <div className="subscription__plan-container">
           <h1>Pricing</h1>
-          <div class="subscription__wrapper-card">
-            <div class="subscription__card-basic">
-              <div class="subscription-header">
+          <div className="subscription__wrapper-card">
+            <div className="subscription__card-basic">
+              <div className="subscription-header">
                 <h2>Basic</h2>
                 <h2>₱0 <span>/ Month</span></h2>
               </div>
@@ -200,8 +200,8 @@ const Home = () => {
               </p>
               <a href="#">Choose Plan</a>
             </div>
-            <div class="subscription__card-premium">
-              <div class="subscription-header">
+            <div className="subscription__card-premium">
+              <div className="subscription-header">
                 <h2>Premium</h2>
                 <h2>₱50 <span>/ Month</span></h2>
               </div>
@@ -225,34 +225,34 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div class="meet-team" id='our-team'>
+        <div className="meet-team" id='our-team'>
           <h1>Meet Our Team</h1>
-          <div class="meet-card-wrapper">
-            <div class="meet-card">
+          <div className="meet-card-wrapper">
+            <div className="meet-card">
               <img src="images/team1.jpg" alt="" />
               <h3>Cherry May Agustin</h3>
-              <div class="teamrole">Paper Manager/ Web Designer</div>
+              <div className="teamrole">Paper Manager/ Web Designer</div>
             </div>
-            <div class="meet-card">
+            <div className="meet-card">
               <img src="images/team2.jpg" alt="" />
               <h3>Kendrick Galan</h3>
-              <div class="teamrole">Lead Developer/ Mobile Developer</div>
+              <div className="teamrole">Lead Developer/ Mobile Developer</div>
 
             </div>
-            <div class="meet-card">
+            <div className="meet-card">
               <img src="images/team3.jpg" alt="" />
               <h3>Lenal Ladaga</h3>
-              <div class="teamrole">Project Manager/ Web Designer</div>
+              <div className="teamrole">Project Manager/ Web Designer</div>
             </div>
-            <div class="meet-card">
+            <div className="meet-card">
               <img src="images/team4.jpg" alt="" />
               <h3>Marvin Olazo</h3>
-              <div class="teamrole">External Relation Officer</div>
+              <div className="teamrole">External Relation Officer</div>
             </div>
-            <div class="meet-card">
+            <div className="meet-card">
               <img src="images/team5.jpg" alt="" />
               <h3>Marwin Vislenio</h3>
-              <div class="teamrole">External Relation Officer</div>
+              <div className="teamrole">External Relation Officer</div>
             </div>
           </div>
         </div>

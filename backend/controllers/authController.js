@@ -33,23 +33,23 @@ exports.registerUser = async (req, res, next) => {
         if (user)
             return res.status(409).send({ message: "User with given email already exist!" });
 
-        if(req.body.avatar === ''){
-         
+        if (req.body.avatar === '') {
 
-  user = await User.create({
-            name,
-            age,
-            gender,
-            contact,
-            email,
-            password,
-            status: 'activated',
-            // role,
-         
-            
-        })
 
-        } else{
+            user = await User.create({
+                name,
+                age,
+                gender,
+                contact,
+                email,
+                password,
+                status: 'activated',
+                // role,
+
+
+            })
+
+        } else {
             const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
                 folder: 'servifind/avatar',
                 width: 150,
@@ -69,14 +69,14 @@ exports.registerUser = async (req, res, next) => {
                     public_id: result.public_id,
                     url: result.secure_url
                 },
-                
-            }) 
+
+            })
         }
-       
 
 
-      
-      
+
+
+
 
         const token = await new Token({
             userId: user._id,
@@ -246,7 +246,7 @@ exports.loginUser = async (req, res, next) => {
             const url = `${process.env.BASE_URL}user/${user._id}/verify/${token.token}`;
             await sendEmail(user.email, "Verify Email", url, user.name);
         }
-        return res.status(400).send({ messasge: "An Email sent to your account,  please verify" });
+        return res.status(400).send({ message: "An Email sent to your account,  please verify" });
     } else {
         sendToken(user, 200, res, { success: true })
         //     const token = user.getJwtToken();

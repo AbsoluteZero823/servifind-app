@@ -8,6 +8,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from "axios";
 import success from "../../images/success.png"
 import { Fragment } from "react/cjs/react.production.min";
+import Loader from '../layout/Loader';
 
 const EmailVerify = () => {
 
@@ -17,8 +18,8 @@ const EmailVerify = () => {
     useEffect(() => {
         const verifyEmailUrl = async () => {
             try {
-                // const url = `http://localhost:3000/api/v1/user/${param.id}/verify/${param.token}`; //localhost
-                const url = `https://servifind-app.onrender.com/api/v1/user/${param.id}/verify/${param.token}`; //website
+                const url = `http://localhost:3000/api/v1/user/${param.id}/verify/${param.token}`; //localhost
+                // const url = `https://servifind-app.onrender.com/api/v1/user/${param.id}/verify/${param.token}`; //website
                 const { data } = await axios.get(url);
                 console.log(data);
                 setValidUrl(true)
@@ -78,7 +79,9 @@ const EmailVerify = () => {
                     zIndex: '10000'
 
 
-                }}>404 not found</h1>
+                }}><Loader />
+
+                </h1>
             )}
         </Fragment>
     );

@@ -7,9 +7,9 @@ const Footer = () => {
                     <div className="row">
                         <div className="footer-col">
                             {/* <h4>company</h4> */}
-                            <div class="footer-section_one">
+                            <div className="footer-section_one">
                                 <img src="images/ServiFind.png" alt="" />
-                                <div class="about">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ullam magnam facilis
+                                <div className="about">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ullam magnam facilis
                                     placeat fugiat aspernatur deleniti magni, veritatis id laboriosam, repellat facere molestias
                                     provident, ipsa hic sapiente distinctio accusamus! Eaque!
                                 </div>

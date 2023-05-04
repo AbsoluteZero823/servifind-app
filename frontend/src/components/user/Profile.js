@@ -23,8 +23,29 @@ const Profile = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'My Profile'} />
-
-                    <h2 className="mt-5 ml-5">My Profile</h2>
+                    <div class="profile-card">
+                        <h1 class="profile-header">Profile Information</h1>
+                        <div class="profile-info__container">
+                            <img src={user && user.avatar.url} alt="" />
+                            <div class="profile-info">
+                                <div class="name">{user && user.name}</div>
+                                <div class="emailaddress">{user && user.email}</div>
+                                <div class="gender"><i class="fa-solid fa-user"></i>{user && user.gender}</div>
+                                <div class="address"><i class="fa-solid fa-location-dot"></i> #24 Ilang-ilang Street Purok 6-C Lower
+                                    Bicutan Taguig City</div>
+                                <div class="phonenum"><i class="fa-solid fa-phone"></i>{user && user.contact}</div>
+                                <div class="profile-button">
+                                    <Link to="/me/update" id="edit_profile">
+                                        Edit Profile
+                                    </Link>
+                                    <Link to="/password/update">
+                                        Change Password
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <h2 className="mt-5 ml-5">My Profile</h2>
                     <div className="flex-container space-between">
                         <div className="col card" id='profile-div'>
                             <figure className='img-placeholder'>
@@ -70,22 +91,13 @@ const Profile = () => {
                                     <p>{String(user.createdAt).substring(0, 10)}</p>
                                 </div>
                             </div>
-                            {/* {user.role !== 'admin' && (
-                                // <Link to="/adopt" className="btn btn-danger btn-block mt-5">
-                                //     My Adopted Animals
-                                // </Link>
-
-
-                                <button className="btn btn-success d-inline ml-4" onClick={() => getadoptHandler(formData)}>
-                                    My Adopted Animals
-                                </button>
-                            )} */}
+                      
 
                             <Link to="/password/update" className="btn btn-primary btn-block mt-3">
                                 Change Password
                             </Link>
                         </div>
-                    </div>
+                    </div> */}
                 </Fragment>
             )}
         </Fragment>

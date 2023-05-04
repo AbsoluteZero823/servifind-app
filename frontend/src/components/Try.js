@@ -86,32 +86,7 @@ const Try = () => {
                             </div>
                         </section>
                     </div>
-                    {/* 
-                    <h1 id="animals_heading">Latest Animals</h1>
-                    <section id="animals" className="container mt-5">
-                        <div className="row">
-                            {animals && animals.map(animal => (
-                                <Animal key={animal._id} animal={animal} />
-                            ))}
-                        </div>
-                    </section> */}
 
-                    {/* {resPerPage <= count && (
-                        <div className="d-flex justify-content-center mt-5">
-                            <Pagination
-                                activePage={currentPage}
-                                itemsCountPerPage={resPerPage}
-                                totalItemsCount={animalsCount}
-                                onChange={setCurrentPageNo}
-                                nextPageText={'Next'}
-                                prevPageText={'Prev'}
-                                firstPageText={'First'}
-                                lastPageText={'Last'}
-                                itemClass="page-item"
-                                linkClass="page-link"
-                            />
-                        </div>
-                    )} */}
 
                 </Fragment>
             )

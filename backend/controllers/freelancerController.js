@@ -407,17 +407,17 @@ exports.makemeaFreelancer = async (req, res, next) => {
         }
 
         const qrResult = await cloudinary.v2.uploader.upload(req.body.qrCode, {
-            folder: 'servifind/freelancer/documents',
+            folder: 'servifind/freelancer/qrcode',
             width: 300,
             crop: "scale"
         });
         const schoolIdResult = await cloudinary.v2.uploader.upload(req.body.schoolID, {
-            folder: 'servifind/freelancer/documents',
+            folder: 'servifind/freelancer/schoolID',
             width: 300,
             crop: "scale"
         });
         const resumeresult = await cloudinary.v2.uploader.upload(req.body.resume, {
-            folder: 'servifind/freelancer/documents',
+            folder: 'servifind/freelancer/resume',
             width: 300,
             crop: "scale"
         });
@@ -489,7 +489,7 @@ exports.updatemyFreelancers = async (req, res, next) => {
 exports.upgrademyFreelancer = async (req, res, next) => {
     try {
         const receiptresult = await cloudinary.v2.uploader.upload(req.body.receipt, {
-            folder: 'servifind/freelancer/documents',
+            folder: 'servifind/freelancer/receipt',
             width: 300,
             crop: "scale"
         });

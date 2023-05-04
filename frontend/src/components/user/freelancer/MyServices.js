@@ -145,7 +145,7 @@ const MyServices = () => {
 
                 <div style={{ padding: '0', margin: '0', display: 'flex', justifyContent: 'space-between' }}>
                     <h1 style={{ padding: '0 !important', margin: '0 !important' }}>My Services</h1>
-                    {user && user.freelancer_id.isPremium ? (
+                    {user && user.freelancer_id.isPremium || !services[0] ? (
                         <h3 style={{ margin: 'auto 0px' }}>Add Service
                             <span> <Link to="/service/new" className="btn update-btn fa fa-plus">
                             </Link> </span>
