@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { getServices,
+    getServicesToDisplay,
     newService,
     getSingleService,
     getFreelancerServices,
@@ -13,6 +14,7 @@ const { getServices,
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
 router.route('/services').get(getServices);
+router.route('/available/services').get(getServicesToDisplay);
 router.route('/services/:id').get(getFreelancerServices);
 router.route('/service/new').post(isAuthenticatedUser, newService);
 router.route('/service/:id').get(getSingleService);

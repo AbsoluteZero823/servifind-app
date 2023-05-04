@@ -5,6 +5,10 @@ import {
     ALL_SERVICES_SUCCESS,
     ALL_SERVICES_FAIL,
 
+    DISPLAYED_SERVICES_REQUEST,
+    DISPLAYED_SERVICES_SUCCESS,
+    DISPLAYED_SERVICES_FAIL,
+
     FREELANCER_SERVICES_REQUEST,
     FREELANCER_SERVICES_SUCCESS,
     FREELANCER_SERVICES_FAIL,
@@ -56,7 +60,25 @@ export const getServices = (keyword = '') => async (dispatch) => {
         })
     }
 }
+export const getServicesToDisplay = (keyword = '') => async (dispatch) => {
+    try {
 
+        dispatch({ type: DISPLAYED_SERVICES_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/available/services?keyword=${keyword}`)
+
+        dispatch({
+            type: DISPLAYED_SERVICES_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DISPLAYED_SERVICES_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 export const clearErrors = () => async (dispatch) => {
     dispatch({

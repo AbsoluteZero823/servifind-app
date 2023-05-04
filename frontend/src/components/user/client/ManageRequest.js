@@ -207,13 +207,15 @@ const ManageRequest = () => {
                     {loading ? <Loader /> : (
                         <MDBDataTable
                             data={setOffers()}
-                            className="px-3"
+                            
                             bordered
                             striped
                             hover
-                            id='mdbtable'
+                            // id='mdbtable'
                             scrollY
                             maxHeight='48vh'
+                            maxWidth='20vw'
+                            
                         />
                     )}
 

@@ -49,13 +49,10 @@ exports.newService = async (req, res, next) => {
 
 exports.getServices = async (req, res, next) => {
     const servicesCount = await Service.countDocuments();
-    // const apiFeatures = new APIFeatures(Service.find({ 'freelancer_id.status': 'approved', 'freelancer_id.availability': true }).populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
-
     const apiFeatures = new APIFeatures(Service.find().populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
 
 
-    const servicess = await apiFeatures.query;
-    const services = servicess.filter(service => service.freelancer_id.availability === true, service => service.freelancer_id.status === 'approved').sort((a, b) => Number(b.freelancer_id.isPremium) - Number(a.freelancer_id.isPremium));
+    const services = await apiFeatures.query;
     let filteredServicesCount = services.length;
 
     // Fetch ratings for each service
@@ -142,10 +139,13 @@ exports.getFreelancerServices = async (req, res, next) => {
 
 exports.getServicesToDisplay = async (req, res, next) => {
     const servicesCount = await Service.countDocuments();
+    // const apiFeatures = new APIFeatures(Service.find({ 'freelancer_id.status': 'approved', 'freelancer_id.availability': true }).populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
+
     const apiFeatures = new APIFeatures(Service.find().populate(['category', 'user', 'freelancer_id']), req.query).search().filter();
 
-    // const filteredServices = apiFeatures.find( apiFeatures.freelancer_id.status === 'approved', apiFeatures.freelancer_id.availability === true);
-    const services = await apiFeatures.query;
+
+    const servicess = await apiFeatures.query;
+    const services = servicess.filter(service => service.freelancer_id.availability === true, service => service.freelancer_id.status === 'approved').sort((a, b) => Number(b.freelancer_id.isPremium) - Number(a.freelancer_id.isPremium));
     let filteredServicesCount = services.length;
 
     // Fetch ratings for each service

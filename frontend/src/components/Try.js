@@ -8,7 +8,7 @@ import Loader from './layout/Loader'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
-import { getServices } from '../actions/serviceActions'
+import { getServices, getServicesToDisplay } from '../actions/serviceActions'
 // import { allUsers } from '../actions/userActions'
 // import Slider from 'rc-slider'
 // import 'rc-slider/assets/index.css'
@@ -54,7 +54,7 @@ const Try = () => {
             return alert.error(error)
         }
 
-        dispatch(getServices(keyword))
+        dispatch(getServicesToDisplay(keyword))
 
 
     }, [dispatch, alert, error, keyword]);
