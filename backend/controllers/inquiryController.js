@@ -9,7 +9,7 @@ const Category = require('../models/category');
 
 exports.newInquiry = async (req, res, next) => {
 
-  req.body.customer = req.user.id;
+  req.body.customer = req.user._id;
     const inquiry = await Inquiry.create(req.body);
   
     res.status(201).json({
