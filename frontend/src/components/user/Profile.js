@@ -23,6 +23,7 @@ const Profile = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'My Profile'} />
+                    <div style={{height:"calc(100vh - 100px)", display:'flex', justifyContent:'center', alignItems:'center'}}>
                     <div class="profile-card">
                         <h1 class="profile-header">Profile Information</h1>
                         <div class="profile-info__container">
@@ -44,6 +45,7 @@ const Profile = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                     {/* <h2 className="mt-5 ml-5">My Profile</h2>
                     <div className="flex-container space-between">

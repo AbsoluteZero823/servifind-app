@@ -22,7 +22,7 @@ exports.newService = async (req, res, next) => {
             if (!freelancer.isPremium) {
                 return res.status(403).json({
                     success: false,
-                    message: 'You need to be a premium freelancer to create more services'
+                    // message: 'You need to be a premium freelancer to create more services'
                 });
             }
         }
@@ -30,6 +30,7 @@ exports.newService = async (req, res, next) => {
         const result = await cloudinary.v2.uploader.upload(req.body.images, {
             folder: 'servifind/freelancer/service',
             width: 150,
+            height: 150,
             crop: "scale"
         });
 
@@ -44,7 +45,7 @@ exports.newService = async (req, res, next) => {
             service
         });
     } catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 

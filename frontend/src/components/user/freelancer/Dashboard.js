@@ -59,6 +59,11 @@ const Dashboard = () => {
             setLoading(false)
         }
 
+        if(user.freelancer_id.gcash_name){
+            setGcashName(user.freelancer_id.gcash_name);
+            setGcashNum(user.freelancer_id.gcash_num);
+        }
+
     }, [dispatch, isUpdated])
 
 
@@ -88,6 +93,19 @@ const Dashboard = () => {
         freelancerData.set('qrCode', qrCode);
 
         dispatch(completeFreelancerSetup(freelancerData))
+        setLoading(true);
+        //     dispatch(updateUser(user._id, formData))
+    }
+
+    const submitEditHandler = (e) => {
+        e.preventDefault();
+
+        const freelancerData = new FormData();
+        freelancerData.set('gcash_name', gcash_name);
+        freelancerData.set('gcash_num', gcash_num);
+        freelancerData.set('qrCode', qrCode);
+
+        // dispatch(completeFreelancerSetup(freelancerData))
         setLoading(true);
         //     dispatch(updateUser(user._id, formData))
     }
@@ -291,9 +309,12 @@ const Dashboard = () => {
 )} */}
                                 <p>GCash Name: {user.freelancer_id && user.freelancer_id.gcash_name}</p>
                                 <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
-                                {!user.freelancer_id.gcash_name && (
+                                {!user.freelancer_id.gcash_name ? (
                                     <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
-                                )}
+                                ):(
+                                    <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
+                                )
+                            }
 
                             </div>
                         </div>
@@ -347,6 +368,94 @@ const Dashboard = () => {
                             </button>
                         </div>
                         <form className="a" onSubmit={submitHandler} encType='multipart/form-data'>
+                            <div className="modal-body">
+
+                                <div className="form-group">
+                                    <label htmlFor="email_field">GCash Name</label>
+                                    <input
+                                        type="text"
+                                        id="gcash_name"
+                                        className="form-control"
+                                        name='gcash_name'
+                                        placeholder='Your gcash name'
+                                        required
+                                        value={gcash_name}
+                                        onChange={(e) => setGcashName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="email_field">GCash Number</label>
+                                    <input
+                                        type="number"
+                                        id="gcash_num"
+                                        className="form-control"
+                                        name='gcash_num'
+                                        placeholder='Your Gcash registered number'
+                                        required
+                                        value={gcash_num}
+                                        onChange={(e) => setGcashNum(e.target.value)}
+                                    />
+                                </div>
+
+
+                                <label htmlFor="email_field">GCash QRCode</label>
+                                <div className='d-flex align-items-center'>
+
+                                    <div className='custom-file'>
+                                        <input
+                                            type='file'
+                                            name='qrCode'
+                                            className='custom-file-input'
+                                            id='customFile'
+                                            accept='image/*'
+                                            onChange={OnChange}
+                                        />
+
+                                        {qrCodeName ? (
+                                            <label className='custom-file-label' htmlFor='customFile'>
+
+                                                {qrCodeName}
+
+                                            </label>
+
+                                        ) : (
+                                            <label className='custom-file-label' htmlFor='customFile'>
+
+                                                attach GCash QRCode
+
+                                            </label>
+
+                                        )
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" className="btn btn-primary" >Save changes</button>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {/* EDIT PAYMENT DETAILS MODAL */}
+            <div className="modal fade" id="editDetailsModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalCenterTitle">Payment Details</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form className="a" onSubmit={submitEditHandler} encType='multipart/form-data'>
                             <div className="modal-body">
 
                                 <div className="form-group">

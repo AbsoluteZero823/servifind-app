@@ -7,11 +7,12 @@ import Loader from '../../layout/Loader';
 import Swal from 'sweetalert2';
 import { useParams, useNavigate } from "react-router-dom";
 
-import { getFreelancerServices } from '../../../actions/serviceActions';
-
+import { getFreelancerServices, deleteService } from '../../../actions/serviceActions';
+import { DELETE_SERVICES_RESET } from '../../../constants/serviceConstants'
 const MyServices = () => {
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const { services, loading } = useSelector(state => state.services)
+    const { isDeleted } = useSelector(state => state.updelService)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -21,8 +22,32 @@ const MyServices = () => {
         if (user) {
             dispatch(getFreelancerServices(user.freelancer_id._id))
         }
-    }, [])
 
+        if(isDeleted){
+            // alert.success('Service deleted successfully');
+            // navigate('/services');
+            dispatch({ type: DELETE_SERVICES_RESET })
+        }
+    }, [dispatch, isDeleted])
+    const deleteServiceHandler = (id) => {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete this service? This action will delete your service permanently",
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: "No",
+            confirmButtonColor: 'red',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteService(id))
+                // navigate(`/premium`)
+            }
+        })
+        // dispatch(deleteUser(id))
+    }
     const isPremium = () => {
         // Swal.fire(
         //     'Information',
@@ -114,7 +139,7 @@ const MyServices = () => {
                         <Link to='' className="btn btn-primary py-1 px-2">
                             <i className="fa fa-pencil-alt"></i>
                         </Link>
-                        <button className="btn btn-danger py-1 px-2 ml-2" >
+                        <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteServiceHandler(service._id)}>
                             <i className="fa fa-trash"></i>
                         </button>
                         {/* <Link to={''} className="btn btn-success py-1 px-2" onClick={() => approveApplicationHandler(freelancer._id)}>
