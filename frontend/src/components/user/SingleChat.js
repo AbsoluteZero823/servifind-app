@@ -295,6 +295,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
         offerData.set('service_id', selectedChat.inquiry_id.service_id);
+        offerData.set('price', price);
         offerData.set('description', description);
         // offerData.set('offered_by', user._id);
         offerData.set('inquiry_id', selectedChat.inquiry_id._id);

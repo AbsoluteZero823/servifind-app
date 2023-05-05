@@ -153,7 +153,7 @@ const SingleService = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <div className='row ey' style={{ paddingLeft: '-10 !important' }}>
-                        <div className='1st' style={{ backgroundColor: "#FFD4D4", width: "30%", paddingLeft: '-5px', height: '86vh' }}>
+                        <div className='1st' style={{ backgroundColor: "#FFD4D4", width: "30%", paddingLeft: '-5px', height: 'calc(100vh - 100px)' }}>
 
                             <center>
                                 <img

@@ -545,7 +545,7 @@ const UserTransactions = () => {
 
                                 {activeSlider === 1 && ClientTransactions && ClientTransactions.map(transaction => (
 
-                                    <CTransaction key={transaction._id} transaction={transaction} />
+                                    <CTransaction key={transaction._id} transaction={transaction} rating={rating} setRating={setRating} />
                                 ))}
 
 
@@ -766,7 +766,7 @@ const UserTransactions = () => {
                                                                 <div style={{ position: 'relative' }}>
 
                                                                     <div>
-                                                                        <img src={transaction.inquiry_id && transaction.inquiry_id.service_id.image} className='picFrame' />
+                                                                        <img src={transaction.inquiry_id && transaction.inquiry_id.service_id.images.url} className='picFrame' />
                                                                     </div>
 
                                                                 </div>

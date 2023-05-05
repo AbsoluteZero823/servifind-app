@@ -181,13 +181,13 @@ const Transaction = ({ transaction }) => {
 
                                                 <div>
                                                     {transaction.inquiry_id && !transaction.offer_id && (
-                                                        <img src={transaction.inquiry_id.service_id.image} className='picFrame' />
+                                                        <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
                                                     )}
                                                     {transaction.offer_id && !transaction.inquiry_id && (
-                                                        <img src={transaction.offer_id.service_id.image} className='picFrame' />
+                                                        <img src={transaction.offer_id.service_id.images.url} className='picFrame' />
                                                     )}
                                                     {transaction.inquiry_id && transaction.offer_id && (
-                                                        <img src={transaction.inquiry_id.service_id.image} className='picFrame' />
+                                                        <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
                                                     )}
                                                 </div>
                                             </div>

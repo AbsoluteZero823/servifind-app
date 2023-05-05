@@ -76,7 +76,7 @@ const Try = () => {
                     <div className='containerz'>
                         <MetaData title={'Services'} />
 
-                        <h1 id="animals_heading">Services</h1>
+                        {/* <h1 id="animals_heading">Services</h1> */}
                         <section id="services" className="containerz mt-5">
                             <div className="row" style={{ justifyContent: 'space-between' }}>
                                 {services && services.map(service => (

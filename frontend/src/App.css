@@ -3582,124 +3582,89 @@ a {
 /* LOGIN AND REGISTER END */
 
 /* SERVICES */
-.service__container {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 60px;
-  padding: 20px;
-}
 
-.movie-card {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  border-radius: 3px;
-}
-
-.movie-card .movie-browse-link {
-  text-decoration: none;
-  border: 5px solid #fff;
-}
-
-.movie-card img {
-  width: 230px;
-  height: 325px;
-}
-
-.movie-card__title {
-  font-weight: 600;
-  color: #fff;
-}
-
-
-.movie-rating {
-  margin-top: 20px;
-}
-
-.movie-card__date {
-  font-size: 14px;
-  color: #ffffff9a;
-}
-
-.fa-star {
-  color: #6ac045;
-}
-
-.movie-card-content button {
-  background-color: #6ac045;
-  width: 137px;
-  height: 40px;
-  border: none;
-  color: #fff;
-  font-size: 15.4px;
-  font-weight: 800;
-  border-radius: 4px;
-  font-family: 'Arimo';
-  cursor: pointer;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  bottom: -80px;
-}
-
-.movie-card-content {
-  text-align: center;
-  color: #fff;
-  display: none;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 24px;
-  font-weight: 600;
-}
-
-.movie-card:hover {
-  border-color: #6ac045;
-}
-
-.movie-card:hover .movie-card-content {
-  display: block;
-  transition: 2s;
-}
-
-.movie-card:hover button {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  bottom: -80px;
-  transition: 300ms;
-}
-
-.genre {
-  margin-top: 20px;
-}
-
-.movie-img {
-  object-fit: contain
-}
-
-.movie-card:hover .movie-img {
-  opacity: .6;
-  border-radius: 7px;
-
-}
-
-.movie-card .movie-browse-link:hover {
-  border: 5px solid #6ac045;
-}
-
-.bottom-link-movie {
-  text-decoration: none;
-  margin-top: 5px;
-}
 
 /* SERVICES END */
+.services-card {
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  height: auto;
+  width: 300px;
+  /* margin: auto; */
+  margin: 10px 0px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.services-info-profile {
+  position: absolute;
+  width: 100%;
+  top: 27%;
+  left: 20px;
+  z-index: 2;
+}
+
+.services-info-profile .services-profile {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.services-info-profile h4 {
+  font-size: .75rem;
+  color: #fff;
+}
+
+.services-photo {
+  width: 300px;
+  height: 200px;
+  clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 80%);
+  display: block;
+}
+
+.card-content {
+  padding: 5px 20px 20px;
+}
+
+.services-title span {
+  display: inline-block;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: 10px 0;
+  color: #246BCE;
+}
+
+.services-body {
+  height: 70px;
+  font-size: .87rem;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.services-footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.services-footer button {
+  margin-left: auto;
+  text-decoration: none;
+  font-size: .9rem;
+  color: #fff;
+  background-color: #1F75FE;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+
+}
+
+.services-footer button:hover {
+  color: white;
+
+}
 
 /* LAPTOP SMALL SCREEN */
 @media(max-height: 959px) {
@@ -3741,7 +3706,7 @@ a {
     /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
     padding: 30px;
   }
-  
+
   .dashboardProfile {
     width: 30%;
     /* background-color: rgb(21, 0, 255); */
@@ -3753,13 +3718,13 @@ a {
 
 
   .forTable {
-  background-color: white;
-  margin: 30px;
-  border-radius: 10px;
-  height: 78vh;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 30px;
-}
+    background-color: white;
+    margin: 30px;
+    border-radius: 10px;
+    height: 78vh;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 30px;
+  }
 }
 
 
@@ -3806,7 +3771,7 @@ a {
     /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
     padding: 30px;
   }
-  
+
   .dashboardProfile {
     width: 25%;
     /* background-color: rgb(21, 0, 255); */
@@ -3816,14 +3781,14 @@ a {
     /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
   }
 
-.forTable {
-  background-color: white;
-  margin: 50px;
-  border-radius: 10px;
-  height: 78vh;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 30px;
-}
+  .forTable {
+    background-color: white;
+    margin: 50px;
+    border-radius: 10px;
+    height: 78vh;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 30px;
+  }
 
 }
 

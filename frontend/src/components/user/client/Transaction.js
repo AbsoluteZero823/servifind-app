@@ -12,7 +12,7 @@ import $ from 'jquery';
 
 import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone, RateDone, ReportDone } from '../../../actions/transactionActions'
 
-const Transaction = ({ transaction }) => {
+const Transaction = ({ transaction, rating, setRating }) => {
     // console.log(users)
 
     const { user, isAuthenticated } = useSelector(state => state.auth)
@@ -20,7 +20,7 @@ const Transaction = ({ transaction }) => {
     const dispatch = useDispatch();
 
     const alert = useAlert();
-    const [rating, setRating] = useState(0);
+    // const [rating, setRating] = useState(0);
 
     useEffect(() => {
         // dispatch(allUsers())
@@ -135,7 +135,7 @@ const Transaction = ({ transaction }) => {
                 if (e.type === 'click') {
                     if (index < this.starValue) {
                         star.classList.add('orange');
-                        // console.log(this.starValue);
+                        console.log(this.starValue);
                         setRating(this.starValue)
                     } else {
                         star.classList.remove('orange')
@@ -277,10 +277,10 @@ const Transaction = ({ transaction }) => {
 
                                                     <div>
                                                         {transaction.inquiry_id && !transaction.offer_id && (
-                                                            <img src={transaction.inquiry_id.service_id.image} className='picFrame' />
+                                                            <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
                                                         )}
                                                         {transaction.offer_id && !transaction.inquiry_id && (
-                                                            <img src={transaction.offer_id.service_id.image} className='picFrame' />
+                                                            <img src={transaction.offer_id.service_id.images.url} className='picFrame' />
                                                         )}
                                                     </div>
                                                 </div>
