@@ -84,13 +84,26 @@ exports.getServices = async (req, res, next) => {
 
 
 exports.getSingleService = async (req, res, next) => {
-    const service = await Service.findById(req.params.id).populate('user');
+    const ratings = await Rating.find({ service_id: req.params.id }).populate('user');
+    const service = await Service.findById(req.params.id).populate(['category', 'user', 'freelancer_id']).then(service => {
+
+        const serviceRatings = ratings.filter(rating => rating.service_id.toString() === service._id.toString());
+        const avgRating = serviceRatings.reduce((acc, rating) => acc + rating.rating, 0) / serviceRatings.length;
+        const ratingCount = serviceRatings.length;
+        return {
+            ...service.toJSON(),
+            ratings: serviceRatings,
+            avgRating,
+            ratingCount
+        };
+
+    });
 
     if (!service) {
         return next(new ErrorHandler('Service not found', 404));
     }
     res.status(200).json({
-        success: true,
+        serviceDetailsSuccess: true,
         service
     })
 }
@@ -159,10 +172,12 @@ exports.getServicesToDisplay = async (req, res, next) => {
     const servicesWithRatings = services.map(service => {
         const serviceRatings = ratings.filter(rating => rating.service_id.toString() === service._id.toString());
         const avgRating = serviceRatings.reduce((acc, rating) => acc + rating.rating, 0) / serviceRatings.length;
+        const ratingCount = serviceRatings.length;
         return {
             ...service.toJSON(),
             ratings: serviceRatings,
-            avgRating
+            avgRating,
+            ratingCount
         };
     });
 

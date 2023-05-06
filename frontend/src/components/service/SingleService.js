@@ -14,6 +14,7 @@ import { addMessage } from '../../actions/messageActions'
 // import { UPDATE_SERVICES_RESET } from '../../constants/serviceConstants'
 import { NEW_INQUIRY_RESET } from '../../constants/inquiryConstants'
 import $ from 'jquery';
+import moment from 'moment/moment'
 
 const SingleService = () => {
 
@@ -22,13 +23,14 @@ const SingleService = () => {
     const [customer, setCustomer] = useState('')
     const [freelancer, setFreelancer] = useState('')
     const [newChat, setNewChat] = useState('')
+    const [serviceRatings, setServiceRatings] = useState([])
 
     const alert = useAlert();
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
     // const { error, isUpdated } = useSelector(state => state.updelService);
-    const { service, loading } = useSelector(state => state.serviceDetails)
+    const { service, loading, serviceDetailsSuccess } = useSelector(state => state.serviceDetails)
     const { user, isAuthenticated } = useSelector(state => state.auth)
 
     const { inquiry, error, success } = useSelector(state => state.inquiry)
@@ -39,7 +41,13 @@ const SingleService = () => {
         dispatch(getServiceDetails(id))
         // if (service && service._id !== id) {
 
-        // } 
+        // }
+        if (serviceDetailsSuccess) {
+            setServiceRatings(service.ratings)
+            console.log(service.ratings)
+        }
+
+
         setInstruction(instruction);
         setService_id(id);
         setCustomer(user && user._id);
@@ -66,7 +74,8 @@ const SingleService = () => {
 
 
 
-    }, [dispatch, alert, navigate, error, success])
+    }, [dispatch, alert, navigate, error, success, serviceDetailsSuccess])
+
     const accessChat = async (chatData) => {
 
         console.log(chatData);
@@ -153,70 +162,151 @@ const SingleService = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <div className='row ey' style={{ paddingLeft: '-10 !important' }}>
-                        <div className='1st' style={{ backgroundColor: "#FFD4D4", width: "30%", paddingLeft: '-5px', height: 'calc(100vh - 100px)' }}>
+                        <div className='first' style={{ backgroundColor: "white", width: "30%", paddingLeft: '-5px', height: 'calc(100vh - 100px)' }}>
 
-                            <center>
-                                <img
-                                    src={service.user && service.user.avatar.url}
-                                    alt={service.user && service.user.name}
-                                    key={service._id}
-                                    className="rounded-img-big"
+                            <center style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 100px)', justifyContent: 'space-between' }}>
+                                <div>
+                                    <img
+                                        src={service.user && service.user.avatar.url}
+                                        alt={service.user && service.user.name}
+                                        key={service._id}
+                                        className="rounded-img-big"
 
-                                    style={{ marginTop: '30px' }}
-                                />
+                                        style={{ marginTop: '30px' }}
+                                    />
 
-                                <div className="profile-info" style={{ fontSize: '20px' }}>
-                                    <h4>Profile Information:</h4>
-                                    <div className="name" >Name: {service.user && service.user.name}</div>
-                                    <div className="age">Age: {service.user && service.user.age}</div>
-                                    <div className="gender">Gender: {service.user && service.user.gender}</div>
-                                    <div className="address">Email: {service.user && service.user.email}</div>
-                                    <div className="contact">Contact Number: {service.user && service.user.contact}</div>
+                                    <div className="profile-info" style={{ fontSize: '20px', margin: '30px 30px' }}>
+                                        <h4 style={{ textAlign: 'left' }}>Profile Information:</h4>
+                                        <div className="info" style={{ marginLeft: 0 }}>Name: {service.user && service.user.name}</div>
+                                        <div className="info" style={{ marginLeft: 0 }}>Age: {service.user && service.user.age}</div>
+                                        <div className="info" style={{ marginLeft: 0 }}>Gender: {service.user && service.user.gender}</div>
+                                        <div className="info" style={{ marginLeft: 0 }}>Email: {service.user && service.user.email}</div>
+                                        <div className="info" style={{ marginLeft: 0 }}>Contact Number: {service.user && service.user.contact}</div>
+
+                                        <div className="info" style={{ marginLeft: 0 }}>Freelancer Since: {service.freelancer_id && moment(service.freelancer_id.approved_date).format('MMM/DD/yy')}</div>
+
+                                    </div>
                                 </div>
                                 <div className='row' style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
-                                    <button className="custom-btn btn-5" style={{ margin: '20px' }} data-toggle="modal" data-target="#exampleModalCenter" ><span style={{ margin: '10px' }} >Inquire</span></button>
-                                    <button className="custom-btn btn-5" style={{ margin: '20px' }}><span>Read More</span></button>
+                                    <button className="custom-btn btn-5" data-toggle="modal" data-target="#exampleModalCenter" ><span style={{ margin: '10px' }} >Inquire</span></button>
+                                    <button className="custom-btn btn-5" ><span>Read More</span></button>
+
+                                </div>
+                                {service.freelancer_id && service.freelancer_id.availability ? (
+                                    <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
+                                        This Freelancer is Available Right Now
+                                    </div>
+
+                                ) : (
+                                    <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'red', padding: 10, margin: '20px' }}>
+                                        This Freelancer is not available right now, and not accepting inquiries at the moment
+                                    </div>
+                                )}
+
+                                <div>
 
                                 </div>
                             </center>
 
                         </div>
-                        <div className='2nd' style={{ backgroundColor: "transparent", width: "70%", height: '86vh', padding: '30px' }}>
-                            <h1 style={{ textAlign: 'center' }}>Nail Treatments</h1>
-                            <div className="list-of-service__container">
-                                <div className="list-of-service">
-                                    <h2>List of Services</h2>
-                                    <ul>
-                                        <li>Manicure and Pedicure</li>
-                                        <li>Handspa and Footspa</li>
+                        <div className='second' style={{ backgroundColor: "transparent", width: "70%", height: 'calc(100vh - 100px)', padding: '30px', overflowY: 'scroll' }}>
+                            <div className="forSecond">
+                                <h1 style={{ textAlign: 'center' }}>{service.category && service.category.name}</h1>
+                                <div className="list-of-service__container">
+                                    <div className="list-of-service">
+                                        {/* <h2>List of Services</h2> */}
+                                        <ul>
+                                            <li>Service: {service.name}</li>
+                                            <li>Description: {service.name}</li>
+                                            {/* <li>Handspa and Footspa</li>
                                         <li>Hand and Foot Paraffine</li>
                                         <li>Waxing</li>
                                         <li>Gel Polish</li>
-                                        <li>Nail Arts</li>
-                                    </ul>
+                                        <li>Nail Arts</li> */}
+                                        </ul>
 
 
+                                    </div>
+                                    <div className="customer-ratings">
+                                        <img src={service.images && service.images.url}
+
+                                            key={service._id}
+                                            // className="rounded-img-big"
+
+                                            style={{ marginTop: '30px' }} />
+
+                                    </div>
                                 </div>
-                                <div className="customer-ratings">
-                                    <img src={service && service.image}
-
-                                        key={service._id}
-                                        // className="rounded-img-big"
-
-                                        style={{ marginTop: '30px' }} />
-
+                                <div style={{ padding: '0px 30px 30px 30px', borderBottom: ' 2px solid rgba(0, 0, 0, 0.09)' }}>
+                                    <h2>Client reviews</h2>
+                                    <div className="ratings mt-auto">
+                                        <div className="rating-outer">
+                                            <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div>
+                                        </div>
+                                        <span style={{ paddingLeft: 10 }}>{service.avgRating} out of 5</span>
+                                    </div>
+                                    <span id="no_of_reviews">{service.ratingCount} client {service.ratingCount === 1 ? 'review' : 'reviews'} </span>
                                 </div>
-                            </div>
-                            <div style={{ padding: '0px 30px' }}>
-                                <h2>Customer reviews</h2>
-                                <div className='rating'>
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star checked"></span>
-                                    <span className="fa fa-star"></span>
-                                    <span className="fa fa-star"></span>
+                                {/* REVIEWS FROM CLIENTS/ */}
+                                <div className="comment-wrapper pt--40">
+                                    <div className="section-title">
+                                        <h5 className="mb--25">Reviews</h5>
+                                    </div>
+                                    {/* array.forEach(element => {
+    
+}); */}
+                                    {/* <div className="edu-comment">
+                                        <div className="thumbnail"> <img src="images/student-1.png" alt="Comment Images" /> </div>
+                                        <div className="comment-content">
+                                            <div className="comment-top">
+                                                <h6 className="title">CSS Tutorials</h6>
+                                                <div className="rating"> <i className="fa fa-star" aria-hidden="true"></i> <i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i> </div>
+                                            </div>
+                                            <span className="subtitle">“ Outstanding Review Design ”</span>
+                                            <p>{rating.comment}</p>
+                                        </div>
+                                    </div> */}
+
+                                    {serviceRatings.map((rating) => (
+                                        <div className="edu-comment">
+                                            <div className='thumbnailAndContent'>
+                                                <div className="thumbnail"> <img src={rating.user.avatar.url} alt="Comment Images" /> </div>
+                                                <div className="comment-content">
+                                                    <div className="comment-top">
+                                                        <div style={{ display: "flex" }}>
+                                                            <h6 className="title">{rating.user.name}</h6>
+                                                            <div className="ratings">
+                                                                <div className="rating-outer">
+                                                                    <div className="rating-inner" style={{ width: `${(rating.rating / 5) * 100}%` }}></div>
+                                                                </div>
+                                                                {/* <span style={{ paddingLeft: 10 }}>{rating.rating}</span> */}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {/* <span className="subtitle">“ Outstanding Review Design ”</span> */}
+                                                    <p>{rating.comment}</p>
+                                                </div>
+                                            </div>
+                                            <p>{moment(rating.created_At).format('MMM/DD/yy')}</p>
+                                        </div>
+
+                                    ))}
+
+                                    {/* <div className="edu-comment">
+                                        <div className="thumbnail"> <img src="images/student-1.png" alt="Comment Images" /> </div>
+                                        <div className="comment-content">
+                                            <div className="comment-top">
+                                                <h6 className="title">HTML CSS Tutorials</h6>
+                                                <div className="rating"> <i className="fa fa-star" aria-hidden="true"></i> <i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i><i className="fa fa-star" aria-hidden="true"></i> </div>
+                                            </div>
+                                            <span className="subtitle">“ Nice Review Design ”</span>
+                                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam.</p>
+                                        </div>
+                                    </div> */}
                                 </div>
-                                <span>6 customer ratings</span>
+                                {/* REVIEWS FROM CLIENTS END/ */}
+
+
                             </div>
                         </div>
 

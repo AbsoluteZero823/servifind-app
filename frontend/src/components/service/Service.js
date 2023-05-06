@@ -62,13 +62,17 @@ const Service = ({ service }) => {
                 <div className="services-footer">
                     <div>
                         <div className='rating' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <span className="fa fa-star checked"></span>
-                            <span className="fa fa-star checked"></span>
-                            <span className="fa fa-star checked"></span>
-                            <span className="fa fa-star"></span>
-                            <span className="fa fa-star"></span>
-                            <span style={{ paddingLeft: 10 }}>{service.ratings.avgRating}</span>
+                            <div className="ratings mt-auto">
+                                <div className="rating-outer">
+                                    <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div>
+                                </div>
+
+                            </div>
+
+
+                            <span style={{ paddingLeft: 10 }}>{service.avgRating}/5</span>
                         </div>
+                        <span id="no_of_reviews">{service.ratingCount} client {service.ratingCount === 1 ? 'review' : 'reviews'} </span>
 
                     </div>
                     {(!user && !isAuthenticated) &&

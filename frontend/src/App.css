@@ -564,25 +564,21 @@ ul {
   height: 400px;
 }
 
-.title {
-  /* width: 100%; */
-  /* height: auto; */
+/* .title {
+
   background-color: white;
   color: black;
 
 
 
-  /* padding-top: 100px;
-      padding-bottom: 100px; */
   position: absolute;
-  /* margin-top: 200px;
-      margin-bottom: 200px; */
+
   right: 0;
   height: auto;
   width: 100%;
   text-align: center;
   font-size: 100px;
-}
+} */
 
 
 /* Avatar */
@@ -1101,7 +1097,8 @@ a:not([href]):hover {
   display: inline-block;
   position: relative;
   font-family: FontAwesome;
-  color: #fdcc0d;
+  color: black;
+
 }
 
 .rating-outer::before {
@@ -3353,7 +3350,7 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
-.name {
+.profile-info .name {
   font-weight: 600;
   font-size: 1.5rem;
 }
@@ -3725,6 +3722,18 @@ a {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 30px;
   }
+
+  .first .rounded-img-big {
+    border-radius: 50% !important;
+    /* left: 100px; */
+    height: 200px;
+    width: 200px;
+  }
+
+  .first .profile-info .info {
+    font-size: 15px;
+    /* margin: 30px 30px; */
+  }
 }
 
 
@@ -3790,7 +3799,96 @@ a {
     padding: 30px;
   }
 
+  .first .rounded-img-big {
+    border-radius: 50% !important;
+    /* left: 100px; */
+    height: 250px;
+    width: 250px;
+  }
+
+  .first .profile-info .info {
+    font-size: 20px;
+    /* margin: 30px 30px; */
+  }
 }
 
 
 /* COMPUTER BIG SCREEN END */
+.forSecond {
+  background-color: rgb(255, 255, 255);
+  /* margin: 50px; */
+  border-radius: 10px;
+  /* height: 78vh; */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.comment-wrapper {
+  padding: 20px;
+}
+
+.mb--25 {
+  margin-bottom: 25px !important;
+}
+
+.edu-comment {
+  display: flex;
+  justify-content: space-between
+}
+
+.thumbnailAndContent {
+  display: flex;
+}
+
+@media only screen and (max-width: 575px) {
+  .edu-comment {
+    flex-direction: column;
+  }
+}
+
+.edu-comment .thumbnail {
+  min-width: 70px;
+  width: 70px;
+  max-height: 70px;
+  border-radius: 100%;
+  margin-right: 25px;
+}
+
+.edu-comment .thumbnail img {
+  border-radius: 100%;
+  width: 100%;
+}
+
+.edu-comment .comment-content .comment-top {
+  display: flex;
+  align-items: center;
+}
+
+.edu-comment .comment-content .title {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 32px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+}
+
+.edu-comment .comment-content .subtitle {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 26px;
+  display: block;
+  margin-bottom: 10px;
+  color: #231F40;
+}
+
+@media only screen and (max-width: 575px) {
+  .edu-comment .comment-content {
+    margin-top: 20px;
+  }
+}
+
+.edu-comment+.edu-comment {
+  border-top: 1px solid #EEEEEE;
+  padding-top: 30px;
+  margin-top: 30px;
+}
