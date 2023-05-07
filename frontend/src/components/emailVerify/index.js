@@ -52,7 +52,7 @@ const EmailVerify = () => {
                 }}>
                     <img src={success} alt='success_img' />
                     <h1>Email verified successfully</h1>
-                    <Link to="/login">
+                    {/* <Link to="/login">
                         <button style={{
                             border: 'none',
                             outline: 'none',
@@ -64,7 +64,7 @@ const EmailVerify = () => {
                             fontSize: '14px',
                             cursor: 'pointer'
                         }}>Login</button>
-                    </Link>
+                    </Link> */}
                 </div>
             ) : (
                 <h1 style={{

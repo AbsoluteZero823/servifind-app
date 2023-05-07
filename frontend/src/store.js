@@ -10,7 +10,7 @@ import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, app
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
 import { getOffersReducer, newOfferReducer, offerDetailsReducer, getRequestOffersReducer, updateReducer } from './reducers/offerReducers';
-import { chatsReducer } from './reducers/chatReducers';
+import { chatsReducer, newChatReducer } from './reducers/chatReducers';
 import { messagesReducer, newMessageReducer } from './reducers/messageReducers';
 
 // import { getTransactions } from '../../backend/controllers/transactionController';
@@ -61,6 +61,7 @@ const reducer = combineReducers({
     requestDetails: requestDetailsReducer,
 
     chats: chatsReducer,
+    newChat: newChatReducer,
 
     messages: messagesReducer,
     addMessage: newMessageReducer,

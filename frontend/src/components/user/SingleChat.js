@@ -13,7 +13,7 @@ import ScrollableChat from './ScrollableChat'
 import $ from 'jquery';
 import Lottie from "react-lottie"
 import animationData from "../../animations/typing.json"
-import { newOffer, getOffers } from '../../actions/offerActions';
+import { newOffer } from '../../actions/offerActions';
 import { newTransaction, updateTransaction } from '../../actions/transactionActions';
 import { NEW_TRANSACTION_RESET, UPDATE_TRANSACTION_RESET } from '../../constants/transactionConstants';
 import { NEW_OFFER_RESET, UPDATE_OFFER_RESET } from '../../constants/offerConstants';
@@ -32,7 +32,7 @@ var socket, selectedChatCompare;
 
 
 
-const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
     const dispatch = useDispatch();
     const defaultOptions = {
@@ -49,7 +49,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     const { selectedChat, setSelectedChat, notification, setNotification } = ChatState();
     const { user } = useSelector(state => state.auth)
     const { offer, success } = useSelector(state => state.addOffer)
-    const { offers } = useSelector(state => state.offers)
+
     const { singleoffer, loadings } = useSelector(state => state.singleOffer)
     const { updateloading } = useSelector(state => state.updateoffer)
     const { loadingUptTrans } = useSelector(state => state.updateTransaction)
@@ -80,7 +80,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     useEffect(() => {
 
         fetchMessages();
-        dispatch(getOffers());
+
         // setLoading(true)
         selectedChatCompare = selectedChat;
 
@@ -115,7 +115,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
     useEffect(() => {
         fetchMessages();
-        dispatch(getOffers());
+
 
         setLoading(true);
 
@@ -417,13 +417,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         dispatch(SingleOffer(id));
     }
 
+
+
+
     const OfferExists = offers.filter(function (o) {
 
         if (o.inquiry_id) {
             if (selectedChat.inquiry_id) {
                 return o.inquiry_id === selectedChat.inquiry_id._id;
+
             }
 
+        }
+        else if (o.request_id && selectedChat.offer_id) {
+            if (selectedChat.offer_id.request_id) {
+                return o.request_id === selectedChat.offer_id.request_id
+            }
         }
 
     }
@@ -435,6 +444,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
 
     return (
+
         <Fragment>
 
             {selectedChat.users[0]._id === user._id && (
@@ -454,7 +464,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     {loading ? <></> : (
                         <Fragment>
                             {!OfferExists[0] && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && (
-                                <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offfer</button>
+                                <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offer</button>
                             )}
                             {/* {OfferExists[0] && OfferExists[0].inquiry_id === selectedChat.inquiry_id._id && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && (
                                 <button type="button" className='custom-offer' data-toggle="modal" data-target="#CheckOfferModal">Check Offer</button>
@@ -504,7 +514,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         {loading ? <></> : (
                             <Fragment>
                                 {!OfferExists[0] && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && (
-                                    <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offfer</button>
+                                    <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offer</button>
                                 )}
                                 {OfferExists[0] && (
                                     <Fragment>
@@ -531,44 +541,46 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
             {/* <!-- end chat-header --> */}
 
-
             {/* SA CUSTOMER */}
-            {
-                selectedChat.inquiry_id && selectedChat.inquiry_id.customer === user._id && OfferExists[0] && OfferExists[0].inquiry_id === selectedChat.inquiry_id._id && (
-
-                    <Fragment>
-                        {OfferExists[0].offer_status === 'waiting' && !hide && (
-                            <div style={{ backgroundColor: 'white', position: 'absolute', width: '58vw', height: '15vh', alignItems: 'center', display: 'flex', padding: '20px', justifyContent: 'space-between' }}>
 
 
+            {selectedChat.inquiry_id && selectedChat.inquiry_id.customer === user._id && OfferExists[0] && OfferExists[0].inquiry_id === selectedChat.inquiry_id._id && (
 
-                                <div>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <i className='fas fa-tag' style={{ fontSize: '50px', width: '50px', height: '50px', margin: '20px' }}></i>
-                                        <div style={{ width: '80%' }}>
-                                            <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
-                                            {/* <p style={{ padding: '10px' }}>Description: {OfferExists[0].description}</p> */}
-                                        </div>
+                <Fragment>
+                    {OfferExists[0].offer_status === 'waiting' && !hide && (
+                        <div style={{ backgroundColor: 'white', position: 'absolute', width: '58vw', height: '15vh', alignItems: 'center', display: 'flex', padding: '20px', justifyContent: 'space-between' }}>
+
+
+
+                            <div>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <i className='fas fa-tag' style={{ fontSize: '50px', width: '50px', height: '50px', margin: '20px' }}></i>
+                                    <div style={{ width: '80%' }}>
+                                        <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
+                                        {/* <p style={{ padding: '10px' }}>Description: {OfferExists[0].description}</p> */}
                                     </div>
-                                    <p style={{ padding: '10px', marginLeft: '90px', width: '80%' }}>Job Description: {OfferExists[0].description}</p>
                                 </div>
-                                {/* buttons */}
-
-                                <div style={{ float: "right" }}>
-                                    <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].inquiry_id)}>Accept</a>
-                                    <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => refuseHandler(OfferExists[0]._id)}>Refuse</a>
-                                    {/* <a style={{ padding: 10, color: 'teal', fontWeight: 'bold' }} data-toggle="modal" data-target='#CheckOfferModal'>Check Details</a> */}
-                                    {/* <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} >Hide</a> */}
-                                </div>
-
+                                <p style={{ padding: '10px', marginLeft: '90px', width: '80%' }}>Job Description: {OfferExists[0].description}</p>
                             </div>
-                        )}
+                            {/* buttons */}
 
-                    </Fragment>
-                )
+                            <div style={{ float: "right" }}>
+                                <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].inquiry_id)}>Accept</a>
+                                <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => refuseHandler(OfferExists[0]._id)}>Refuse</a>
+                                {/* <a style={{ padding: 10, color: 'teal', fontWeight: 'bold' }} data-toggle="modal" data-target='#CheckOfferModal'>Check Details</a> */}
+                                {/* <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} >Hide</a> */}
+                            </div>
+
+                        </div>
+                    )}
+
+                </Fragment>
+            )
             }
 
             {/* SA FREELANCER */}
+            {/* {!loadingUptTrans ? (
+                <Fragment> */}
             {OfferExists[0] && OfferExists[0].inquiry_id === selectedChat.inquiry_id._id && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && (
 
                 <Fragment>
@@ -614,6 +626,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 </Fragment>
             )
             }
+            {/* </Fragment>
+            ) : <Loader />} */}
 
             <div className="chat-history">
                 {loading ? <Loader /> : (

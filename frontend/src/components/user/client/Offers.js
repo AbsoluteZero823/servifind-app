@@ -6,15 +6,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import Swal from 'sweetalert2'
+import { NEW_CHAT_RESET } from '../../../constants/chatConstants'
 
 import { CancelOtherOffer, AcceptOffer } from '../../../actions/offerActions'
 import { newTransaction, clearErrors } from '../../../actions/transactionActions';
-
+import { accessChat } from '../../../actions/chatActions';
 
 const Offers = ({ offer }) => {
     // console.log(users)
 
     const { user, isAuthenticated } = useSelector(state => state.auth)
+    const { success } = useSelector(state => state.newChat)
 
     const dispatch = useDispatch();
     let navigate = useNavigate();
@@ -23,6 +25,10 @@ const Offers = ({ offer }) => {
 
 
     useEffect(() => {
+        if (success) {
+            dispatch({ type: NEW_CHAT_RESET })
+            navigate(`/chat`)
+        }
         // dispatch(allUsers())
 
         // if (error) {
@@ -45,31 +51,31 @@ const Offers = ({ offer }) => {
 
         // }
 
-    }, [dispatch, alert])
+    }, [dispatch, alert, success])
 
-    const accessChat = async (chatData) => {
+    // const accessChat = async (chatData) => {
 
-        console.log(chatData);
+    //     console.log(chatData);
 
-        try {
-            // setLoadingChat(true);
-            const config = {
-                headers: {
-                    "Content-type": "multipart/form-data",
-                    // Authorization: `Bearer ${user.token}`,
-                },
-            };
-            const { data } = await axios.post(`/api/v1/chat`, chatData, config);
-            console.log(data);
-            // if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
-            // setSelectedChat(data);
-            // setLoadingChat(false);
-            // onClose();
-            navigate(`/chat`)
-        } catch (error) {
-            console.log(error)
-        }
-    };
+    //     try {
+    //         // setLoadingChat(true);
+    //         const config = {
+    //             headers: {
+    //                 "Content-type": "multipart/form-data",
+    //                 // Authorization: `Bearer ${user.token}`,
+    //             },
+    //         };
+    //         const { data } = await axios.post(`/api/v1/chat`, chatData, config);
+    //         console.log(data);
+    //         // if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+    //         // setSelectedChat(data);
+    //         // setLoadingChat(false);
+    //         // onClose();
+    //         // navigate(`/chat`)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // };
 
     const acceptOfferHandler = (id) => {
         const offerData = new FormData();
@@ -79,6 +85,7 @@ const Offers = ({ offer }) => {
 
         const formData = new FormData();
         formData.set('offer_id', id);
+        formData.set('price', offer.price)
 
         Swal.fire({
             title: 'Are you sure?',

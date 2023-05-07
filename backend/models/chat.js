@@ -19,7 +19,7 @@ const chatSchema = new mongoose.Schema({
   },
   offer_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'offer',
+    ref: 'Offer',
     required: false
   },
   isArchived: {

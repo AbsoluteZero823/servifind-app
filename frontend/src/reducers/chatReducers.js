@@ -1,9 +1,9 @@
 import {
 
-    // NEW_CATEGORY_REQUEST,
-    // NEW_CATEGORY_SUCCESS,
-    // NEW_CATEGORY_RESET,
-    // NEW_CATEGORY_FAIL,
+    NEW_CHAT_REQUEST,
+    NEW_CHAT_SUCCESS,
+    NEW_CHAT_RESET,
+    NEW_CHAT_FAIL,
 
 
     GET_CHATS_REQUEST,
@@ -19,44 +19,44 @@ import {
 } from '../constants/chatConstants'
 
 
-// export const newCategoryReducer = (state = { category: {} }, action) => {
-//     switch (action.type) {
+export const newChatReducer = (state = { chat: {} }, action) => {
+    switch (action.type) {
 
-//         case NEW_CATEGORY_REQUEST:
-//             return {
-//                 ...state,
-//                 loading: true
-//             }
+        case NEW_CHAT_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
 
-//         case NEW_CATEGORY_SUCCESS:
-//             return {
-//                 loading: false,
-//                 success: action.payload.success,
-//                 category: action.payload.category
-//             }
+        case NEW_CHAT_SUCCESS:
+            return {
+                loading: false,
+                success: action.payload.success,
+                chat: action.payload.chat
+            }
 
-//         case NEW_CATEGORY_FAIL:
-//             return {
-//                 ...state,
-//                 error: action.payload
-//             }
+        case NEW_CHAT_FAIL:
+            return {
+                ...state,
+                error: action.payload
+            }
 
-//         case NEW_CATEGORY_RESET:
-//             return {
-//                 ...state,
-//                 success: false
-//             }
+        case NEW_CHAT_RESET:
+            return {
+                ...state,
+                success: false
+            }
 
-//         case CLEAR_ERRORS:
-//             return {
-//                 ...state,
-//                 error: null
-//             }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
 
-//         default:
-//             return state
-//     }
-// }
+        default:
+            return state
+    }
+}
 
 
 export const chatsReducer = (state = { chats: [] }, action) => {

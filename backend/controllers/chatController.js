@@ -75,7 +75,7 @@ exports.accessChat = async (req, res, next) => {
         "users",
         "-password"
       );
-      res.status(200).json(FullChat);
+      res.status(200).json({ success: true, FullChat });
     }
   } catch (error) {
     res.status(400);
@@ -129,6 +129,11 @@ exports.fetchChats = async (req, res, next) => {
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("inquiry_id")
+      .populate({
+        path: 'offer_id',
+        populate: { path: 'request_id' }
+      })
+
       //   .populate("groupAdmin", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
@@ -147,6 +152,7 @@ exports.fetchChats = async (req, res, next) => {
 
         // .send(results);
       });
+
   } catch (error) {
     res.status(400);
     throw new Error(error.message);

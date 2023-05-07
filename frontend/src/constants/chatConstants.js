@@ -5,7 +5,10 @@ export const GET_CHATS_SUCCESS = 'GET_CHATS_SUCCESS'
 export const GET_CHATS_RESET = 'GET_CHATS_RESET'
 export const GET_CHATS_FAIL = 'GET_CHATS_FAIL'
 
-
+export const NEW_CHAT_REQUEST = 'NEW_CHAT_REQUEST'
+export const NEW_CHAT_SUCCESS = 'NEW_CHAT_SUCCESS'
+export const NEW_CHAT_RESET = 'NEW_CHAT_RESET'
+export const NEW_CHAT_FAIL = 'NEW_CHAT_FAIL'
 
 
 

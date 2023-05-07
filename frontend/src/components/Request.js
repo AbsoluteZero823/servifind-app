@@ -36,6 +36,7 @@ const Request = ({ request }) => {
 
     const [service_id, setServiceId] = useState('');
     const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
     // const [request_id, setRequestId] = useState('');
 
     useEffect(() => {
@@ -68,6 +69,7 @@ const Request = ({ request }) => {
 
         offerData.set('service_id', service_id);
         offerData.set('description', description);
+        offerData.set('price', price);
         // offerData.set('offered_by', user._id);
         offerData.set('request_id', singlerequest && singlerequest._id);
 
@@ -132,31 +134,34 @@ const Request = ({ request }) => {
 
                 </div>
                 <div className='dividerLine'></div>
-                <div className="post-actions">
-                    <div className="actions">
-                        {request.requested_by._id === user._id && (
-                            <div className="action" onClick={() => SwalAlert()}>
-                                {/* <i className="like-icon"></i> */}
-                                <a href="#">
-                                    <span>Make an Offer</span>
-                                </a>
+                {user.role === 'freelancer' && (
+                    <div className="post-actions">
+                        <div className="actions">
+                            {request.requested_by._id === user._id && (
+                                <div className="action" onClick={() => SwalAlert()}>
+                                    {/* <i className="like-icon"></i> */}
+                                    <a href="#">
+                                        <span>Make an Offer</span>
+                                    </a>
 
-                            </div>
+                                </div>
 
-                        )}
-                        {request.requested_by._id !== user._id && (
-                            <div name={request._id} className="action" data-toggle="modal" data-target="#MakeOfferModal" onClick={() => requestDetailsHandler(request._id)}>
-                                {/* <i className="like-icon"></i> */}
-                                <a href="#">
-                                    <span>Make an Offer</span>
-                                </a>
+                            )}
+                            {request.requested_by._id !== user._id && (
+                                <div name={request._id} className="action" data-toggle="modal" data-target="#MakeOfferModal" onClick={() => requestDetailsHandler(request._id)}>
+                                    {/* <i className="like-icon"></i> */}
+                                    <a href="#">
+                                        <span>Make an Offer</span>
+                                    </a>
 
-                            </div>
+                                </div>
 
-                        )}
+                            )}
+                        </div>
+
                     </div>
+                )}
 
-                </div>
 
             </div>
 
@@ -207,6 +212,17 @@ const Request = ({ request }) => {
                                         onChange={(e) => setDescription(e.target.value)}
                                     >
                                     </textarea>
+
+                                    <div className="form-group">
+                                        <label htmlFor="stock_field">Price</label>
+                                        <input
+                                            type="number"
+                                            id="stock_field"
+                                            className="form-control"
+                                            value={price}
+                                            onChange={(e) => setPrice(e.target.value)}
+                                        />
+                                    </div>
 
                                     {/* To Do */}
                                     {/* <div className="form-group">

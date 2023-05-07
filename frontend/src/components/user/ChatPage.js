@@ -12,22 +12,29 @@ import MetaData from '../layout/MetaData'
 
 import MyChats from './MyChats'
 import ChatBox from './ChatBox'
+import { useDispatch } from 'react-redux'
+import { getOffers } from '../../actions/offerActions'
 
 
 const ChatPage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
     // const { user, loading } = useSelector(state => state.auth)
+    const { offers } = useSelector(state => state.offers)
+    const dispatch = useDispatch();
     const fetchChats = async () => {
         // console.log(user._id);
 
     }
+    useEffect(() => {
+        dispatch(getOffers())
+    }, []);
     return (
 
 
         <div style={{ display: 'flex' }}>
 
 
-            <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+            <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
 
 
 

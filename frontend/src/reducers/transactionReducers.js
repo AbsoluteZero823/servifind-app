@@ -235,6 +235,7 @@ export const updateTransactionReducer = (state = {}, action) => {
             return {
                 ...state,
                 isUpdated: false
+
             }
 
 

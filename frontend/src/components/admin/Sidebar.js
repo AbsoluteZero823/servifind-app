@@ -85,11 +85,11 @@ const Sidebar = () => {
                         <Link to="/admin/reviews"><i className="fa fa-star"></i> Reviews</Link>
                     </li> */}
 
-                    {user && user.role === 'freelancer' && (
-                        <li>
-                            <Link to="/feed"><i className="fa fa-flag"></i>Requests Feed</Link>
-                        </li>
-                    )}
+                    {/* {user && user.role === 'freelancer' && ( */}
+                    <li>
+                        <Link to="/feed"><i className="fa fa-flag"></i>Requests Feed</Link>
+                    </li>
+                    {/* )} */}
                     {user && user.role === 'admin' && (
                         <li>
                             <Link to="/admin/reviews"><i className="fa fa-flag"></i> Reports</Link>

@@ -28,7 +28,7 @@ const transactionSchema = new mongoose.Schema({
     },
     expected_Date: {
         type: Date,
-        required: true
+        required: false
     },
     finished_At: {
         type: Date,

@@ -129,13 +129,13 @@ const SingleService = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        setFreelancer(service.user && service.user._id)
+        setFreelancer(service.user._id)
         // console.log(service.user && service.user._id)
         const formData = new FormData();
         formData.set('instruction', instruction);
         formData.set('service_id', service_id);
         formData.set('customer', customer);
-        formData.set('freelancer', service.freelancer_id);
+        formData.set('freelancer', service.freelancer_id._id);
         // formData.set('attachments', attachments);
 
         // console.log(service.user._id);

@@ -52,7 +52,7 @@ const Service = ({ service }) => {
             </div>
             <img className="services-photo" src={service.images.url} alt="" />
             <div className="card-content">
-                <h4 className="freelancer-name">Kendrick Galan</h4>
+                <h4 className="freelancer-name">{service.user.name}</h4>
                 <div className="services-title">
                     <span>{service.category.name}</span>
                 </div>
