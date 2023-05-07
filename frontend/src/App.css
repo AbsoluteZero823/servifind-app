@@ -3618,6 +3618,7 @@ a {
   height: 200px;
   clip-path: polygon(0 0, 100% 0%, 100% 100%, 0 80%);
   display: block;
+  border-radius: 10px 10px 0px 10px;
 }
 
 .card-content {
