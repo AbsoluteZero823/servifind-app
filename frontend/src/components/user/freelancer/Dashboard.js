@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2';
 import $ from 'jquery';
 
+
 import Loader from '../../layout/Loader';
+import MetaData from '../../layout/MetaData';
 
 import { availabilityUpdate, completeFreelancerSetup } from '../../../actions/freelancerActions';
 import { getFreelancerServices } from '../../../actions/serviceActions';
@@ -59,7 +61,7 @@ const Dashboard = () => {
             setLoading(false)
         }
 
-        if(user.freelancer_id.gcash_name){
+        if (user.freelancer_id.gcash_name) {
             setGcashName(user.freelancer_id.gcash_name);
             setGcashNum(user.freelancer_id.gcash_num);
         }
@@ -215,6 +217,7 @@ const Dashboard = () => {
     return (
         <Fragment>
             <div className='containerDashboardFull' >
+                <MetaData title={'Freelancer Dashboard'} />
                 <div className='dashboard'>
 
 
@@ -311,10 +314,10 @@ const Dashboard = () => {
                                 <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
                                 {!user.freelancer_id.gcash_name ? (
                                     <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
-                                ):(
+                                ) : (
                                     <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
                                 )
-                            }
+                                }
 
                             </div>
                         </div>

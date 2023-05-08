@@ -88,13 +88,14 @@ const SingleService = () => {
                 },
             };
             const { data } = await axios.post(`/api/v1/chat`, chatData, config);
-            console.log(data._id);
+            console.log(data.FullChat._id);
+
             setNewChat(data);
             // if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
             // setSelectedChat(data);
             // setLoadingChat(false);
             // onClose();
-            sendMessage(data._id)
+            sendMessage(data.FullChat._id)
 
         } catch (error) {
             console.log(error)
@@ -268,7 +269,7 @@ const SingleService = () => {
                                     </div> */}
 
                                     {serviceRatings.map((rating) => (
-                                        <div className="edu-comment">
+                                        <div className="edu-comment" key={rating._id}>
                                             <div className='thumbnailAndContent'>
                                                 <div className="thumbnail"> <img src={rating.user.avatar.url} alt="Comment Images" /> </div>
                                                 <div className="comment-content">
@@ -350,7 +351,7 @@ const SingleService = () => {
 
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" className="btn btn-primary" >Save changes</button>
+                                        <button type="submit" className="btn btn-primary" >Submit</button>
 
 
                                     </div>

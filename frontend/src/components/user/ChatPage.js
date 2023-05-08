@@ -32,7 +32,7 @@ const ChatPage = () => {
 
 
         <div style={{ display: 'flex' }}>
-
+            <MetaData title={'Messages'} />
 
             <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
 

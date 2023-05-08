@@ -78,7 +78,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     }, []);
 
     useEffect(() => {
-console.log(OfferExists)
+        console.log(OfferExists)
         fetchMessages();
 
         // setLoading(true)
@@ -117,7 +117,7 @@ console.log(OfferExists)
         console.log(OfferExists)
         fetchMessages();
 
-console.log(selectedChat)
+        console.log(selectedChat)
         setLoading(true);
 
         console.log(expectedDate)
@@ -489,7 +489,7 @@ console.log(selectedChat)
                     )}
 
 
-{(OfferExists[0].request_id && OfferExists[0].request_id === selectedChat.offer_id.request_id._id) && (
+                    {(OfferExists[0] && OfferExists[0].request_id && OfferExists[0].request_id === selectedChat.offer_id.request_id._id) && (
                         <Fragment>
                             {OfferExists[0].offer_status === 'granted' ? (
                                 <button type="button" className='custom-offer' data-toggle="modal" data-target="#CheckOfferModal">Check Offer</button>
@@ -530,7 +530,7 @@ console.log(selectedChat)
                                 {!OfferExists[0] && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && (
                                     <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offer</button>
                                 )}
-                                  {/* {!OfferExists[0] && selectedChat.offer_id && selectedChat.offer_id.request_id.requested_by !== user._id && (
+                                {/* {!OfferExists[0] && selectedChat.offer_id && selectedChat.offer_id.request_id.requested_by !== user._id && (
                                     <button type="button" className='custom-offer' data-toggle="modal" data-target="#CustomOfferModal">Custom Offer</button>
                                 )} */}
                                 {OfferExists[0] && (
@@ -624,7 +624,7 @@ console.log(selectedChat)
 
                         </div>
                     )}
-                       </Fragment>
+                </Fragment>
             )
             }
             {/* CUSTOMER THROUGH INQUIRY END */}
@@ -632,7 +632,7 @@ console.log(selectedChat)
             {/* {!loadingUptTrans ? (
                 <Fragment> */}
             {/* {OfferExists[0] && OfferExists[0].inquiry_id === selectedChat.inquiry_id._id && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id && ( */}
-                       {(OfferExists[0] && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id) && (
+            {(OfferExists[0] && selectedChat.inquiry_id && selectedChat.inquiry_id.customer !== user._id) && (
 
                 <Fragment>
                     {(OfferExists[0].offer_status === 'waiting' || OfferExists[0].offer_status === 'cancelled') && !hide && (
@@ -679,7 +679,7 @@ console.log(selectedChat)
             }
 
             {/* FREELANCER THROUGH REQUEST */}
-                      {(OfferExists[0] && selectedChat.offer_id && selectedChat.offer_id.request_id && selectedChat.offer_id.request_id.requested_by !== user._id) && (
+            {(OfferExists[0] && selectedChat.offer_id && selectedChat.offer_id.request_id && selectedChat.offer_id.request_id.requested_by !== user._id) && (
 
                 <Fragment>
                     {(OfferExists[0].offer_status === 'waiting' || OfferExists[0].offer_status === 'cancelled') && !hide && (

@@ -9,6 +9,7 @@ const Sidebar = () => {
     const { user, loading, isAuthenticated } = useSelector(state => state.auth)
     return (
         <div className="sidebar-wrapper">
+
             <nav id="sidebar" className='sidenav'>
                 <ul className="list-unstyled components">
                     {user && user.role === "admin" && (
@@ -61,7 +62,7 @@ const Sidebar = () => {
                             <Link to="/services"><i className="fa fa-cogs"></i>Services</Link>
                         </li>
                     )}
-                    <li>
+                    {/* <li>
                         <Link to="/my-inquiries"><i className="fa fa-cogs"></i>My Inquiries</Link>
                     </li>
                     {user && user.role === 'freelancer' && (
@@ -69,7 +70,7 @@ const Sidebar = () => {
                             <Link to="/client-inquiries"><i className="fa fa-cogs"></i>Client Inquiries</Link>
                         </li>
 
-                    )}
+                    )} */}
 
 
                     <li>

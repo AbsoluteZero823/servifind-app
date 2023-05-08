@@ -137,7 +137,7 @@ exports.verifyEmail = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).send({ message: "Internals server error" });
+        res.status(500).send({ message: "Internal server error" });
     }
 }
 
@@ -280,15 +280,24 @@ exports.allFreelancers = async (req, res, next) => {
 }
 // Get user details   =>   /api/v1/admin/user/:id
 exports.getUserDetails = async (req, res, next) => {
-    const user = await User.findById(req.params.id);
-    console.log(user);
-    if (!user) {
-        return next(new ErrorHandler(`User does not found with id: ${req.params.id}`))
+    try {
+        const user = await User.findById(req.params.id);
+        console.log(user);
+        if (!user) {
+            return next(new ErrorHandler(`User does not found with id: ${req.params.id}`))
+        }
+        res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        res.status(404).json({
+            message: '404 not found'
+
+        })
+
     }
-    res.status(200).json({
-        success: true,
-        user
-    })
+
 }
 
 
