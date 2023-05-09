@@ -377,9 +377,9 @@ exports.getUserProfile = async (req, res, next) => {
     let user = {}
 
     if ((req.user) && (req.user.role === "freelancer")) {
-        user = await User.findById(req.user.id).populate('freelancer_id');
+        user = await User.findById(req.user._id).populate('freelancer_id');
     } else {
-        user = await User.findById(req.user.id);
+        user = await User.findById(req.user._id);
     }
 
 
@@ -443,7 +443,7 @@ exports.getUserProfile = async (req, res, next) => {
 // }
 
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-    const user = await User.findById(req.user.id).select('+password');
+    const user = await User.findById(req.user._id).select('+password');
 
     // Check previous user password
     const isMatched = await user.comparePassword(req.body.oldPassword)
@@ -470,7 +470,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
         }
         // Update avatar
         if (req.body.avatar !== '') {
-            const user = await User.findById(req.user.id)
+            const user = await User.findById(req.user._id)
             const image_id = user.avatar.public_id;
             const res = await cloudinary.v2.uploader.destroy(image_id);
             const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
@@ -487,7 +487,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
                 url: result.secure_url
             }
         }
-        const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+        const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
             new: true,
             runValidators: true,
             // useFindAndModify: false

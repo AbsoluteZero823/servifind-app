@@ -9,9 +9,9 @@ const Category = require('../models/category');
 
 exports.newInquiry = async (req, res, next) => {
 
-  req.body.customer = req.user._id;
+    req.body.customer = req.user._id;
     const inquiry = await Inquiry.create(req.body);
-  
+
     res.status(201).json({
         success: true,
         inquiry
@@ -46,7 +46,7 @@ exports.getInquiries = async (req, res, next) => {
 exports.getMyInquiries = async (req, res, next) => {
 
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
 
     const inquiries = await Inquiry.find({ customer: user._id }).populate(['customer', {
         path: 'service_id',

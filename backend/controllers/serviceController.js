@@ -196,7 +196,7 @@ exports.getServicesToDisplay = async (req, res, next) => {
 
 //CODES SA MOBILE
 exports.getmyServices = async (req, res, next) => {
-    const services = await Service.find({ user: req.user.id }).populate(['category', 'user', 'freelancer_id']);
+    const services = await Service.find({ user: req.user._id }).populate(['category', 'user', 'freelancer_id']);
     res.status(200).json({
 
         success: true,
