@@ -37,7 +37,7 @@ const Application = () => {
 
 
         // user_id: user && user._id,
-        course:"",
+        course: "",
         resume: "",
         schoolID: ""
 
@@ -46,8 +46,9 @@ const Application = () => {
     const [serviceData, setServiceData] = useState({
         category: "",
         name: "",
-        priceStarts_At: ""
-
+        priceStarts_At: "",
+        description: "",
+        images: ""
 
     });
 
@@ -162,6 +163,8 @@ const Application = () => {
         servicesData.set('name', serviceData.name);
         servicesData.set('priceStarts_At', serviceData.priceStarts_At);
         servicesData.set('freelancer_id', id);
+        servicesData.set('description', serviceData.description)
+        servicesData.set('images', serviceData.images)
         // console.log(servicesData);
         dispatch(newService(servicesData));
 

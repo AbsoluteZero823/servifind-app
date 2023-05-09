@@ -222,7 +222,7 @@ const Dashboard = () => {
 
 
                     <div className='dashboardContent'>
-                        {user && user.freelancer_id && user.freelancer_id.isPremium === "false" && (
+                        {user && user.freelancer_id && user.freelancer_id.isPremium === false && (
                             <div className='premiumCard' >
                                 <div className='content'>
                                     <h1>Go Premium</h1>
@@ -236,29 +236,78 @@ const Dashboard = () => {
                         )}
                         <div className='charts' >
                             <div className='smallCardContainer' style={{ marginRight: '10px' }}>
-                                <h5>Progress</h5>
+                                <h5>My Request & Inquiries (Client)</h5>
                                 <div className='smallCard' >
-
+                                    <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightblue', borderRadius: '10px 0px 0px 10px' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel'>
+                                            Request
+                                        </div>
+                                    </div>
+                                    <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightgreen' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel' >
+                                            Inquiries
+                                        </div>
+                                    </div>
+                                    <div className='smallCard-section' style={{ backgroundColor: 'lightgoldenrodyellow', borderRadius: '0px 10px 10px 0px' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel'>
+                                            Total
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className='smallCardContainer' style={{ marginLeft: '10px' }}>
-                                <h5>Progress</h5>
+                                <h5>My Projects (Freelancer)</h5>
                                 <div className='smallCard' >
-
+                                    <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightblue', borderRadius: '10px 0px 0px 10px' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel'>
+                                            All
+                                        </div>
+                                    </div>
+                                    <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightgreen' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel' >
+                                            Completed
+                                        </div>
+                                    </div>
+                                    <div className='smallCard-section' style={{ backgroundColor: 'lightgoldenrodyellow', borderRadius: '0px 10px 10px 0px' }}>
+                                        <div className='count'>
+                                            0
+                                        </div>
+                                        <div className='countLabel'>
+                                            Pending
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div className='runningCourses' >
-                            <h5 style={{ paddingBottom: '10px' }}>Progress</h5>
+                            <h5 style={{ paddingBottom: '10px' }}>Ongoing Transactions</h5>
                             <div className='bigCardContainer'>
+                                <div className='notClickedCard' style={{ height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <h1 style={{ display: 'flex', justifyContent: 'center' }}>No Transactions Yet</h1>
+                                </div>
 
-                                <div className='wideCard' >
+                                {/* <div className='wideCard' >
 
                                 </div>
                                 <div className='notClickedCard' >
 
-                                </div>
+                                </div> */}
 
                             </div>
 

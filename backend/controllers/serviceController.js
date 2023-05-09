@@ -36,7 +36,10 @@ exports.newService = async (req, res, next) => {
 
         req.body.images = { public_id: result.public_id, url: result.secure_url };
         req.body.user = userId;
-        req.body.freelancer_id = req.user.freelancer_id._id
+        if (!req.body.freelancer_id) {
+            req.body.freelancer_id = req.user.freelancer_id._id
+        }
+
         console.log(req.body);
         const service = await Service.create(req.body);
 

@@ -376,7 +376,7 @@ exports.forgotPassword = async (req, res, next) => {
 exports.getUserProfile = async (req, res, next) => {
     let user = {}
 
-    if (req.user.role === "freelancer") {
+    if ((req.user) && (req.user.role === "freelancer")) {
         user = await User.findById(req.user.id).populate('freelancer_id');
     } else {
         user = await User.findById(req.user.id);
