@@ -499,7 +499,17 @@ exports.FetchTransactionbyOfferorInquiry = async (req, res, next) => {
         if (inquiry_id !== null && inquiry_id !== undefined) {
             query.inquiry_id = inquiry_id;
         }
-        const transaction = await Transaction.findOne(query).populate('offer_id');
+        const transaction = await Transaction.findOne(query)
+            .populate({
+                path: 'offer_id',
+                populate: {
+                path: 'service_id',
+                populate: {
+                    path: 'freelancer_id',
+                    model: 'Freelancer'
+                }
+                }
+            });
         if (!transaction) {
             return res.status(200).json({ success: false, message: 'No transaction found.' });
         }

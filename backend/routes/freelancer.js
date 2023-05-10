@@ -20,6 +20,7 @@ const { getFreelancers,
     upgrademyFreelancer,
     newupgrade,
     getfreelancerjobs,
+    initialasaFreelancer,
 
 } = require('../controllers/freelancerController');
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
@@ -39,6 +40,7 @@ router.route('/complete-setup').put(isAuthenticatedUser, completeFreelancerSetup
 
 //CODE SA MOBILE
 router.route('/freelancers/register').post(isAuthenticatedUser, makemeaFreelancer);
+router.route('/freelancers/initial/register').post(initialasaFreelancer);
 router.route('/freelancers/me').post(isAuthenticatedUser, getmyFreelancers);
 router.route('/freelancers/update').post(isAuthenticatedUser, updatemyFreelancers);
 router.route('/freelancers/upgrade').post(isAuthenticatedUser, upgrademyFreelancer);

@@ -24,19 +24,11 @@ const serviceSchema = new mongoose.Schema({
         ref: 'user',
         required: true
     },
-    // experience: {
-    //     type: String,
-    //     required: true
-    // },
     freelancer_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Freelancer',
         required: true
     },
-    // status: {
-    //     type: String,
-    //     default: 'approved'
-    // },
     images: {
         public_id: {
             type: String,

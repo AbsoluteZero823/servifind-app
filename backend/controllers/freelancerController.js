@@ -399,6 +399,62 @@ exports.completeFreelancerSetup = async (req, res, next) => {
 }
 
 // CODES SA MOBILE
+exports.initialasaFreelancer = async (req,res,next) => {
+    try {
+        const existingFreelancer = await Freelancer.findOne({ user_id: req.body.user_id });
+        if (existingFreelancer) {
+            return next(new ErrorHandler('You already have a freelancer document registered, Wait for Administrator Verification', 400));
+        }
+
+        const qrResult = await cloudinary.v2.uploader.upload(req.body.qrCode, {
+            folder: 'servifind/freelancer/qrcode',
+            width: 300,
+            crop: "scale"
+        });
+        const schoolIdResult = await cloudinary.v2.uploader.upload(req.body.schoolID, {
+            folder: 'servifind/freelancer/schoolID',
+            width: 300,
+            crop: "scale"
+        });
+        const resumeresult = await cloudinary.v2.uploader.upload(req.body.resume, {
+            folder: 'servifind/freelancer/resume',
+            width: 300,
+            crop: "scale"
+        });
+
+        const freelancer = new Freelancer({
+            status: 'applying',
+            user_id: req.body.user_id,
+            gcash_name: req.body.gcash_name,
+            gcash_num: req.body.gcash_number,
+            course: req.body.course,
+            qrCode: {
+                public_id: qrResult.public_id,
+                url: qrResult.secure_url
+            },
+            schoolId: {
+                public_id: schoolIdResult.public_id,
+                url: schoolIdResult.secure_url
+            },
+            resume: {
+                public_id: resumeresult.public_id,
+                url: resumeresult.secure_url
+            }
+        });
+        const result = await freelancer.save();
+        res.status(201).json({
+            message: 'Application Sent, Wait for Confirmation',
+            freelancer: result,
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: error.message
+        });
+    }
+}
+
 exports.makemeaFreelancer = async (req, res, next) => {
     try {
         const existingFreelancer = await Freelancer.findOne({ user_id: req.user.id });
@@ -424,7 +480,7 @@ exports.makemeaFreelancer = async (req, res, next) => {
 
         const freelancer = new Freelancer({
             status: 'applying',
-            user_id: req.body.user_id || req.user.id,
+            user_id: req.user.id,
             gcash_name: req.body.gcash_name,
             gcash_num: req.body.gcash_number,
             course: req.body.course,
