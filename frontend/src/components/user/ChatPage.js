@@ -19,7 +19,7 @@ import { getOffers } from '../../actions/offerActions'
 const ChatPage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
     // const { user, loading } = useSelector(state => state.auth)
-    const { offers } = useSelector(state => state.offers)
+    const { offers,loading } = useSelector(state => state.offers)
     const dispatch = useDispatch();
     const fetchChats = async () => {
         // console.log(user._id);
@@ -34,7 +34,9 @@ const ChatPage = () => {
         <div style={{ display: 'flex' }}>
             <MetaData title={'Messages'} />
 
-            <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
+    <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} loading={loading} />
+
+            
 
 
 

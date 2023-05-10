@@ -320,7 +320,7 @@ const Dashboard = () => {
 
                         <div className='dashboardProfile'>
 
-                            <div style={{ marginBottom: '25px' }}>
+                            <div style={{ marginBottom: '15px' }}>
                                 <p style={{ fontWeight: 'bold' }}>Profile</p>
                             </div>
                             <div style={{ display: 'flex', borderBottom: '2px solid rgba(0, 0, 0, .09)', justifyContent: 'space-around' }}>
@@ -357,18 +357,22 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className='paymentDetails'>
-                                <p style={{ fontWeight: 'bold', marginTop: "20px" }}>Payment Details</p>
+                                <div style={{display:'flex', justifyContent:'space-between', marginTop:'20px', paddingRight:'10px'}}>
+                                <p style={{ fontWeight: 'bold' }}>Payment Details</p>
+                                <span><i className='fa fa-pencil'></i></span>
+                                </div>
                                 <div className='completeSetup'>
                                     {/* {user.freelancer_id && (
 
 )} */}
                                     <p>GCash Name: {user.freelancer_id && user.freelancer_id.gcash_name}</p>
                                     <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
-                                    {!user.freelancer_id.gcash_name ? (
+                                    {!user.freelancer_id.gcash_name && (
                                         <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
-                                    ) : (
-                                        <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
-                                    )
+                                    ) 
+                                        // <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
+                                   
+        
                                     }
 
                                 </div>

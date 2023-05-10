@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import {
     useSelector
     // , useDispatch 
 } from 'react-redux'
 import SingleChat from './SingleChat'
 import { ChatState } from '../../Context/ChatProvider'
+import Loader from '../layout/Loader'
 
-const ChatBox = ({ fetchAgain, setFetchAgain, offers }) => {
-    const { user, loading } = useSelector(state => state.auth)
+const ChatBox = ({ fetchAgain, setFetchAgain, offers, loading}) => {
+    // const { user, loading } = useSelector(state => state.auth)
     const { selectedChat } = ChatState();
     return (
         <div className="chat">
             {selectedChat ? (
-                <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
+                <Fragment>
+                    {loading ? <Loader/> : (
+                     <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
+                    )}
+                </Fragment>
+               
 
             ) :
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', fontSize: 'xx-large' }}>Click on a user to start chatting</div>

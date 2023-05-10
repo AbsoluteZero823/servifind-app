@@ -226,7 +226,7 @@ export const updateTransactionReducer = (state = {}, action) => {
             return {
                 ...state,
                 loadingUptTrans: false,
-                isUpdated: action.payload
+                isUpdatedTrans: action.payload
             }
 
 
@@ -234,7 +234,7 @@ export const updateTransactionReducer = (state = {}, action) => {
 
             return {
                 ...state,
-                isUpdated: false
+                isUpdatedTrans: false
 
             }
 

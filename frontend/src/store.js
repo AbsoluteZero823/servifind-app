@@ -38,7 +38,7 @@ const reducer = combineReducers({
     transactions: getTransactionsReducer,
     transactionDetails: transactionDetailsReducer,
     updatePayment: paymentReducer,
-    updateTransaction: updateTransactionReducer,
+    updatetransaction: updateTransactionReducer,
 
     freelancerDetails: freelancerDetailsReducer,
     addFreelancer: newFreelancerReducer,

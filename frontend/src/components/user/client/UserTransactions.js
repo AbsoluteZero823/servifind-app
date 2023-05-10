@@ -20,7 +20,8 @@ import { newReport } from '../../../actions/reportActions'
 
 import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone, RateDone, ReportDone } from '../../../actions/transactionActions'
 // import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone } from '../../../actions/transactionActions';
-import { UPDATE_PSENT_RESET, UPDATE_PRECEIVED_RESET, UPDATE_TRANSACTIONDONE_RESET } from '../../../actions/transactionActions';
+
+import { UPDATE_PSENT_RESET } from '../../../constants/transactionConstants';
 const UserTransactions = () => {
 
     // const { createSliderWithToolTip } = Slider;
@@ -37,6 +38,7 @@ const UserTransactions = () => {
     const { loading, error, transactions } = useSelector(state => state.transactions);
     const { loadings, detailserror, transaction } = useSelector(state => state.transactionDetails);
     const { user, isAuthenticated } = useSelector(state => state.auth)
+    const {isUpdated,loadingPayment} = useSelector(state=> state.updatePayment)
     // const [currentPage, setCurrentPage] = useState(1)
     // let { keyword } = useParams();
 
@@ -50,17 +52,6 @@ const UserTransactions = () => {
     const [description, setDescription] = useState('');
     useEffect(() => {
 
-
-        // if (error) {
-        //     alert.error(error);
-        //     dispatch(clearErrors())
-        // }
-
-        // if (isDeleted) {
-        //     alert.success('Animal deleted successfully');
-        //     navigate('/animals');
-        //     dispatch({ type: DELETE_ANIMALS_RESET })
-        // }
 
 
     }, [dispatch, alert])
@@ -76,8 +67,11 @@ const UserTransactions = () => {
             console.log(user._id);
         }
 
+        if(isUpdated){
+            dispatch({type: UPDATE_PSENT_RESET})
+        }
 
-    }, [dispatch, alert, error]);
+    }, [dispatch, alert, error, loadingPayment, isUpdated]);
 
     // function setCurrentPageNo(pageNumber) {
     //     setCurrentPage(pageNumber)
@@ -452,7 +446,7 @@ const UserTransactions = () => {
         <Fragment>
 
 
-            {loading ? <Loader /> : (
+            {(loading || loadingPayment) ? <Loader /> : (
                 <Fragment>
 
                     <MetaData title={'Transaction'} />

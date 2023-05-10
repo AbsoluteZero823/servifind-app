@@ -245,16 +245,7 @@ const Transaction = ({ transaction }) => {
                     <div>Date to be Finished: {moment(transaction.expected_Date).format('MMM/DD/yy')}</div>
                 </div>
                 <div style={{ display: 'flex', overflow: 'hidden' }}>
-                    {/* {transaction && transaction.transaction_done.client === 'true' && transaction.isRated === 'false' && (
-                <div className='inTransDiv'>
-                    <button className='buttonInTrans' style={{border:'1px solid transparent', backgroundColor:'#ee4d2d', color:'#fff'}}>Rate</button>
-                </div>
-            )} */}
-                    {/* {transaction.paymentSent === 'false' && (
-                    <div className='inTransDiv'>
-                    <button className='buttonInTrans' style={{border:'1px solid transparent', backgroundColor:'#0fa0dc', color:'#fff'}}>Make Payment</button>
-                </div>
-                )} */}
+           
                     {transaction.transaction_done && transaction.transaction_done.freelancer === 'false' && (
                         <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#0fa0dc', color: '#fff' }} onClick={() => workDoneHandler(transaction._id)} data-toggle="tooltip" data-placement="bottom" title="is Work done?">Work Done</button>

@@ -4,6 +4,7 @@ import {
     useSelector
     , useDispatch
 } from 'react-redux'
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { getMessages, addMessage } from '../../actions/messageActions'
 import Loader from '../layout/Loader'
@@ -26,8 +27,8 @@ import moment from 'moment/moment'
 import io from 'socket.io-client'
 import Swal from 'sweetalert2';
 
-const ENDPOINT = "http://localhost:4002"; //localhost
-// const ENDPOINT = "https://servifind-app.onrender.com" //website
+// const ENDPOINT = "http://localhost:4002"; //localhost
+const ENDPOINT = "https://servifind-app.onrender.com" //website
 var socket, selectedChatCompare;
 
 
@@ -49,10 +50,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     const { selectedChat, setSelectedChat, notification, setNotification } = ChatState();
     const { user } = useSelector(state => state.auth)
     const { offer, success, newOfferLoading } = useSelector(state => state.addOffer)
+    // const {updateloading} = useSelector(state=>state.updatePayment)
 
     const { singleoffer, loadings } = useSelector(state => state.singleOffer)
-    const { updateloading } = useSelector(state => state.updateoffer)
-    const { loadingUptTrans } = useSelector(state => state.updateTransaction)
+
+    //sa update offer
+    const { updateloading, isUpdated } = useSelector(state => state.updateoffer)
+
+    //sa updateTransaction
+    const { loadingUptTrans, isUpdatedTrans } = useSelector(state => state.updatetransaction)
 
     const { message } = useSelector(state => state.addMessage)
     // const { messages, loading } = useSelector(state => state.messages)
@@ -112,8 +118,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
 
         }
+
+        if(isUpdated){
+            setFetchAgain(!fetchAgain);
+            dispatch({ type: UPDATE_OFFER_RESET });
+            
+        }
+
+        if(isUpdatedTrans){
+            // setFetchAgain(!fetchAgain);
+            dispatch({type: UPDATE_TRANSACTION_RESET});
+        }
+        // dispatch({type: UPDATE_TRANSACTION_RESET});
         // dispatch({ type: UPDATE_OFFER_RESET });
-    }, [fetchAgain, success, loadings, dispatch, updateloading, loadingUptTrans]);
+    }, [fetchAgain, success, loadings, dispatch, updateloading, isUpdated, loadingUptTrans, isUpdatedTrans]);
 
     useEffect(() => {
         console.log(OfferExists)
@@ -308,7 +326,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
     }
 
-    const acceptHandler = (id, inquiry_id) => {
+    const acceptHandler = (id, inquiry_or_offer_id, type) => {
         const statusData = new FormData();
         statusData.set('status', 'granted');
         Swal.fire({
@@ -323,7 +341,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
             if (result.isConfirmed) {
 
                 dispatch(AcceptOffer(id));
-                dispatch(updateStatus(inquiry_id, statusData))
+
+                if(type === 'offer'){
+                    dispatch(updateOffer(inquiry_or_offer_id, statusData))
+                } else
+                if (type === 'inquiry'){
+                    dispatch(updateStatus(inquiry_or_offer_id, statusData))
+                }
+                
                 Swal.fire(
                     'Offer Accepted',
                     'Freelancer should start working',
@@ -585,7 +610,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                     {/* buttons */}
 
                                     <div style={{ float: "right" }}>
-                                        <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].inquiry_id)}>Accept</a>
+                                        
+                                        <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].request_id, 'request')}>Accept</a>
                                         <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => refuseHandler(OfferExists[0]._id)}>Refuse</a>
                                         {/* <a style={{ padding: 10, color: 'teal', fontWeight: 'bold' }} data-toggle="modal" data-target='#CheckOfferModal'>Check Details</a> */}
                                         {/* <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} >Hide</a> */}
@@ -619,7 +645,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                     {/* buttons */}
 
                                     <div style={{ float: "right" }}>
-                                        <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].inquiry_id)}>Accept</a>
+                                        <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].inquiry_id, 'inquiry')}>Accept</a>
                                         <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => refuseHandler(OfferExists[0]._id)}>Refuse</a>
                                         {/* <a style={{ padding: 10, color: 'teal', fontWeight: 'bold' }} data-toggle="modal" data-target='#CheckOfferModal'>Check Details</a> */}
                                         {/* <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} >Hide</a> */}
@@ -889,8 +915,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
 
                             </div>
+                            {(OfferExists[0].transaction[0].status === 'completed') ? (
+ <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
+                                        Transaction Completed
+                                    </div>
+                            ) : (
+<div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
+                                        {(OfferExists[0].offered_by._id === user._id ) ? ' You should start working now' : 'Freelancer should start working now'}
+                                    </div>
+
+                            )}
+                            {/* <Fragment> */}
+                           
+
+                            
+{/* </Fragment> */}
                             {/* )} */}
                             <div className="modal-footer">
+                                {/* <Link to={'/my/transactions'} className='btn-primary'><button>Transaction Page</button></Link> */}
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                 {/* <button type="submit" className="btn btn-danger" >Refuse</button>
                                 <button type="submit" className="btn btn-success" >Accept</button> */}
