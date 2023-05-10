@@ -391,7 +391,7 @@ exports.getUserProfile = async (req, res, next) => {
 
         })
     } catch (error) {
-        return next(new ErrorHandler(err.message, 500));
+        return next(new ErrorHandler(error.message, 500));
     }
 
 
