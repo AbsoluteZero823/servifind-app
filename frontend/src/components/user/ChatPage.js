@@ -27,12 +27,12 @@ const ChatPage = () => {
     }
     useEffect(() => {
         dispatch(getOffers())
-    }, []);
+    }, [fetchAgain]);
     return (
 
 
         <div style={{ display: 'flex' }}>
-
+            <MetaData title={'Messages'} />
 
             <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
 

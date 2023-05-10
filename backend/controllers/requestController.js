@@ -71,7 +71,7 @@ exports.getSingleRequest = async (req, res, next) => {
 exports.getAllexceptMyRequest = async (req, res, next) => {
     try {
         const requests = await Request.find({
-            requested_by: { $ne: req.user.id }
+            requested_by: { $ne: req.user._id }
         }).populate('category').populate('requested_by');
         res.status(200).json({ requests: requests, success: true });
     } catch (error) {
@@ -96,7 +96,7 @@ exports.getMyRequest = async (req, res, next) => {
 
 
 exports.getMyRequests = async (req, res, next) => {
-    const requests = await Request.find({ requested_by: req.user.id }).populate('requested_by category');
+    const requests = await Request.find({ requested_by: req.user._id }).populate('requested_by category');
     if (requests) {
         res.status(200).json({
             success: true,

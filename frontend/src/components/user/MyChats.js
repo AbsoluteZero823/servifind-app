@@ -33,7 +33,7 @@ const MyChats = ({ fetchAgain }) => {
                 <ul className="list">
                     {chats ? (<Fragment>
                         {chats && chats.map((chat) => (
-                            <Fragment>
+                            <Fragment key={chat._id}>
                                 {chat.users[0]._id === user._id && (
                                     <a
                                         onClick={() => [setSelectedChat(chat), console.log(chat)]}

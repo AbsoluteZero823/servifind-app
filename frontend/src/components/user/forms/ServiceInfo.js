@@ -7,7 +7,7 @@ function ServiceInfo({ serviceData, setServiceData }) {
     const dispatch = useDispatch();
 
     // let navigate = useNavigate();
-
+    const [imageName, setImageName] = useState('')
     const { loading, error, categories } = useSelector(state => state.categories);
 
     useEffect(() => {
@@ -16,6 +16,24 @@ function ServiceInfo({ serviceData, setServiceData }) {
 
 
     }, [dispatch, error])
+
+
+    const OnChange = e => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            if (reader.readyState === 2) {
+
+                setServiceData({ ...serviceData, images: reader.result })
+
+                setImageName(e.target.files[0].name)
+                // console.log(avatarName)
+            }
+        }
+
+        reader.readAsDataURL(e.target.files[0])
+
+    }
 
     return (
         <div className="service-info-container">
@@ -84,8 +102,57 @@ function ServiceInfo({ serviceData, setServiceData }) {
                 }}
                 value={serviceData.priceStarts_At}
             />
+            <br />
+            <label htmlFor="email_field">Service Description</label>
+            <input
+                type="text"
+                placeholder="I will ...... for you"
+                name='description'
+                className="form-control"
+                value={serviceData.description}
+                onChange={(e) => {
+                    setServiceData({ ...serviceData, description: e.target.value });
+                }}
+            />
 
+            <br />
+            <label htmlFor="email_field">Service Image</label>
+            <div className='d-flex align-items-center'>
 
+                <div className='custom-file'>
+                    <input
+                        type='file'
+                        name='avatar'
+                        className='custom-file-input'
+                        id='customFile'
+                        accept='image/*'
+                        onChange={OnChange}
+                    />
+                    {/* <label className='custom-file-label' htmlFor='customFile'>
+
+                        resumé must be image
+
+                    </label> */}
+
+                    {imageName ? (
+                        <label className='custom-file-label' htmlFor='customFile'>
+
+                            {imageName}
+
+                        </label>
+
+                    ) : (
+                        <label className='custom-file-label' htmlFor='customFile'>
+
+                            Upload Image
+
+                        </label>
+
+                    )
+                    }
+
+                </div>
+            </div>
 
 
 

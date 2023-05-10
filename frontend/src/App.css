@@ -1526,7 +1526,7 @@ a:hover {
 }
 
 .buttoncontainer {
-  padding: 12px 24px 24px;
+  padding: 24px 24px;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -1573,7 +1573,8 @@ a:hover {
   min-width: 300px;
   max-width: 400px;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   grid-gap: 4px;
   gap: 4px;
   flex-grow: 1;
@@ -1597,7 +1598,7 @@ a:hover {
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-
+  margin-right: 10px;
 }
 
 .dividerLine {
@@ -1634,7 +1635,7 @@ a:hover {
 .pictureDapat {
   box-sizing: border-box;
   display: inline-block;
-  background-color: #d0011b;
+  /* background-color: #d0011b; */
   border-radius: 2px;
   padding: 2px 3px;
   vertical-align: middle;
@@ -2653,8 +2654,36 @@ input:checked+.slider:before {
   width: auto;
   margin: 30px 0px;
   border-radius: 10px;
+  display: flex;
+  justify-content: center;
 
+}
 
+.smallCard-section {
+  width: 33.33333333333333%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.smallCard-section .count {
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid rgba(0, 0, 0, .09);
+  /* padding-bottom: 10px; */
+  width: 100%;
+}
+
+.smallCard-section .countLabel {
+
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rounded-pic {

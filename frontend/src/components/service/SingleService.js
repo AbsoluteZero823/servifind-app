@@ -88,13 +88,14 @@ const SingleService = () => {
                 },
             };
             const { data } = await axios.post(`/api/v1/chat`, chatData, config);
-            console.log(data._id);
+            console.log(data.FullChat._id);
+
             setNewChat(data);
             // if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
             // setSelectedChat(data);
             // setLoadingChat(false);
             // onClose();
-            sendMessage(data._id)
+            sendMessage(data.FullChat._id)
 
         } catch (error) {
             console.log(error)
@@ -213,11 +214,11 @@ const SingleService = () => {
                             <div className="forSecond">
                                 <h1 style={{ textAlign: 'center' }}>{service.category && service.category.name}</h1>
                                 <div className="list-of-service__container">
-                                    <div className="list-of-service">
+                                    <div className="list-of-service" style={{ display: 'flex' }}>
                                         {/* <h2>List of Services</h2> */}
-                                        <ul>
-                                            <li>Service: {service.name}</li>
-                                            <li>Description: {service.name}</li>
+                                        <ul style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                            <li style={{ fontSize: '30px' }}>Service: {service.name}</li>
+                                            <li style={{ fontSize: '30px' }}>Description: {service.name}</li>
                                             {/* <li>Handspa and Footspa</li>
                                         <li>Hand and Foot Paraffine</li>
                                         <li>Waxing</li>
@@ -268,7 +269,7 @@ const SingleService = () => {
                                     </div> */}
 
                                     {serviceRatings.map((rating) => (
-                                        <div className="edu-comment">
+                                        <div className="edu-comment" key={rating._id}>
                                             <div className='thumbnailAndContent'>
                                                 <div className="thumbnail"> <img src={rating.user.avatar.url} alt="Comment Images" /> </div>
                                                 <div className="comment-content">
@@ -350,7 +351,7 @@ const SingleService = () => {
 
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" className="btn btn-primary" >Save changes</button>
+                                        <button type="submit" className="btn btn-primary" >Submit</button>
 
 
                                     </div>

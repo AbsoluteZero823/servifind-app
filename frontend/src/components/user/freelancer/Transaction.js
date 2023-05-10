@@ -156,6 +156,24 @@ const Transaction = ({ transaction }) => {
 
                             </div>
                         )}
+                        {transaction.inquiry_id && transaction.offer_id && (
+
+
+                            <div className='firstColumn'>
+
+                                <img className='small-circle' src={transaction.inquiry_id.customer.avatar.url} />
+
+                                <div className='freelancer'>
+                                    {transaction.inquiry_id.customer.name}
+                                </div>
+
+                                <div style={{ margin: '0 0 0 8px' }}>
+
+                                </div>
+
+                            </div>
+                        )}
+
                         <div>
                             <div style={{ padding: '0 0 0 10px', display: 'flex', alignItems: 'center' }}>
                                 <div style={{ display: 'block' }}>
@@ -175,25 +193,37 @@ const Transaction = ({ transaction }) => {
                             <div>
                                 <span>
                                     <div style={{ display: 'block' }}></div>
-                                    <div className='imagePriceColumn'>
-                                        <div className='picFrame' style={{ border: '1px solid #e1e1e1', background: '#e1e1e1' }}>
-                                            <div style={{ position: 'relative' }}>
+                                    <div className='imagePriceColumn' style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                            <div className='picFrame' style={{ border: '1px solid #e1e1e1', background: '#e1e1e1' }}>
+                                                <div style={{ position: 'relative' }}>
 
-                                                <div>
-                                                    {transaction.inquiry_id && !transaction.offer_id && (
-                                                        <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
-                                                    )}
-                                                    {transaction.offer_id && !transaction.inquiry_id && (
-                                                        <img src={transaction.offer_id.service_id.images.url} className='picFrame' />
-                                                    )}
-                                                    {transaction.inquiry_id && transaction.offer_id && (
-                                                        <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
-                                                    )}
+                                                    <div>
+                                                        {transaction.inquiry_id && transaction.offer_id && (
+                                                            <img src={transaction.inquiry_id.service_id.images.url} className='picFrame' />
+                                                        )}
+                                                        {(transaction.offer_id && !transaction.inquiry_id) && (
+                                                            <img src={transaction.offer_id.service_id.images.url} className='picFrame' />
+                                                        )}
+                                                    </div>
                                                 </div>
+                                            </div>
+
+
+                                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                                <p style={{ fontSize: '25px' }}>
+                                                    {transaction.offer_id.service_id.name}
+                                                </p>
+                                                <p style={{ color: 'gray' }}>
+                                                    Job Description: {transaction.offer_id.description}
+                                                </p>
+
                                             </div>
                                         </div>
                                         <div>
-
+                                            <p>
+                                                ₱{transaction.price}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -210,7 +240,10 @@ const Transaction = ({ transaction }) => {
             </div>
 
             <div className='buttoncontainer'>
-                <div className='bottomInfo'>Date Created: {moment(transaction.created_At).format('MMM/DD/yy')}</div>
+                <div className='bottomInfo'>
+                    <div>Date Created: {moment(transaction.created_At).format('MMM/DD/yy')}</div>
+                    <div>Date to be Finished: {moment(transaction.expected_Date).format('MMM/DD/yy')}</div>
+                </div>
                 <div style={{ display: 'flex', overflow: 'hidden' }}>
                     {/* {transaction && transaction.transaction_done.client === 'true' && transaction.isRated === 'false' && (
                 <div className='inTransDiv'>
