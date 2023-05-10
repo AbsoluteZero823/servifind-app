@@ -27,7 +27,7 @@ const ChatPage = () => {
     }
     useEffect(() => {
         dispatch(getOffers())
-    }, []);
+    }, [fetchAgain]);
     return (
 
 
