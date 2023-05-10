@@ -11,12 +11,13 @@ import MetaData from '../../layout/MetaData';
 
 import { availabilityUpdate, completeFreelancerSetup } from '../../../actions/freelancerActions';
 import { getFreelancerServices } from '../../../actions/serviceActions';
+import { loadUser } from '../../../actions/userActions';
 
 import { AVAILABILITY_UPDATE_RESET, FREELANCER_SETUP_RESET } from '../../../constants/freelancerConstants';
 
 const Dashboard = () => {
     const { user } = useSelector(state => state.auth)
-    const { isUpdated } = useSelector(state => state.updateFreelancer)
+    const { isUpdated, loading } = useSelector(state => state.updateFreelancer)
     const { services } = useSelector(state => state.services)
 
     const dispatch = useDispatch()
@@ -26,7 +27,7 @@ const Dashboard = () => {
     const [gcash_num, setGcashNum] = useState('');
     const [qrCodeName, setQRCodeName] = useState('')
     const [qrCode, setQRCode] = useState('')
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
     useEffect(() => {
 
@@ -48,7 +49,7 @@ const Dashboard = () => {
         }
 
         if (isUpdated) {
-
+            dispatch(loadUser());
             Swal.fire(
                 'Success',
                 'Update Successfully',
@@ -58,7 +59,7 @@ const Dashboard = () => {
             $("#setupModal").hide();
             dispatch({ type: AVAILABILITY_UPDATE_RESET })
             dispatch({ type: FREELANCER_SETUP_RESET })
-            setLoading(false)
+            // setLoading(false)
         }
 
         if (user.freelancer_id.gcash_name) {
@@ -95,7 +96,8 @@ const Dashboard = () => {
         freelancerData.set('qrCode', qrCode);
 
         dispatch(completeFreelancerSetup(freelancerData))
-        setLoading(true);
+        $('.close').click();
+        // setLoading(true);
         //     dispatch(updateUser(user._id, formData))
     }
 
@@ -108,7 +110,7 @@ const Dashboard = () => {
         freelancerData.set('qrCode', qrCode);
 
         // dispatch(completeFreelancerSetup(freelancerData))
-        setLoading(true);
+        // setLoading(true);
         //     dispatch(updateUser(user._id, formData))
     }
     const clickedSliderHandler = (e) => {
@@ -218,146 +220,202 @@ const Dashboard = () => {
         <Fragment>
             <div className='containerDashboardFull' >
                 <MetaData title={'Freelancer Dashboard'} />
-                <div className='dashboard'>
+                {loading ? <Loader /> : (
+                    <div className='dashboard'>
 
 
-                    <div className='dashboardContent'>
-                        {user && user.freelancer_id && user.freelancer_id.isPremium === "false" && (
-                            <div className='premiumCard' >
-                                <div className='content'>
-                                    <h1>Go Premium</h1>
-                                    <p>Post more Services and Earn more with lifetime mermbership</p>
-                                    <Link to="/premium" ><button className='premiumBtn'><span>Connect Now</span> </button></Link>
+                        <div className='dashboardContent'>
+                            {user && user.freelancer_id && user.freelancer_id.isPremium === false && (
+                                <div className='premiumCard' >
+                                    <div className='content'>
+                                        <h1>Go Premium</h1>
+                                        <p>Post more Services and Earn more with lifetime mermbership</p>
+                                        <Link to="/premium" ><button className='premiumBtn'><span>Connect Now</span> </button></Link>
+                                    </div>
+                                    <div className='picContainer' >
+                                        <img className='pic' src='../images/8-03.png' />
+                                    </div>
                                 </div>
-                                <div className='picContainer' >
-                                    <img className='pic' src='../images/8-03.png' />
+                            )}
+                            <div className='charts' >
+                                <div className='smallCardContainer' style={{ marginRight: '10px' }}>
+                                    <h5>My Request & Inquiries (Client)</h5>
+                                    <div className='smallCard' >
+                                        <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightblue', borderRadius: '10px 0px 0px 10px' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel'>
+                                                Request
+                                            </div>
+                                        </div>
+                                        <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightgreen' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel' >
+                                                Inquiries
+                                            </div>
+                                        </div>
+                                        <div className='smallCard-section' style={{ backgroundColor: 'lightgoldenrodyellow', borderRadius: '0px 10px 10px 0px' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel'>
+                                                Total
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='smallCardContainer' style={{ marginLeft: '10px' }}>
+                                    <h5>My Projects (Freelancer)</h5>
+                                    <div className='smallCard' >
+                                        <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightblue', borderRadius: '10px 0px 0px 10px' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel'>
+                                                All
+                                            </div>
+                                        </div>
+                                        <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightgreen' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel' >
+                                                Completed
+                                            </div>
+                                        </div>
+                                        <div className='smallCard-section' style={{ backgroundColor: 'lightgoldenrodyellow', borderRadius: '0px 10px 10px 0px' }}>
+                                            <div className='count'>
+                                                0
+                                            </div>
+                                            <div className='countLabel'>
+                                                Pending
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        )}
-                        <div className='charts' >
-                            <div className='smallCardContainer' style={{ marginRight: '10px' }}>
-                                <h5>Progress</h5>
-                                <div className='smallCard' >
 
-                                </div>
-                            </div>
-                            <div className='smallCardContainer' style={{ marginLeft: '10px' }}>
-                                <h5>Progress</h5>
-                                <div className='smallCard' >
+                            <div className='runningCourses' >
+                                <h5 style={{ paddingBottom: '10px' }}>Ongoing Transactions</h5>
+                                <div className='bigCardContainer'>
+                                    <div className='notClickedCard' style={{ height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <h1 style={{ display: 'flex', justifyContent: 'center' }}>No Transactions Yet</h1>
+                                    </div>
 
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className='runningCourses' >
-                            <h5 style={{ paddingBottom: '10px' }}>Progress</h5>
-                            <div className='bigCardContainer'>
-
-                                <div className='wideCard' >
+                                    {/* <div className='wideCard' >
 
                                 </div>
                                 <div className='notClickedCard' >
 
+                                </div> */}
+
                                 </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <div className='dashboardProfile'>
 
-                    <div className='dashboardProfile'>
-
-                        <div style={{ marginBottom: '25px' }}>
-                            <p style={{ fontWeight: 'bold' }}>Profile</p>
-                        </div>
-                        <div style={{ display: 'flex', borderBottom: '2px solid rgba(0, 0, 0, .09)', justifyContent: 'space-around' }}>
-                            <div className='picContainer'>
-                                <img
-                                    src={user.avatar.url}
-                                    className='rounded-pic'
-                                />
+                            <div style={{ marginBottom: '15px' }}>
+                                <p style={{ fontWeight: 'bold' }}>Profile</p>
                             </div>
-                            <div className='profileInfo'>
-                                <h3>{user.name}</h3>
-                                <p>{user.role} -
-                                    {user.freelancer_id.isPremium ? 'Premium' : 'Basic'}</p>
-                                {user.role === 'freelancer' && user.freelancer_id.gcash_num && (
-                                    <a name='' className={activeSlider === 1 ? `selection` : "selection active"} >Availability
-                                        <label className="switch" style={{ justifyContent: 'center', margin: '0px 5px' }}>
-                                            <input type="checkbox" id='myCheck' onClick={clickedSliderHandler} />
-                                            <span className="slider round" ></span>
-                                        </label>
+                            <div style={{ display: 'flex', borderBottom: '2px solid rgba(0, 0, 0, .09)', justifyContent: 'space-around' }}>
+                                <div className='picContainer'>
+                                    <img
+                                        src={user.avatar.url}
+                                        className='rounded-pic'
+                                    />
+                                </div>
+                                <div className='profileInfo'>
+                                    <h3>{user.name}</h3>
+                                    <p>{user.role} -
+                                        {user.freelancer_id.isPremium ? 'Premium' : 'Basic'}</p>
+                                    {user.role === 'freelancer' && user.freelancer_id.gcash_num && (
+                                        <a name='' className={activeSlider === 1 ? `selection` : "selection active"} >Availability
+                                            <label className="switch" style={{ justifyContent: 'center', margin: '0px 5px' }}>
+                                                <input type="checkbox" id='myCheck' onClick={clickedSliderHandler} />
+                                                <span className="slider round" ></span>
+                                            </label>
 
-                                    </a>
-                                )}
+                                        </a>
+                                    )}
 
-                                {user.role === 'freelancer' && !user.freelancer_id.gcash_num && (
-                                    <a name='' className='selection'  >Availability
-                                        <label className="switch" style={{ justifyContent: 'center', margin: '0px 5px' }}>
-                                            <div onClick={notSetupSliderHandler}>
-                                                <input type="checkbox" id='myCheck' onClick={notSetupSliderHandler} /></div>
-                                            <span className="slider round" ></span>
-                                        </label>
+                                    {user.role === 'freelancer' && !user.freelancer_id.gcash_num && (
+                                        <a name='' className='selection'  >Availability
+                                            <label className="switch" style={{ justifyContent: 'center', margin: '0px 5px' }}>
+                                                <div onClick={notSetupSliderHandler}>
+                                                    <input type="checkbox" id='myCheck' onClick={notSetupSliderHandler} /></div>
+                                                <span className="slider round" ></span>
+                                            </label>
 
-                                    </a>
-                                )}
+                                        </a>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                        <div className='paymentDetails'>
-                            <p style={{ fontWeight: 'bold', marginTop: "20px" }}>Payment Details</p>
-                            <div className='completeSetup'>
-                                {/* {user.freelancer_id && (
+                            <div className='paymentDetails'>
+                                <div style={{display:'flex', justifyContent:'space-between', marginTop:'20px', paddingRight:'10px'}}>
+                                <p style={{ fontWeight: 'bold' }}>Payment Details</p>
+                                <span><i className='fa fa-pencil'></i></span>
+                                </div>
+                                <div className='completeSetup'>
+                                    {/* {user.freelancer_id && (
 
 )} */}
-                                <p>GCash Name: {user.freelancer_id && user.freelancer_id.gcash_name}</p>
-                                <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
-                                {!user.freelancer_id.gcash_name ? (
-                                    <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
-                                ) : (
-                                    <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
-                                )
-                                }
+                                    <p>GCash Name: {user.freelancer_id && user.freelancer_id.gcash_name}</p>
+                                    <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
+                                    {!user.freelancer_id.gcash_name && (
+                                        <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
+                                    ) 
+                                        // <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
+                                   
+        
+                                    }
 
+                                </div>
                             </div>
-                        </div>
-                        <div className='servicesDisplay'>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <h4 style={{ fontWeight: 'bold', marginTop: "20px" }}>My Services</h4>
-                                <Link to={`/services/${user.freelancer_id._id}`} style={{ marginTop: '20px' }} ><span >see all</span></Link>
+                            <div className='servicesDisplay'>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <h4 style={{ fontWeight: 'bold', marginTop: "20px" }}>My Services</h4>
+                                    <Link to={`/services/${user.freelancer_id._id}`} style={{ marginTop: '20px' }} ><span >see all</span></Link>
 
-                            </div>
-                            <div className='servicesContainer'>
+                                </div>
+                                <div className='servicesContainer'>
 
-                                {/* <div className='wideCard' >
+                                    {/* <div className='wideCard' >
 
                                 </div> */}
-                                {services && services.map(service => (
+                                    {services && services.map(service => (
 
-                                    // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
+                                        // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
 
-                                    <div className='serviceCard' >
-                                        <img
-                                            className='rounded-img'
-                                            src={service.images.url}
-                                            style={{ margin: 'auto 20px auto 0px' }}
-                                        />
-                                        <div className='serviceCardInfo'>
-                                            <p style={{ fontWeight: 'bold' }}>{service.category.name}</p>
-                                            <p className='limitTextLength'>{service.name}</p>
-                                            <p>₱{service.priceStarts_At}</p>
+                                        <div className='serviceCard' >
+                                            <img
+                                                className='rounded-img'
+                                                src={service.images.url}
+                                                style={{ margin: 'auto 20px auto 0px' }}
+                                            />
+                                            <div className='serviceCardInfo'>
+                                                <p style={{ fontWeight: 'bold' }}>{service.category.name}</p>
+                                                <p className='limitTextLength'>{service.name}</p>
+                                                <p>₱{service.priceStarts_At}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
 
 
 
 
 
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
+                {/* dito lagay loading */}
             </div>
 
             {/* SETUP INFORMATION MODAL */}

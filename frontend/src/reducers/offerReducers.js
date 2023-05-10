@@ -43,12 +43,12 @@ export const newOfferReducer = (state = { offer: {} }, action) => {
         case NEW_OFFER_REQUEST:
             return {
                 ...state,
-                loading: true
+                newOfferLoading: true
             }
 
         case NEW_OFFER_SUCCESS:
             return {
-                loading: false,
+                newOfferLoading: false,
                 success: action.payload.success,
                 offer: action.payload.offer
             }

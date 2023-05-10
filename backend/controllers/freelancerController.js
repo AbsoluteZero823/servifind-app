@@ -457,7 +457,7 @@ exports.initialasaFreelancer = async (req,res,next) => {
 
 exports.makemeaFreelancer = async (req, res, next) => {
     try {
-        const existingFreelancer = await Freelancer.findOne({ user_id: req.user.id });
+        const existingFreelancer = await Freelancer.findOne({ user_id: req.user._id });
         if (existingFreelancer) {
             return next(new ErrorHandler('You already have a freelancer document registered, Wait for Administrator Verification', 400));
         }
@@ -513,7 +513,7 @@ exports.makemeaFreelancer = async (req, res, next) => {
 
 exports.getmyFreelancers = async (req, res, next) => {
     try {
-        const freelancer = await Freelancer.find({ user_id: req.user.id });
+        const freelancer = await Freelancer.find({ user_id: req.user._id });
         res.status(200).json({
             success: true,
             freelancer
@@ -528,7 +528,7 @@ exports.getmyFreelancers = async (req, res, next) => {
 
 exports.updatemyFreelancers = async (req, res, next) => {
     try {
-        const freelancer = await Freelancer.findOneAndUpdate({ user_id: req.user.id }, req.body, { new: true });
+        const freelancer = await Freelancer.findOneAndUpdate({ user_id: req.user._id }, req.body, { new: true });
         res.status(200).json({
             message: "Freelancer Updated Successfully",
             freelancer: freelancer,
@@ -553,7 +553,7 @@ exports.upgrademyFreelancer = async (req, res, next) => {
             public_id: receiptresult.public_id,
             url: receiptresult.secure_url
         };
-        const freelancer = await Freelancer.findOneAndUpdate({ user_id: req.user.id }, req.body, { new: true });
+        const freelancer = await Freelancer.findOneAndUpdate({ user_id: req.user._id }, req.body, { new: true });
         console.log(freelancer);
         res.status(200).json({
             message: "Applied for Premium",

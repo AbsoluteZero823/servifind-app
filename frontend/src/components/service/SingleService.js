@@ -214,11 +214,11 @@ const SingleService = () => {
                             <div className="forSecond">
                                 <h1 style={{ textAlign: 'center' }}>{service.category && service.category.name}</h1>
                                 <div className="list-of-service__container">
-                                    <div className="list-of-service">
+                                    <div className="list-of-service" style={{ display: 'flex' }}>
                                         {/* <h2>List of Services</h2> */}
-                                        <ul>
-                                            <li>Service: {service.name}</li>
-                                            <li>Description: {service.name}</li>
+                                        <ul style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                            <li style={{ fontSize: '30px' }}>Service: {service.name}</li>
+                                            <li style={{ fontSize: '30px' }}>Description: {service.name}</li>
                                             {/* <li>Handspa and Footspa</li>
                                         <li>Hand and Foot Paraffine</li>
                                         <li>Waxing</li>

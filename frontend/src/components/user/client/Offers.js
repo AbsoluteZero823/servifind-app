@@ -190,7 +190,7 @@ const Offers = ({ offer }) => {
 
                 
             </div> */}
-            <div className='servicecontainer'>
+            <div className='servicecontainer' style={{ width: '100%' }}>
                 {/* 1st div */}
                 <div>
                     <div style={{ padding: '12px 24px', background: '#fff' }}>
@@ -228,7 +228,7 @@ const Offers = ({ offer }) => {
                                         {/* <div>? </div> */}
                                     </div>
                                     <div className='statusDescription'>
-                                        ₱30
+                                        ₱{offer.price}
                                     </div>
                                 </div>
                             </div>
@@ -271,7 +271,7 @@ const Offers = ({ offer }) => {
                     <div className='bottomInfo'></div>
                     <div style={{ display: 'flex', overflow: 'hidden' }}>
                         <div className='inTransDiv'>
-                            <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#ee4d2d', color: '#fff' }} onClick={() => acceptOfferHandler(offer._id)} >Accept for ₱30</button>
+                            <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#ee4d2d', color: '#fff' }} onClick={() => acceptOfferHandler(offer._id)} >Accept</button>
                         </div>
                         <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid rgba(0,0,0,.09)', color: '#555' }}>Contact Seller</button>

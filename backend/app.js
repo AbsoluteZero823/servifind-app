@@ -9,16 +9,17 @@ const app = express();
 // REQUIRED FOR UPLOADING LARGE IMAGE
 // app.use(express.json({ limit: '10mb' }));
 // app.use(express.urlencoded({ limit: '10mb' }));
-app.use(express.json({limit:'10mb', extended: true}));
-app.use(express.urlencoded({limit:'10mb',extended:true}));
+// app.use(express.json({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 // app.use(express.urlencoded());
-
+app.use(express.json({ limit: '50mb', extended: true }));
+app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 
 app.use(cookieParser());
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 
@@ -26,8 +27,8 @@ app.use(fileUpload());
 app.use(
     cors({
 
-        // origin: "https://servifind-app.onrender.com", //website
-        origin: "http://localhost:3000", //localhost
+        origin: "https://servifind-app.onrender.com", //website
+        // origin: "http://localhost:3000", //localhost
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
 
