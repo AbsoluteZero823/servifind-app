@@ -67,7 +67,7 @@ const Home = () => {
           <div className="mobile-version">
             <img className="mobile-ver-img" src="../images/mobile-servifind.png" alt="" />
             <a className="app-btn blu flex vert"
-              href="https://expo.dev/artifacts/eas/764RGoPNVLqw33DgWvSQcf.apk">
+              href="https://expo.dev/artifacts/eas/5ps8cX877MwoQrnFyKTugZ.apk">
               <img src="../images/android.png" alt="" />
               <p>Get it on <br /> <span className="big-txt">Google Play</span></p>
             </a>
