@@ -8,19 +8,25 @@ const Category = require('../models/category');
 //create new service
 
 exports.newInquiry = async (req, res, next) => {
+    try {
 
-    req.body.customer = req.user._id;
-    // if (!req.body.instruction) {
-    //     return next(new ErrorHandler('Please Provide inquiry', 404));
-    // }
-    const inquiry = await Inquiry.create(req.body);
+        req.body.customer = req.user._id;
+        if (!req.body.instruction) {
+            return next(new ErrorHandler('Please Provide inquiry', 404));
+        }
+        const inquiry = await Inquiry.create(req.body);
 
 
 
-    res.status(201).json({
-        success: true,
-        inquiry
-    })
+        res.status(201).json({
+            success: true,
+            inquiry
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
+
 
 
 }
