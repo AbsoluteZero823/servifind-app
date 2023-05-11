@@ -27,8 +27,8 @@ import moment from 'moment/moment'
 import io from 'socket.io-client'
 import Swal from 'sweetalert2';
 
-// const ENDPOINT = "http://localhost:4002"; //localhost
-const ENDPOINT = "https://servifind-app.onrender.com" //website
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
 var socket, selectedChatCompare;
 
 
@@ -119,15 +119,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
         }
 
-        if(isUpdated){
+        if (isUpdated) {
             setFetchAgain(!fetchAgain);
             dispatch({ type: UPDATE_OFFER_RESET });
-            
+
         }
 
-        if(isUpdatedTrans){
+        if (isUpdatedTrans) {
             // setFetchAgain(!fetchAgain);
-            dispatch({type: UPDATE_TRANSACTION_RESET});
+            dispatch({ type: UPDATE_TRANSACTION_RESET });
         }
         // dispatch({type: UPDATE_TRANSACTION_RESET});
         // dispatch({ type: UPDATE_OFFER_RESET });
@@ -342,13 +342,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
                 dispatch(AcceptOffer(id));
 
-                if(type === 'offer'){
+                if (type === 'offer') {
                     dispatch(updateOffer(inquiry_or_offer_id, statusData))
                 } else
-                if (type === 'inquiry'){
-                    dispatch(updateStatus(inquiry_or_offer_id, statusData))
-                }
-                
+                    if (type === 'inquiry') {
+                        dispatch(updateStatus(inquiry_or_offer_id, statusData))
+                    }
+
                 Swal.fire(
                     'Offer Accepted',
                     'Freelancer should start working',
@@ -610,7 +610,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                     {/* buttons */}
 
                                     <div style={{ float: "right" }}>
-                                        
+
                                         <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => acceptHandler(OfferExists[0]._id, OfferExists[0].request_id, 'request')}>Accept</a>
                                         <a style={{ padding: 10, color: 'purple', fontWeight: 'bold' }} onClick={() => refuseHandler(OfferExists[0]._id)}>Refuse</a>
                                         {/* <a style={{ padding: 10, color: 'teal', fontWeight: 'bold' }} data-toggle="modal" data-target='#CheckOfferModal'>Check Details</a> */}
@@ -900,7 +900,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
                                 <h5 style={{ color: "red" }} >Offer Details</h5>
                                 <div className='room'>
-                                    {OfferExists[0] && (
+                                    {(OfferExists[0] && OfferExists[0].transaction[0]) && (
                                         <div className='contents'>
                                             <label htmlFor="email_field">Description: {OfferExists[0].description}</label>
                                             <label htmlFor="email_field">Price: ₱{OfferExists[0].transaction[0].price}</label>
@@ -915,21 +915,21 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
 
                             </div>
-                            {(OfferExists[0].transaction[0].status === 'completed') ? (
- <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
-                                        Transaction Completed
-                                    </div>
+                            {((OfferExists[0] && OfferExists[0].transaction[0]) && OfferExists[0].transaction[0].status === 'completed') ? (
+                                <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
+                                    Transaction Completed
+                                </div>
                             ) : (
-<div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
-                                        {(OfferExists[0].offered_by._id === user._id ) ? ' You should start working now' : 'Freelancer should start working now'}
-                                    </div>
+                                <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
+                                    {((OfferExists[0] && OfferExists[0].transaction[0]) && OfferExists[0].offered_by._id === user._id) ? ' You should start working now' : 'Freelancer should start working now'}
+                                </div>
 
                             )}
                             {/* <Fragment> */}
-                           
 
-                            
-{/* </Fragment> */}
+
+
+                            {/* </Fragment> */}
                             {/* )} */}
                             <div className="modal-footer">
                                 {/* <Link to={'/my/transactions'} className='btn-primary'><button>Transaction Page</button></Link> */}
