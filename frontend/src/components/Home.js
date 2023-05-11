@@ -67,7 +67,8 @@ const Home = () => {
           <div className="mobile-version">
             <img className="mobile-ver-img" src="../images/mobile-servifind.png" alt="" />
             <a className="app-btn blu flex vert"
-              href="https://expo.dev/artifacts/eas/5ps8cX877MwoQrnFyKTugZ.apk">
+              href="https://expo.dev/artifacts/eas/uFJT6JkPfm2PvUENyRiVku.apk">
+
               <img src="../images/android.png" alt="" />
               <p>Get it on <br /> <span className="big-txt">Google Play</span></p>
             </a>
@@ -180,7 +181,7 @@ const Home = () => {
             <div className="subscription__card-basic">
               <div className="subscription-header">
                 <h2>Basic</h2>
-                <h2>₱0 <span>/ Month</span></h2>
+                <h2>₱0 <span></span></h2>
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
