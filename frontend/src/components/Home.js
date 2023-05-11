@@ -184,21 +184,21 @@ const Home = () => {
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
-                All time links
+                Create One service
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
-                Basic Features
+                Chat
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
-                No unlimited features
+                Accomodate 1 transaction
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
                 Limited functions
               </p>
-              <a href="#">Choose Plan</a>
+              <a href="#">Current Plan</a>
             </div>
             <div className="subscription__card-premium">
               <div className="subscription-header">
@@ -207,20 +207,17 @@ const Home = () => {
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
-                All time links
+                Create many services
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
-                Basic Features
+                Chat
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
-                No unlimited features
+                Accomodate Many clients
               </p>
-              <p>
-                <img src="../images/check.png" alt="" />
-                Limited functions
-              </p>
+
               <a href="#">Choose Plan</a>
             </div>
           </div>

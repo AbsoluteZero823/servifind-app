@@ -76,19 +76,19 @@ const Premium = () => {
                             </h2>
                         </div>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            All time links
+                            <img src="../images/check.png" alt="" />
+                            Create One service
                         </p>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            Basic Features
+                            <img src="../images/check.png" alt="" />
+                            Chat
                         </p>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            No unlimited features
+                            <img src="../images/check.png" alt="" />
+                            Accomodate 1 transaction
                         </p>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
+                            <img src="../images/check.png" alt="" />
                             Limited functions
                         </p>
                         <button disabled>Current Plan</button>
@@ -101,20 +101,16 @@ const Premium = () => {
                             </h2>
                         </div>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            All time links
+                            <img src="../images/check.png" alt="" />
+                            Create many services
                         </p>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            Basic Features
+                            <img src="../images/check.png" alt="" />
+                            Chat
                         </p>
                         <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            No unlimited features
-                        </p>
-                        <p>
-                            <img src="images/iconmonstr-check-mark-7-24 (1).png" alt="" />
-                            Limited functions
+                            <img src="../images/check.png" alt="" />
+                            Accomodate Many clients
                         </p>
                         <button data-toggle="modal" data-target="#PaymentDetailsModal">Choose Plan</button>
                     </div>
