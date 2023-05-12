@@ -44,13 +44,7 @@ const Users = () => {
 
     }, [dispatch, alert, error, isDeleted, isUpdated, navigate])
 
-    // $(document).ready(function () {
-    //     $('#forTable').DataTable({
-    //         "scrollY": "200px",
-    //         "scrollCollapse": true,
-    //     });
-    //     $('.dataTables_length').addClass('bs-select');
-    // });
+
     const deleteUserHandler = (id) => {
         dispatch(deleteUser(id))
     }
@@ -179,7 +173,17 @@ const Users = () => {
         return data;
     }
 
+    // var MyDatatable = $("#mdbb").MDBDataTable();
 
+
+    // MyDatatable.columns.adjust().draw();
+    // $(document).ready(function () {
+    //     $('#mdbb').DataTable({
+    //         "scrollY": true,
+    //         "scrollCollapse": true,
+    //     });
+    //     $('.dataTables_length').addClass('bs-select');
+    // });
     return (
         <Fragment>
             <div className='forTable'>
@@ -197,15 +201,16 @@ const Users = () => {
 
                     {loading ? <Loader /> : (
                         <MDBDataTable
+                            scrollY
                             data={setUsers()}
                             className="px-3"
                             bordered
                             striped
                             hover
-                            scrollY
+                            // scrollY
                             maxHeight='48vh'
-                            id='forTable'
-
+                            id='mdbb'
+                            responsive
                         />
                     )}
 

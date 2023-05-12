@@ -192,10 +192,17 @@ const Freelancers = () => {
                             bordered
                             striped
                             hover
-                            scrollY
+                            // scrollY
                             maxHeight='48vh'
+
+                            responsive
+
                         />
                     )}
+                    var table = $('#example').DataTable();
+
+                    $('#container').css( 'display', 'block' );
+                    table.columns.adjust().draw();
                 </div>
             </Fragment>
 

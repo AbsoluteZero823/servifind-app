@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import MetaData from '../../layout/MetaData'
+import Swal from 'sweetalert2';
 
 import { useAlert } from 'react-alert'
 import { useSelector, useDispatch } from 'react-redux'
@@ -29,7 +30,7 @@ const Application = () => {
     // const { error } = useSelector(state => state.addService);
     const [avatarName, setAvatarName] = useState('')
     const [avatar, setAvatar] = useState('')
-    const { freelancer, error, success } = useSelector(state => state.addFreelancer);
+    const { freelancer, error, success, loading } = useSelector(state => state.addFreelancer);
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const [avatarPreview, setAvatarPreview] = useState(user && user.avatar.url);
 
@@ -66,7 +67,7 @@ const Application = () => {
 
 
     const FormTitles = ["Personal Info", "Your First Service", "Verification & Proof"];
-    const { loading } = useSelector(state => state.auth)
+    // const { loading } = useSelector(state => state.auth)
     const PageDisplay = () => {
         if (page === 0) {
             return <BasicInfo />;
@@ -132,6 +133,11 @@ const Application = () => {
             // dispatch(newService(servicesData))
 
             dispatch({ type: NEW_FREELANCER_RESET });
+            Swal.fire(
+                'Application Sent Successfully!',
+                '',
+                'success')
+            navigate(`/become-freelancer`)
         }
 
     }, [dispatch, alert, error, success, navigate, user])

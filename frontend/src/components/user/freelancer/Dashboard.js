@@ -357,9 +357,9 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className='paymentDetails'>
-                                <div style={{display:'flex', justifyContent:'space-between', marginTop:'20px', paddingRight:'10px'}}>
-                                <p style={{ fontWeight: 'bold' }}>Payment Details</p>
-                                <span><i className='fa fa-pencil'></i></span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingRight: '10px' }}>
+                                    <p style={{ fontWeight: 'bold' }}>Payment Details</p>
+                                    <span><i className='fa fa-pencil'></i></span>
                                 </div>
                                 <div className='completeSetup'>
                                     {/* {user.freelancer_id && (
@@ -369,10 +369,10 @@ const Dashboard = () => {
                                     <p>GCash Number: {user.freelancer_id && user.freelancer_id.gcash_num}</p>
                                     {!user.freelancer_id.gcash_name && (
                                         <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#setupModal">Complete Setup</button></div>
-                                    ) 
+                                    )
                                         // <div className='flexCenter'><button className='profileBtn' data-toggle="modal" data-target="#editDetailsModal">Edit Details</button></div>
-                                   
-        
+
+
                                     }
 
                                 </div>
@@ -447,15 +447,19 @@ const Dashboard = () => {
                                 <div className="form-group">
                                     <label htmlFor="email_field">GCash Number</label>
                                     <input
-                                        type="number"
+                                        type="tel"
                                         id="gcash_num"
                                         className="form-control"
                                         name='gcash_num'
-                                        placeholder='Your Gcash registered number'
+                                        placeholder='09XXXXXXXXX'
+                                        pattern="[0-9]{11}"
+                                        maxlength="11"
                                         required
+                                        title="Please use a 11 digit telephone number with no dashes or dots"
                                         value={gcash_num}
                                         onChange={(e) => setGcashNum(e.target.value)}
                                     />
+                                    {/* <input type="tel" name="phoneNumber" id="phoneNumber" title="Please use a 11 digit telephone number with no dashes or dots" pattern="[0-9]{10}" required /> <i>10 digits</i> */}
                                 </div>
 
 
