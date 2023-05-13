@@ -22,7 +22,7 @@ exports.newService = async (req, res, next) => {
             if (!freelancer.isPremium) {
                 return res.status(403).json({
                     success: false,
-                    // message: 'You need to be a premium freelancer to create more services'
+                    message: 'You need to be a premium freelancer to create more services'
                 });
             }
         }
