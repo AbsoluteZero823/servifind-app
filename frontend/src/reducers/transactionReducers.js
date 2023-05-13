@@ -43,6 +43,10 @@ import {
     UPDATE_TRANSACTION_RESET,
     UPDATE_TRANSACTION_FAIL,
 
+    GET_TRANSACTIONCOURSES_REQUEST,
+    GET_TRANSACTIONCOURSES_SUCCESS,
+    GET_TRANSACTIONCOURSES_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -245,5 +249,41 @@ export const updateTransactionReducer = (state = {}, action) => {
                 ...state,
                 error: action.payload
             }
+    }
+}
+
+
+export const getTransactionCoursesReducer = (state = { sectionArr: [] }, action) => {
+    switch (action.type) {
+
+
+        case GET_TRANSACTIONCOURSES_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case GET_TRANSACTIONCOURSES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                sectionArr: action.payload.sectionArr,
+            }
+
+        case GET_TRANSACTIONCOURSES_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
     }
 }

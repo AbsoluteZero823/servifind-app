@@ -592,3 +592,86 @@ exports.AddOffertoInquiryByCreatingTransaction = async (req, res, next) => {
         return next(error);
     }
 };
+
+exports.topTenServices = async (req,res,next) => {
+    try {
+        const transactions = await Transaction.find().populate([
+        {
+            path: 'offer_id',
+            model: 'Offer',
+            populate: {
+                path: 'service_id',
+                model: 'Service',
+                populate: {
+                    path: 'category',
+                    model: 'category'
+                }
+            }
+        },
+        ]);
+        res.status(200).json({
+            success: true,
+            transactions
+        })
+    } catch (error) {
+        
+    }
+}
+
+exports.TransactionPerCourses = async (req, res, next) => {
+    let sectionArr = []
+
+const NumberOfSection = await Transaction.find({}).populate([
+
+    {
+        path: 'offer_id',
+        model: 'Offer',
+        populate: {
+            path: 'offered_by',
+            model:"user",
+            populate:{
+                path:"freelancer_id"
+            }
+        }
+    }
+    ]);
+
+    for (let i = 0; i < NumberOfSection.length; i++) {
+        // console.log(NumberOfSection[i].offer_id.offered_by.freelancer_id.course)
+        // console.log(NumberOfSection.length)
+        sectionArr.push({ section: NumberOfSection[i].offer_id.offered_by.freelancer_id.course, returnedDate: NumberOfSection[i].created_At })
+    }
+    // console.log(sectionArr);
+    res.status(200).json({
+        success: true,
+        sectionArr
+    })
+}
+
+exports.getTransactions = async (req, res, next) => {
+
+    const sort = { _id: -1 };
+    const transactions = await Transaction.find().populate([
+
+    {
+        path: 'offer_id',
+        model: 'Offer',
+        populate: {
+            path: 'offered_by',
+
+        }
+    },
+    {
+        path: 'offer_id',
+        model: 'Offer',
+        populate: {
+            path: 'service_id',
+
+        }
+    }
+    ]);
+    res.status(200).json({
+        success: true,
+        transactions
+    })
+}

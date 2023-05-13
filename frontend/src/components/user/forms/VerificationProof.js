@@ -63,27 +63,29 @@ function VerificationProof({ freelancerData, setFreelancerData }) {
 
                     
 
-                    <option value="BET-Automotive">BET-Automotive</option>
-                    <option value="BET-Chemical Tech">BET-Chemical Tech</option>
-                    <option value="BET-Civil Tech">BET-Civil Tech</option>
-                    <option value="BET-DMT">BET-DMT</option>
-                    <option value="BET-ELEC">BET-ELEC</option>
-                    <option value="BET-ELX">BET-ELX</option>
-                    <option value="BET-EMT">BET-EMT</option>
-                    <option value="BET-HVACRT">BET-HVACRT</option>
-                    <option value="BET-ICT">BET-ICT</option>
-                    <option value="BET-MT">BET-MT</option>
-                    <option value="BET-Mechatronics">BET-Mechatronics</option>
-                    <option value="BET-NDT">BET-NDT</option>
-                    <option value="BGTAT">BGTAT</option>
-                    <option value="BSCE-SEP">BSCE-SEP</option>
-                    <option value="BSEE-SEP">BSEE-SEP</option>
-                    <option value="BSME-SEP">BSME-SEP</option>
-                    <option value="BSIT">BSIT</option>
-                    <option value="BTVTE">BTVTE</option>
-                    <option value="BSES-SDP">BSES-SDP</option>
-                    <option value="LADDERIZED">LADDERIZED</option>
-
+                    <option value="BET Major in Automotive Technology (BETAT-T)">BET Major in Automotive Technology (BETAT-T)</option>
+                    <option value="BET Major in Chemical Technology (BETChT-T)">BET Major in Chemical Technology (BETChT-T)</option>
+                    <option value="BET Major in Construction Technology (BETCT-T)">BET Major in Construction Technology (BETCT-T)</option>
+                    <option value="BET Major in Electrical Technology (BETET-T)">BET Major in Electrical Technology (BETET-T)</option>
+                    <option value="BET Major in Electromechanical Technology (BETEMT-T)">BET Major in Electromechanical Technology (BETEMT-T)</option>
+                    <option value="BET Major in Electronics Technology (BETElxT-T)">BET Major in Electronics Technology (BETElxT-T)</option>
+                    <option value="BET Major in Instrumentation and Control Technology (BETInCT-T)">BET Major in Instrumentation and Control Technology (BETInCT-T)</option>
+                    <option value="BET Major in Mechanical Technology (BETMT-T)">BET Major in Mechanical Technology (BETMT-T)</option>
+                    <option value="BET Major in Mechatronics Technology (BETMecT-T)">BET Major in Mechatronics Technology (BETMecT-T)</option>
+                    <option value="BET Major in Non-Destructive Testing Technology (BETNDTT-T)">BET Major in Non-Destructive Testing Technology (BETNDTT-T)</option>
+                    <option value="BET Major in Dies & Moulds Technology (BETDMT-T)">BET Major in Dies & Moulds Technology (BETDMT-T)</option>
+                    <option value="BET Major in Heating, Ventilation and Airconditioning/Refrigeration Technology (BETHVAC/RT-T)">BET Major in Heating, Ventilation and Airconditioning/Refrigeration Technology (BETHVAC/RT-T)</option>
+                    <option value="Bachelor of Science in Civil Engineering (BSCESEP-T)">Bachelor of Science in Civil Engineering (BSCESEP-T)</option>
+                    <option value="Bachelor of Science in Electrical Engineering (BSEESEP-T)">Bachelor of Science in Electrical Engineering (BSEESEP-T)</option>
+                    <option value="Bachelor of Science in Electronics Engineering (BSECESEP-T)">Bachelor of Science in Electronics Engineering (BSECESEP-T)</option>
+                    <option value="Bachelor  of Science in Mechanical Engineering (BSMESEP-T)">Bachelor  of Science in Mechanical Engineering (BSMESEP-T)</option>
+                    <option value="Bachelor of Science in Information Technology (BSIT-T)">Bachelor of Science in Information Technology (BSIT-T)</option>
+                    <option value="Bachelor of Science in Information System (BSIS-T)">Bachelor of Science in Information System (BSIS-T)</option>
+                    <option value="Bachelor of Science in Environmental Science (BSESSDP-T)">Bachelor of Science in Environmental Science (BSESSDP-T)</option>
+                    <option value="Bachelor in Graphics Technology Major in Architecture Technology (BGTAT-T)">Bachelor in Graphics Technology Major in Architecture Technology (BGTAT-T)</option>
+                    <option value="BTVTE Major in Electrical Technology (BTVTEdeT-T)">BTVTE Major in Electrical Technology (BTVTEdeT-T)</option>
+                    <option value="BTVTE Major in Electronics Technology (BTVTEdElxT-T)">BTVTE Major in Electronics Technology (BTVTEdElxT-T)</option>
+                    <option value="BTVTE Major in Information and Communication Technology (BTVTEdICT-T)">BTVTE Major in Information and Communication Technology (BTVTEdICT-T)</option>
                 </select>
                 <br />
                 <label htmlFor="email_field">Resumé</label>

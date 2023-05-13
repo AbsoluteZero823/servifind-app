@@ -10,6 +10,7 @@ const { getTransactions,
     rateDone,
     reportDone,
     updateTransaction,
+    TransactionPerCourses,
     //CODE SA MOBILE
     ClientCompleteTransaction,
     ClientRateTransaction,
@@ -35,6 +36,8 @@ router.route('/transaction/done/:id').put(transactionDone);
 router.route('/transaction/rated/:id').put(rateDone);
 router.route('/transaction/reported/:id').put(reportDone);
 router.route('/transaction-update/:id').put(updateTransaction);
+router.route('/transactionpercourses').get(TransactionPerCourses);
+
 //CODE SA MOBILE
 router.route('/mytransactions').post(isAuthenticatedUser, ClientFetchTransaction);
 router.route('/transactions/complete').post(isAuthenticatedUser, ClientCompleteTransaction);

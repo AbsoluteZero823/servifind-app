@@ -1,9 +1,13 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom';
 
+import { UserData } from './charts/data';
 import MetaData from '../layout/MetaData'
 import Loader from '../layout/Loader'
 import Sidebar from './Sidebar'
+import BarChart from './charts/BarChart';
+import PieChart from './charts/PieChart';
+import LineChart from './charts/LineChart';
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -32,6 +36,17 @@ const Dashboard = () => {
     //     dispatch(allUsers())
     // }, [dispatch])
 
+    const [userData, setUserData] = useState({
+        labels: UserData.map((data)=> data.year),
+        datasets: [{
+          label: "Users Gained",
+          data: UserData.map((data)=> data.userGain),
+          backgroundColor: ["green", 'blue'],
+          borderColor: "black",
+          borderWidth: 1.5
+        }]
+      })
+
     return (
         <Fragment>
 
@@ -46,17 +61,17 @@ const Dashboard = () => {
                 <Fragment>
                     <MetaData title={'Admin Dashboard'} />
 
-                    <div className="row pr-4">
+                    {/* <div className="row pr-4">
                         <div className="col-xl-12 col-sm-12 mb-3">
                             <div className="card text-white bg-primary o-hidden h-100">
                                 <div className="card-body">
-                                    {/* <div className="text-center card-font-size">Total Amount<br /> <b>${totalAmount && totalAmount.toFixed(2)}</b></div> */}
+                                 
                                     <div className="text-center card-font-size">Total Amount<br /> <b>$100</b></div>
 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="row pr-4">
                         <div className="col-xl-3 col-sm-6 mb-3">
@@ -130,6 +145,11 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
+                    <div style={{display:'flex', flexWrap:'wrap'}}>
+                    <BarChart chartData={userData}/>
+                <LineChart chartData={userData}/>
+                <PieChart chartData={userData}/>
+                </div>
                 </Fragment>
             )}
 

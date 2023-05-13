@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 
-
+import { UserData } from './components/admin/charts/data';
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Home from './components/Home'
@@ -57,11 +57,14 @@ import { useSelector } from 'react-redux'
 import store from './store'
 
 import Sidebar from './components/admin/Sidebar';
+
+
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
 
   }, [])
+
 
   const { user, isAuthenticated, loading } = useSelector(state => state.auth)
   return (
@@ -150,6 +153,15 @@ function App() {
                   <Route path="/premium" element={<Premium />} exact />
                   <Route path="/application-premium" element={<ApplicationPremium />} exact />
                   <Route path="/services/:id" element={<MyServices />} exact />
+                  {/* <Route path="/charts" element={
+                    <div>
+                      <BarChart chartData={userData}/>
+                <LineChart chartData={userData}/>
+                <PieChart chartData={userData}/>
+                    </div>
+                  
+                } exact /> */}
+                  
 
                   <Route path="/services" element={
                     <ProtectedRoute isAdmin={true}>

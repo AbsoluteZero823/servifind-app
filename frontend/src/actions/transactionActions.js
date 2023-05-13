@@ -39,6 +39,10 @@ import {
     UPDATE_TRANSACTION_SUCCESS,
     UPDATE_TRANSACTION_FAIL,
 
+    GET_TRANSACTIONCOURSES_REQUEST,
+    GET_TRANSACTIONCOURSES_SUCCESS,
+    GET_TRANSACTIONCOURSES_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
 
@@ -275,6 +279,27 @@ export const updateTransaction = (id, transactionData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_TRANSACTION_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+export const getTransactionPerCourses = () => async (dispatch) => {
+    try {
+
+        dispatch({ type:GET_TRANSACTIONCOURSES_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transactionpercourses`)
+
+        dispatch({
+            type: GET_TRANSACTIONCOURSES_SUCCESS,
+            payload: data.sectionArr
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TRANSACTIONCOURSES_FAIL,
             payload: error.response.data.message
         })
     }
