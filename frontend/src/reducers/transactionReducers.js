@@ -47,6 +47,14 @@ import {
     GET_TRANSACTIONCOURSES_SUCCESS,
     GET_TRANSACTIONCOURSES_FAIL,
 
+    GET_TRANSACTIONMONTH_REQUEST,
+    GET_TRANSACTIONMONTH_SUCCESS,
+    GET_TRANSACTIONMONTH_FAIL,
+
+    GET_SERVICECOURSES_REQUEST,
+    GET_SERVICECOURSES_SUCCESS,
+    GET_SERVICECOURSES_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -268,6 +276,7 @@ export const getTransactionCoursesReducer = (state = { sectionArr: [] }, action)
                 ...state,
                 loading: false,
                 sectionArr: action.payload.sectionArr,
+                success: action.payload.success,
             }
 
         case GET_TRANSACTIONCOURSES_FAIL:
@@ -285,5 +294,71 @@ export const getTransactionCoursesReducer = (state = { sectionArr: [] }, action)
 
         default:
             return state;
+    }
+}
+
+
+export const getServiceCoursesReducer = (state = { topServicesArr: [] }, action) => {
+    switch (action.type) {
+
+
+        case GET_SERVICECOURSES_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case GET_SERVICECOURSES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                topServicesArr: action.payload.topServicesArr,
+                success: action.payload.success,
+            }
+
+        case GET_SERVICECOURSES_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+export const getTransactionMonthReducer = (state = { completionDate:[] }, action) => {
+    switch(action.type) {
+        case GET_TRANSACTIONMONTH_REQUEST:
+        return {
+            ...state,
+            loading: true,
+            // borrowedDate: []
+        }
+        case GET_TRANSACTIONMONTH_SUCCESS:
+        return {
+            ...state,
+            loading: false,
+            completionDate: action.payload.completionDate,
+            success: action.payload.success,
+        }
+        case GET_TRANSACTIONMONTH_FAIL:
+        return {
+            loading:false,
+            error: action.payload
+        }
+        case CLEAR_ERRORS:
+        return {
+            ...state,
+            error: null
+        }
+        default:
+        return state;
     }
 }

@@ -3,7 +3,7 @@ import React, { Fragment, useState, useRef, useEffect } from 'react'
 import { Pie } from 'react-chartjs-2';
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
-import { getTransactionPerCourses } from '../../../actions/transactionActions';
+import { getTransactionPerCourses, clearErrors } from '../../../actions/transactionActions';
 import MetaData from '../../layout/MetaData';
 import Loader from '../../layout/Loader';
 import { Chart as ChartJS, CategoryScale, LinearScale, Title, registerables } from 'chart.js';
@@ -25,15 +25,38 @@ const PieChart = () => {
         sectionArr, error
     } = useSelector(state => state.sectionArray);
 
+    const refStart = useRef(null);
+    const refEnd = useRef(null);
     useEffect(() => {
         dispatch(getTransactionPerCourses());
-
+console.log(sectionDataPoints);
+console.log(courseCountLength);
         if (error) {
             alert.error(error);
-            // dispatch(clearErrors())
+            dispatch(clearErrors())
         }
 
-    }, [dispatch, alert, error])
+    }, [dispatch, alert, error,])
+    useEffect(() => {
+        
+console.log(sectionDataPoints);
+console.log(courseCountLength);
+if(courseCountLength[0]){
+    filterData1();
+    filterData2();
+}
+     
+
+    }, [dispatch, alert, error, loading])
+
+    useEffect(() => {
+        if (refStart.current) {
+            filterData1();
+            filterData2();
+          }
+      
+        
+            }, [refStart])
 
     // initial value for charts
     const Coursegroups = sectionArr.reduce(
@@ -59,8 +82,6 @@ const PieChart = () => {
     const [startDate, setStartDate] = useState('2023-01-01');
     const [endDate, setEndDate] = useState('2023-12-31');
 
-    const refStart = useRef();
-    const refEnd = useRef();
 
     const Dategroups = sectionArr.reduce(
         (Dategroups, borrow_date) => {
@@ -78,6 +99,7 @@ const PieChart = () => {
     console.log(arrGroups);
     //----------------------------------------------------------------------
     function filterData1() {
+        console.log('i am called')
         let valueStart = refStart.current.value;
         setStartDate(valueStart);
         let valueEnd = endDate;
@@ -149,7 +171,7 @@ const PieChart = () => {
     const state = {
         labels: sectionData,
         datasets: [{
-            label: 'Times Borrowed',
+            label: 'Transaction Completed',
             data: sectionDataPoints,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -197,7 +219,7 @@ const PieChart = () => {
             },
             title: {
                 display: true,
-                text: 'Borrowed Books Per Course',
+                text: 'Transaction per Course',
                 font: {
                     size: 30
                 }
@@ -226,20 +248,28 @@ const PieChart = () => {
     return (<Fragment >
         <MetaData title={'Dashboard'} />
         {loading ? < Loader /> : (
-            <div className="col-md-6" >
+            <div className="col-md-6" 
+            style={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
+                flex: '0 0 48%'
+                }} >
                 <Pie
                     // labels={sectionData}
                     data={state}
                     options={options}
                 />
+                <div style={{ display:'flex', justifyContent:'center'}}>
                 <div className="form-group" >
                     <label > From: </label> {
                         <div>
-                            <input type="date" ref={refStart} onChange={filterData1} value={startDate} />
+                            <input type="date" ref={refStart} onChange={filterData1} defaultValue={'2023-01-01'} />
                             <label> To: </label>
-                            <input type="date" ref={refEnd} onChange={filterData2} value={endDate} />
+                            <input type="date" ref={refEnd} onChange={filterData2} defaultValue={'2023-12-31'} />
                         </div>
                     } </div>
+</div>
             </div>
         )
         }

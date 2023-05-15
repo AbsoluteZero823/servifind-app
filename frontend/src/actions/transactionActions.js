@@ -42,6 +42,14 @@ import {
     GET_TRANSACTIONCOURSES_REQUEST,
     GET_TRANSACTIONCOURSES_SUCCESS,
     GET_TRANSACTIONCOURSES_FAIL,
+    
+    GET_TRANSACTIONMONTH_REQUEST,
+    GET_TRANSACTIONMONTH_SUCCESS,
+    GET_TRANSACTIONMONTH_FAIL,
+
+    GET_SERVICECOURSES_REQUEST,
+    GET_SERVICECOURSES_SUCCESS,
+    GET_SERVICECOURSES_FAIL,
 
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
@@ -294,7 +302,8 @@ export const getTransactionPerCourses = () => async (dispatch) => {
 
         dispatch({
             type: GET_TRANSACTIONCOURSES_SUCCESS,
-            payload: data.sectionArr
+            payload: data
+
         })
 
     } catch (error) {
@@ -304,3 +313,70 @@ export const getTransactionPerCourses = () => async (dispatch) => {
         })
     }
 }
+
+
+
+
+
+export const getTransactionPerMonth = () => async (dispatch) => {
+    try {
+
+        dispatch({ type:GET_TRANSACTIONMONTH_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transactionpermonth`)
+
+        dispatch({
+            type: GET_TRANSACTIONMONTH_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TRANSACTIONMONTH_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+export const getTopTenServices = () => async (dispatch) => {
+    try {
+
+        dispatch({ type:GET_SERVICECOURSES_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/topservicepercourses`)
+
+        dispatch({
+            type: GET_SERVICECOURSES_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_SERVICECOURSES_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+// export const getBookLeaderboards = () => async (dispatch) => {
+//     try {
+
+//         dispatch({ type:GET_BOOKLEADERBOARDS_REQUEST })
+
+//         const { data } = await axios.get(`/api/v1/bookLeaderboards`)
+
+//         dispatch({
+//             type: GET_BOOKLEADERBOARDS_SUCCESS,
+//             payload: data.bookCounts
+//         })
+
+//     } catch (error) {
+//         dispatch({
+//             type: GET_BOOKLEADERBOARDS_FAIL,
+//             payload: error.response.data.message
+//         })
+//     }
+// }

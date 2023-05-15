@@ -145,10 +145,11 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <div style={{display:'flex', flexWrap:'wrap'}}>
-                    <BarChart chartData={userData}/>
-                <LineChart chartData={userData}/>
-                <PieChart chartData={userData}/>
+                    <div style={{display:'flex', flexWrap:'wrap', padding:20, justifyContent:'space-between'}}>
+                    
+                {/* <LineChart chartData={userData}/> */}
+                <PieChart/>
+                <BarChart/>
                 </div>
                 </Fragment>
             )}

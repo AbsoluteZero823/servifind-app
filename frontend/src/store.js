@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserReducer, userDetailsReducer } from './reducers/userReducers'
 import { servicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
-import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer } from './reducers/transactionReducers';
+import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer,getServiceCoursesReducer, getTransactionMonthReducer } from './reducers/transactionReducers';
 import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer } from './reducers/freelancerReducers';
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
@@ -40,6 +40,8 @@ const reducer = combineReducers({
     updatePayment: paymentReducer,
     updatetransaction: updateTransactionReducer,
     sectionArray:getTransactionCoursesReducer,
+    completionDateTo:getTransactionMonthReducer,
+    topServicesArray:getServiceCoursesReducer,
 
     freelancerDetails: freelancerDetailsReducer,
     addFreelancer: newFreelancerReducer,
