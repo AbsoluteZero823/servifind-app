@@ -193,6 +193,37 @@ exports.getServicesToDisplay = async (req, res, next) => {
 
 }
 
+exports.getPremiumServices = async (req, res, next) => {
+
+    const servicess = await Service.find({}).populate(['category', 'user', 'freelancer_id']);
+    const services = servicess.filter(service => service.freelancer_id.availability === true, service => service.freelancer_id.status === 'approved', service => service.freelancer_id.isPremium === true);
+    let filteredServicesCount = services.length;
+
+    // Fetch ratings for each service
+    const serviceIds = services.map(service => service._id);
+    const ratings = await Rating.find({ service_id: { $in: serviceIds } }).populate('user');
+
+    // Merge ratings with services
+    const servicesWithRatings = services.map(service => {
+        const serviceRatings = ratings.filter(rating => rating.service_id.toString() === service._id.toString());
+        const avgRating = serviceRatings.reduce((acc, rating) => acc + rating.rating, 0) / serviceRatings.length;
+        const ratingCount = serviceRatings.length;
+        return {
+            ...service.toJSON(),
+            ratings: serviceRatings,
+            avgRating,
+            ratingCount
+        };
+    });
+
+    res.status(200).json({
+        success: true,
+        filteredServicesCount,
+        services: servicesWithRatings
+    })
+
+}
+
 
 //CODES SA MOBILE
 exports.getmyServices = async (req, res, next) => {

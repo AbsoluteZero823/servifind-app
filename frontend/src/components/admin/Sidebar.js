@@ -72,16 +72,19 @@ const Sidebar = () => {
 
                     )} */}
 
-
+{user && user.role !== 'admin' && (
                     <li>
                         <Link to="/chat"><i className="fa fa-envelope"></i>Messages</Link>
                     </li>
+)}
                     <li>
                         <Link to="/all"><i className="fa fa-cogs"></i>Available Services</Link>
                     </li>
+                    {user && user.role !== 'admin' && (
                     <li>
                         <Link to="/my/transactions"><i className="fa fa-history"></i>Transactions</Link>
                     </li>
+                    )}
                     {/* <li>
                         <Link to="/admin/reviews"><i className="fa fa-star"></i> Reviews</Link>
                     </li> */}

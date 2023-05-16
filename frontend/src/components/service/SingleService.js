@@ -188,11 +188,24 @@ const SingleService = () => {
 
                                     </div>
                                 </div>
-                                <div className='row' style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
+  {(!user && !isAuthenticated) &&
+                       <Link className='row' to={`/login`} style={{ justifyContent: 'space-around', paddingTop: '10px'  }}>
+                       <button className="custom-btn btn-5"><span style={{ margin: '10px' }} >Inquire</span></button>
+                       {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
+
+                   </Link> 
+                    }
+
+
+                    {(user && isAuthenticated) &&
+                      <div className='row' style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
                                     <button className="custom-btn btn-5" data-toggle="modal" data-target="#exampleModalCenter" ><span style={{ margin: '10px' }} >Inquire</span></button>
-                                    <button className="custom-btn btn-5" ><span>Read More</span></button>
+                                    {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
 
                                 </div>
+                    }
+                                
+
                                 {service.freelancer_id && service.freelancer_id.availability ? (
                                     <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
                                         This Freelancer is Available Right Now

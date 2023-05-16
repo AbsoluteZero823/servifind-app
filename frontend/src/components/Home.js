@@ -7,8 +7,13 @@ import MetaData from './layout/MetaData'
 import Loader from './layout/Loader'
 import Footer from './layout/Footer'
 
+import FlashDeals from './FlashDeals';
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
+
+import { getPremiumServices } from '../actions/serviceActions';
+
 // import { getAnimals } from '../actions/animalActions'
 
 // import Slider from 'rc-slider'
@@ -24,6 +29,13 @@ const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
+  const { services, success } = useSelector(state => state.services)
+
+  useEffect(() => {
+    
+    dispatch(getPremiumServices());
+
+  }, [])
 
 
   // const { loading, animals, error, animalsCount, resPerPage, filteredAnimalsCount } = useSelector(state => state.animals);
@@ -74,6 +86,15 @@ const Home = () => {
             </a>
           </div>
         </div>
+        <section className='home'>
+        <div className='container d_flex'>
+          {/* <Categories /> */}
+          {/* <SliderHome /> */}
+          <FlashDeals services ={services}/>
+        </div>
+      </section>
+
+  
         <div className="services-container">
           <h1>Our Services</h1>
           <div className="getry">
@@ -191,10 +212,10 @@ const Home = () => {
                 <img src="../images/check.png" alt="" />
                 Chat
               </p>
-              <p>
+              {/* <p>
                 <img src="../images/check.png" alt="" />
                 Accomodate 1 transaction
-              </p>
+              </p> */}
               <p>
                 <img src="../images/check.png" alt="" />
                 Limited functions
@@ -204,7 +225,7 @@ const Home = () => {
             <div className="subscription__card-premium">
               <div className="subscription-header">
                 <h2>Premium</h2>
-                <h2>₱50 <span>/ Month</span></h2>
+                <h2>₱50 <span></span></h2>
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
@@ -216,7 +237,7 @@ const Home = () => {
               </p>
               <p>
                 <img src="../images/check.png" alt="" />
-                Accomodate Many clients
+                Advertise Services
               </p>
 
               <a href="#">Choose Plan</a>
@@ -227,28 +248,28 @@ const Home = () => {
           <h1>Meet Our Team</h1>
           <div className="meet-card-wrapper">
             <div className="meet-card">
-              <img src="images/team1.jpg" alt="" />
+              <img src="images/CHE.png" alt="" />
               <h3>Cherry May Agustin</h3>
               <div className="teamrole">Paper Manager/ Web Designer</div>
             </div>
             <div className="meet-card">
-              <img src="images/team2.jpg" alt="" />
+              <img src="images/KENDRICK.png" alt="" />
               <h3>Kendrick Galan</h3>
               <div className="teamrole">Lead Developer/ Mobile Developer</div>
 
             </div>
             <div className="meet-card">
-              <img src="images/team3.jpg" alt="" />
+              <img src="images/LENAL.png" alt="" />
               <h3>Lenal Ladaga</h3>
               <div className="teamrole">Project Manager/ Web Designer</div>
             </div>
             <div className="meet-card">
-              <img src="images/team4.jpg" alt="" />
+              <img src="images/MARVIN.png" alt="" />
               <h3>Marvin Olazo</h3>
               <div className="teamrole">External Relation Officer</div>
             </div>
             <div className="meet-card">
-              <img src="images/team5.jpg" alt="" />
+              <img src="images/MAW.png" alt="" />
               <h3>Marwin Vislenio</h3>
               <div className="teamrole">External Relation Officer</div>
             </div>

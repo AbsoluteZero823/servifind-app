@@ -8,9 +8,9 @@ import {
     DISPLAYED_SERVICES_SUCCESS,
     DISPLAYED_SERVICES_FAIL,
 
-    // FULL_SERVICES_REQUEST,
-    // FULL_SERVICES_SUCCESS, 
-    // FULL_SERVICES_FAIL,
+    PREMIUM_SERVICES_REQUEST,
+    PREMIUM_SERVICES_SUCCESS, 
+    PREMIUM_SERVICES_FAIL,
 
     NEW_SERVICES_REQUEST,
     NEW_SERVICES_SUCCESS,
@@ -48,6 +48,7 @@ export const servicesReducer = (state = { services: [] }, action) => {
 
         case ALL_SERVICES_REQUEST:
         case DISPLAYED_SERVICES_REQUEST:
+            case PREMIUM_SERVICES_REQUEST:
         case FREELANCER_SERVICES_REQUEST:
             return {
                 ...state,
@@ -57,6 +58,7 @@ export const servicesReducer = (state = { services: [] }, action) => {
         case ALL_SERVICES_SUCCESS:
         case DISPLAYED_SERVICES_SUCCESS:
         case FREELANCER_SERVICES_SUCCESS:
+            case PREMIUM_SERVICES_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -66,6 +68,7 @@ export const servicesReducer = (state = { services: [] }, action) => {
         case ALL_SERVICES_FAIL:
         case DISPLAYED_SERVICES_FAIL:
         case FREELANCER_SERVICES_FAIL:
+            case PREMIUM_SERVICES_FAIL:
             return {
                 ...state,
                 loading: false,

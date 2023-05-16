@@ -13,6 +13,8 @@ const { getTransactions,
     TransactionPerCourses,
     TransactionPerMonth,
 topTenServices,
+ServiceLeaderboards,
+getDashboardInfo,
 
     //CODE SA MOBILE
     ClientCompleteTransaction,
@@ -42,6 +44,8 @@ router.route('/transaction-update/:id').put(updateTransaction);
 router.route('/transactionpercourses').get(TransactionPerCourses);
 router.route('/transactionpermonth').get(TransactionPerMonth);
 router.route('/topservicepercourses').get(topTenServices);
+router.route('/serviceleaderboards').get(ServiceLeaderboards);
+router.route('/dashboardinfo').get(getDashboardInfo);
 
 //CODE SA MOBILE
 router.route('/mytransactions').post(isAuthenticatedUser, ClientFetchTransaction);

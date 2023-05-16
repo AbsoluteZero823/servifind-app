@@ -83,10 +83,10 @@ const Premium = () => {
                             <img src="../images/check.png" alt="" />
                             Chat
                         </p>
-                        <p>
+                        {/* <p>
                             <img src="../images/check.png" alt="" />
                             Accomodate 1 transaction
-                        </p>
+                        </p> */}
                         <p>
                             <img src="../images/check.png" alt="" />
                             Limited functions
@@ -110,7 +110,7 @@ const Premium = () => {
                         </p>
                         <p>
                             <img src="../images/check.png" alt="" />
-                            Accomodate Many clients
+                            Advertise Services
                         </p>
                         <button data-toggle="modal" data-target="#PaymentDetailsModal">Choose Plan</button>
                     </div>

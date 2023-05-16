@@ -75,7 +75,7 @@ const Service = ({ service }) => {
                         <span id="no_of_reviews">{service.ratingCount} client {service.ratingCount === 1 ? 'review' : 'reviews'} </span>
 
                     </div>
-                    {(!user && !isAuthenticated) &&
+                    {/* {(!user && !isAuthenticated) &&
                         <Link to={`/login`} style={{ color: 'white' }}>
                             <button>View Details</button>
                         </Link>
@@ -86,9 +86,11 @@ const Service = ({ service }) => {
                         <Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
                             <button>View Details</button>
                         </Link>
-                    }
+                    } */}
 
-
+<Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
+                            <button>View Details</button>
+                        </Link>
                     {/* <a href="#">More Info</a> */}
                 </div>
                 <div style={{ padding: '0px 30px' }}>

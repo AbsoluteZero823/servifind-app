@@ -198,7 +198,7 @@ const ManageRequest = () => {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '30px 0px' }}>
                         <div><h1 style={{ color: 'black' }}>Manage Requests</h1></div>
                         <div >
-                            <Link to={'/post-request'}><button className='nav-button'>Post a Request</button></Link>
+                            <Link to={'/post-request'}><button className='nav-button'>Post a Job</button></Link>
                         </div>
                     </div>
                 </div>

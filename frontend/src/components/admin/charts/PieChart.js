@@ -25,8 +25,8 @@ const PieChart = () => {
         sectionArr, error
     } = useSelector(state => state.sectionArray);
 
-    const refStart = useRef(null);
-    const refEnd = useRef(null);
+    const refStart = useRef();
+    const refEnd = useRef();
     useEffect(() => {
         dispatch(getTransactionPerCourses());
 console.log(sectionDataPoints);
@@ -49,14 +49,14 @@ if(courseCountLength[0]){
 
     }, [dispatch, alert, error, loading])
 
-    useEffect(() => {
-        if (refStart.current) {
-            filterData1();
-            filterData2();
-          }
+    // useEffect(() => {
+    //     if (refStart.current) {
+    //         filterData1();
+    //         filterData2();
+    //       }
       
         
-            }, [refStart])
+    //         }, [refStart])
 
     // initial value for charts
     const Coursegroups = sectionArr.reduce(
@@ -100,7 +100,17 @@ if(courseCountLength[0]){
     //----------------------------------------------------------------------
     function filterData1() {
         console.log('i am called')
-        let valueStart = refStart.current.value;
+        console.log(refStart)
+var valueStart = ''
+        if(refStart.current === null){
+            console.log('this is null')
+            valueStart = startDate
+        }else{
+            valueStart = refStart.current.value;
+        }
+        
+        
+    
         setStartDate(valueStart);
         let valueEnd = endDate;
         //filtering of data from the array of dates with attached array of Section data
@@ -134,9 +144,18 @@ if(courseCountLength[0]){
     };
     //----------------------------------------------------------------------
     function filterData2() {
-        let valueEnd = refEnd.current.value;
+        // let valueEnd = refEnd.current.value;
+        var valueEnd = ''
+        if(refEnd.current === null){
+            valueEnd = endDate
+        }else{
+            valueEnd = refEnd.current.value;
+        }
+
+
         setEndDate(valueEnd);
         let valueStart = startDate;
+        
         //filtering of data from the array of dates with attached array of Section data
         const filtered_arr = arrGroups.filter(
             (obj) => {
@@ -219,7 +238,7 @@ if(courseCountLength[0]){
             },
             title: {
                 display: true,
-                text: 'Transaction per Course',
+                text: 'Transaction/Course',
                 font: {
                     size: 30
                 }
@@ -247,7 +266,7 @@ if(courseCountLength[0]){
 
     return (<Fragment >
         <MetaData title={'Dashboard'} />
-        {loading ? < Loader /> : (
+        {(loading || loading === undefined) ? < Loader /> : (
             <div className="col-md-6" 
             style={{
                 backgroundColor: 'white',
@@ -264,9 +283,9 @@ if(courseCountLength[0]){
                 <div className="form-group" >
                     <label > From: </label> {
                         <div>
-                            <input type="date" ref={refStart} onChange={filterData1} defaultValue={'2023-01-01'} />
+                            <input type="date" ref={refStart} onChange={filterData1} value={startDate} />
                             <label> To: </label>
-                            <input type="date" ref={refEnd} onChange={filterData2} defaultValue={'2023-12-31'} />
+                            <input type="date" ref={refEnd} onChange={filterData2} value={endDate} />
                         </div>
                     } </div>
 </div>

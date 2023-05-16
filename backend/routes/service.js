@@ -8,6 +8,7 @@ const { getServices,
     getFreelancerServices,
     updateService,
     deleteService,
+    getPremiumServices,
     //CODE SA MOBILE
     getmyServices,
 } = require('../controllers/serviceController');
@@ -15,6 +16,7 @@ const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
 router.route('/services').get(getServices);
 router.route('/available/services').get(getServicesToDisplay);
+router.route('/premium/services').get(getPremiumServices);
 router.route('/services/:id').get(getFreelancerServices);
 router.route('/service/new').post(isAuthenticatedUser, newService);
 router.route('/service/:id').get(getSingleService);

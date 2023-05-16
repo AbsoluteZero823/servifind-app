@@ -12,7 +12,10 @@ const { now } = require('mongoose');
 
 exports.newRequest = async (req, res, next) => {
     req.body.requested_by = req.user._id;
-    const request = await Request.create(req.body);
+    const request = (await Request.create(req.body)).populate(
+        'requested_by',
+        'category'
+    );
 
     res.status(201).json({
         success: true,

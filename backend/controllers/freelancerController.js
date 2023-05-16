@@ -549,7 +549,7 @@ exports.upgrademyFreelancer = async (req, res, next) => {
             width: 300,
             crop: "scale"
         });
-        req.body.premiumreceipt = {
+        req.body.premiumReceipt = {
             public_id: receiptresult.public_id,
             url: receiptresult.secure_url
         };

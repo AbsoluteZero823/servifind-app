@@ -9,6 +9,10 @@ import {
     DISPLAYED_SERVICES_SUCCESS,
     DISPLAYED_SERVICES_FAIL,
 
+    PREMIUM_SERVICES_REQUEST,
+    PREMIUM_SERVICES_SUCCESS,
+    PREMIUM_SERVICES_FAIL,
+
     FREELANCER_SERVICES_REQUEST,
     FREELANCER_SERVICES_SUCCESS,
     FREELANCER_SERVICES_FAIL,
@@ -75,6 +79,26 @@ export const getServicesToDisplay = (keyword = '') => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: DISPLAYED_SERVICES_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getPremiumServices = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: PREMIUM_SERVICES_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/premium/services`)
+
+        dispatch({
+            type: PREMIUM_SERVICES_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: PREMIUM_SERVICES_FAIL,
             payload: error.response.data.message
         })
     }

@@ -7,13 +7,16 @@ import Loader from '../layout/Loader'
 import Sidebar from './Sidebar'
 import BarChart from './charts/BarChart';
 import PieChart from './charts/PieChart';
+import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
+import { getDashboardInfo } from '../../actions/transactionActions';
 
 import { useDispatch, useSelector } from 'react-redux'
 
 // import { getAdminProducts } from '../../actions/productActions'
 // import { allOrders } from '../../actions/orderActions'
 // import { allUsers } from '../../actions/userActions'
+
 
 const Dashboard = () => {
 
@@ -23,6 +26,8 @@ const Dashboard = () => {
     // const { users } = useSelector(state => state.allUsers)
     // const { orders, totalAmount, loading } = useSelector(state => state.allOrders)
 
+    const { success, result } = useSelector(state => state.dashboardInfo);
+
     // let outOfStock = 0;
     // products.forEach(product => {
     //     if (product.stock === 0) {
@@ -30,11 +35,14 @@ const Dashboard = () => {
     //     }
     // })
 
-    // useEffect(() => {
-    //     dispatch(getAdminProducts())
-    //     dispatch(allOrders())
-    //     dispatch(allUsers())
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(getDashboardInfo())
+        if(success){
+           console.log(result)  
+          
+        }
+
+    }, [dispatch, success])
 
     const [userData, setUserData] = useState({
         labels: UserData.map((data)=> data.year),
@@ -81,14 +89,18 @@ const Dashboard = () => {
 
                                 <div className="card-body">
                                     {/* <div className="text-center card-font-size">Products<br /> <b>{products && products.length}</b></div> */}
-                                    <div className="text-center card-font-size">Services<br /> <b>Services</b></div>
+                                    <div className="text-center card-font-size">Services</div>
                                 </div>
 
-                                <Link className="card-footer text-white clearfix small z-1" to="/admin/products">
+                                <Link className="card-footer text-white clearfix small z-1" to="/services">
+                                    <div>
                                     <span className="float-left">View Details</span>
                                     <span className="float-right">
                                         <i className="fa fa-angle-right"></i>
                                     </span>
+                                    </div>
+
+                                    <div className='dashboard_count'>{result.serviceCount}</div>
                                 </Link>
                             </div>
                         </div>
@@ -101,14 +113,17 @@ const Dashboard = () => {
 
                                 <div className="card-body">
                                     {/* <div className="text-center card-font-size">Orders<br /> <b>{orders && orders.length}</b></div> */}
-                                    <div className="text-center card-font-size">Freelancers<br /> <b>Freelancers</b></div>
+                                    <div className="text-center card-font-size">Freelancers</div>
                                 </div>
 
-                                <Link className="card-footer text-white clearfix small z-1" to="/admin/orders">
+                                <Link className="card-footer text-white clearfix small z-1" to="/all/freelancers">
+<div>
                                     <span className="float-left">View Details</span>
                                     <span className="float-right">
                                         <i className="fa fa-angle-right"></i>
                                     </span>
+</div>
+                                    <div className='dashboard_count'>{result.freelancerCount}</div>
                                 </Link>
                             </div>
                         </div>
@@ -121,14 +136,17 @@ const Dashboard = () => {
 
                                 <div className="card-body">
                                     {/* <div className="text-center card-font-size">Users<br /> <b>{users && users.length}</b></div> */}
-                                    <div className="text-center card-font-size">Users<br /> <b>Users</b></div>
+                                    <div className="text-center card-font-size">Users</div>
                                 </div>
 
-                                <Link className="card-footer text-white clearfix small z-1" to="/admin/users">
+                                <Link className="card-footer text-white clearfix small z-1" to="/users">
+                                    <div>
                                     <span className="float-left">View Details</span>
                                     <span className="float-right">
                                         <i className="fa fa-angle-right"></i>
                                     </span>
+                                    </div>
+                                    <div className='dashboard_count'>{result.userCount}</div>
                                 </Link>
                             </div>
                         </div>
@@ -140,7 +158,14 @@ const Dashboard = () => {
 
                                 <div className="card-body">
                                     {/* <div className="text-center card-font-size">Out of Stock<br /> <b>{outOfStock}</b></div> */}
-                                    <div className="text-center card-font-size">Out of Stock<br /> <b>Out of Stock</b></div>
+                                    <div className="text-center card-font-size">Completed Transactions</div>
+                                    
+                                <div className="card-footer text-white clearfix small z-1" to="/admin/users">
+                                    
+                                 
+                                    <div className='dashboard_count'>{result.transactionCount}</div>
+                                </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -150,6 +175,7 @@ const Dashboard = () => {
                 {/* <LineChart chartData={userData}/> */}
                 <PieChart/>
                 <BarChart/>
+                <ServiceLeaderboards/>
                 </div>
                 </Fragment>
             )}

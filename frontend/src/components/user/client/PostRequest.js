@@ -75,11 +75,11 @@ const PostRequest = () => {
     }
     return (
         <Fragment>
-            <MetaData title={'Post Request'} />
+            <MetaData title={'Post Job'} />
             <div className='newstyle'>
                 <div className='mainsection'>
                     <div className='firstsection'>
-                        <h3 className=''>Post Request</h3>
+                        <h3 className=''>Post Job</h3>
                         <img src='https://peopleintouch.com/wp-content/uploads/2019/11/illustratie-partner-compact.png' style={{ height: '50%', width: '100%' }}></img>
                     </div>
                     {/* forms */}

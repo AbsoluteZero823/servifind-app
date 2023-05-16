@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserReducer, userDetailsReducer } from './reducers/userReducers'
 import { servicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
-import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer,getServiceCoursesReducer, getTransactionMonthReducer } from './reducers/transactionReducers';
+import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer,getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer,getDashboardInfoReducer } from './reducers/transactionReducers';
 import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer } from './reducers/freelancerReducers';
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
@@ -42,6 +42,8 @@ const reducer = combineReducers({
     sectionArray:getTransactionCoursesReducer,
     completionDateTo:getTransactionMonthReducer,
     topServicesArray:getServiceCoursesReducer,
+    serviLeaderboards:getServiceLeaderboardsReducer,
+    dashboardInfo: getDashboardInfoReducer,
 
     freelancerDetails: freelancerDetailsReducer,
     addFreelancer: newFreelancerReducer,

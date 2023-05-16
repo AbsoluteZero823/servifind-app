@@ -51,6 +51,14 @@ import {
     GET_SERVICECOURSES_SUCCESS,
     GET_SERVICECOURSES_FAIL,
 
+    GET_SERVICELEADERBOARDS_REQUEST,
+    GET_SERVICELEADERBOARDS_SUCCESS,
+    GET_SERVICELEADERBOARDS_FAIL,
+    
+    GET_DASHBOARDINFO_REQUEST,
+    GET_DASHBOARDINFO_SUCCESS,
+    GET_DASHBOARDINFO_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
 
@@ -361,22 +369,42 @@ export const getTopTenServices = () => async (dispatch) => {
     }
 }
 
-// export const getBookLeaderboards = () => async (dispatch) => {
-//     try {
+export const getServiceLeaderboards = () => async (dispatch) => {
+    try {
 
-//         dispatch({ type:GET_BOOKLEADERBOARDS_REQUEST })
+        dispatch({ type:GET_SERVICELEADERBOARDS_REQUEST })
 
-//         const { data } = await axios.get(`/api/v1/bookLeaderboards`)
+        const { data } = await axios.get(`/api/v1/serviceleaderboards`)
 
-//         dispatch({
-//             type: GET_BOOKLEADERBOARDS_SUCCESS,
-//             payload: data.bookCounts
-//         })
+        dispatch({
+            type: GET_SERVICELEADERBOARDS_SUCCESS,
+            payload: data
+        })
 
-//     } catch (error) {
-//         dispatch({
-//             type: GET_BOOKLEADERBOARDS_FAIL,
-//             payload: error.response.data.message
-//         })
-//     }
-// }
+    } catch (error) {
+        dispatch({
+            type: GET_SERVICELEADERBOARDS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getDashboardInfo = () => async (dispatch) => {
+    try {
+
+        dispatch({ type:GET_DASHBOARDINFO_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/dashboardinfo`)
+
+        dispatch({
+            type: GET_DASHBOARDINFO_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_DASHBOARDINFO_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}

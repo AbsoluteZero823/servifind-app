@@ -346,7 +346,7 @@ const BarChart  = () => {
             },
             title: {
                 display: true,
-                text: 'Completed Transaction Per Month',
+                text: 'Completed Transaction/Month',
                 font: {
                     size: 30
                 }

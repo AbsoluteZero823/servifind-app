@@ -55,6 +55,14 @@ import {
     GET_SERVICECOURSES_SUCCESS,
     GET_SERVICECOURSES_FAIL,
 
+    GET_SERVICELEADERBOARDS_REQUEST,
+    GET_SERVICELEADERBOARDS_SUCCESS,
+    GET_SERVICELEADERBOARDS_FAIL,
+
+    GET_DASHBOARDINFO_REQUEST,
+    GET_DASHBOARDINFO_SUCCESS,
+    GET_DASHBOARDINFO_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -349,6 +357,67 @@ export const getTransactionMonthReducer = (state = { completionDate:[] }, action
             success: action.payload.success,
         }
         case GET_TRANSACTIONMONTH_FAIL:
+        return {
+            loading:false,
+            error: action.payload
+        }
+        case CLEAR_ERRORS:
+        return {
+            ...state,
+            error: null
+        }
+        default:
+        return state;
+    }
+}
+
+export const getServiceLeaderboardsReducer = (state = { sortedService:[] }, action) => {
+    switch(action.type) {
+        case GET_SERVICELEADERBOARDS_REQUEST:
+        return {
+            ...state,
+            loading: true,
+            // borrowedDate: []
+        }
+        case GET_SERVICELEADERBOARDS_SUCCESS:
+        return {
+            ...state,
+            loading: false,
+            sortedService: action.payload.sortedService,
+            success: action.payload.success,
+        }
+        case GET_SERVICELEADERBOARDS_FAIL:
+        return {
+            loading:false,
+            error: action.payload
+        }
+        case CLEAR_ERRORS:
+        return {
+            ...state,
+            error: null
+        }
+        default:
+        return state;
+    }
+}
+
+
+export const getDashboardInfoReducer = (state = { result:[] }, action) => {
+    switch(action.type) {
+        case GET_DASHBOARDINFO_REQUEST:
+        return {
+            ...state,
+            loading: true,
+            // borrowedDate: []
+        }
+        case GET_DASHBOARDINFO_SUCCESS:
+        return {
+            ...state,
+            loading: false,
+            result: action.payload.result,
+            success: action.payload.success,
+        }
+        case GET_DASHBOARDINFO_FAIL:
         return {
             loading:false,
             error: action.payload
