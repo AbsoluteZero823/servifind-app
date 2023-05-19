@@ -2064,7 +2064,7 @@ $gray: #92959E; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 18vw;
+  width: 17vw;
 }
 
 .people-list .status {
@@ -2073,7 +2073,7 @@ $gray: #92959E; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 13vw;
+  width: 15vw;
 }
 
 .people-list .about .name {
@@ -2082,7 +2082,7 @@ $gray: #92959E; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 18vw;
+  width: 17vw;
 }
 
 .people-list {
@@ -2516,12 +2516,8 @@ input:checked+.slider:before {
   font-weight: bold;
 }
 
-.dashboardProfile .profileInfo h3 {
 
-  padding-top: 10px;
-  margin: 0;
-  font-weight: bold;
-}
+
 
 .profileInfo .selection {
 
@@ -2616,13 +2612,7 @@ input:checked+.slider:before {
 
 }
 
-.servicesDisplay .servicesContainer {
-  width: 100%;
-  overflow-y: auto;
-  padding-top: 20px;
-  max-height: 35vh;
 
-}
 
 
 
@@ -2640,12 +2630,7 @@ input:checked+.slider:before {
 
 }
 
-.limitTextLength {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 13vw;
-}
+
 
 
 .smallCardContainer .smallCard {
@@ -3761,10 +3746,44 @@ a {
     height: 200px;
     width: 200px;
   }
-
+  
+  .sixty .rounded-img-big {
+    border-radius: 50% !important;
+    /* left: 100px; */
+    height: 150px;
+    width: 150px;
+    margin:15px
+  }
   .first .profile-info .info {
     font-size: 15px;
     /* margin: 30px 30px; */
+  }
+
+  .dashboardProfile .profileInfo h3 {
+    font-weight: bold;
+    margin: 0;
+    padding-top: 10px;
+    font-size: 20px;
+  }
+
+  .limitTextLength {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 13vw;
+    font-size: 15px;
+  }
+
+  .serviceCardInfo p{
+    font-size: 15px;
+  }
+
+  .servicesDisplay .servicesContainer {
+    width: 100%;
+    overflow-y: auto;
+    padding-top: 20px;
+    max-height: 30vh;
+  
   }
 }
 
@@ -3841,6 +3860,27 @@ a {
   .first .profile-info .info {
     font-size: 20px;
     /* margin: 30px 30px; */
+  }
+  .dashboardProfile .profileInfo h3 {
+    font-weight: bold;
+    margin: 0;
+    padding-top: 10px;
+
+  }
+
+  .limitTextLength {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 13vw;
+  }
+
+  .servicesDisplay .servicesContainer {
+    width: 100%;
+    overflow-y: auto;
+    padding-top: 20px;
+    max-height: 35vh;
+  
   }
 }
 
@@ -4055,13 +4095,13 @@ a {
 }
 
 /*---------category----------*/
-.btn-primary {
+/* .btn-primary {
   background: #e94560;
   padding: 13px 40px;
   font-weight: bold;
   color: #fff;
   border-radius: 5px;
-}
+} */
 .top {
   margin-top: 80px;
 }
@@ -4210,3 +4250,62 @@ a {
   display: flex;
 }
 
+
+
+ 
+.paymentMethod .alternativeforLi {
+  float: left;
+  margin: 0 2px 0 0;
+  width: 45%;
+  height: 40px;
+  position: relative;
+}
+
+.paymentMethod .labelGcash,
+.paymentMethod .inputGcash {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+    height: 40px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.paymentMethod .labelCash,
+.paymentMethod .inputCash {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+    height: 40px;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.paymentMethod input[type="radio"]:checked+label,
+.Checked+label {
+  background: rgb(139, 239, 248);
+
+
+}
+
+.paymentMethod label {
+  padding: 5px;
+  border: 1px solid #CCC;
+  cursor: pointer;
+  z-index: 90;
+  text-align: center;
+}
+
+.paymentMethod input:hover {
+  background: #910000;
+}
+.paymentMethod input[type="radio"] {
+  opacity: 0.01;
+  z-index: 100;
+}

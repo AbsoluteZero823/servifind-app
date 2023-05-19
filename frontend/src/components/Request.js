@@ -11,6 +11,7 @@ import $ from 'jquery';
 import moment from 'moment/moment'
 
 import { getServices } from '../actions/serviceActions';
+import { getFreelancerServices } from '../actions/serviceActions';
 import { SingleRequest } from '../actions/requestActions';
 
 import { newOffer } from '../actions/offerActions'
@@ -48,8 +49,10 @@ const Request = ({ request }) => {
         // if(request_id){
         //     setRequestId(request_id);
         // }
-
-        dispatch(getServices());
+if(user.role === 'freelancer'){
+     dispatch(getFreelancerServices(user.freelancer_id._id));
+}
+       
 
     }, [dispatch, alert, error]);
 
@@ -99,10 +102,10 @@ const Request = ({ request }) => {
     }
 
 
-    const MyServices = services.filter(function (service) {
-        return service.user._id === user._id;
+    // const MyServices = services.filter(function (service) {
+    //     return service.user._id === user._id;
 
-    });
+    // });
 
     return (
 
@@ -194,7 +197,7 @@ const Request = ({ request }) => {
                                     >
                                         <option value="">Select Service</option>
 
-                                        {MyServices.map((service) => (
+                                        {services.map((service) => (
                                             <option key={service._id} value={service._id}>{service.name}</option>
                                             //   <li key={season.id}>{season}</li>
                                         ))}

@@ -135,7 +135,7 @@ const Header = () => {
                                     )}
 
                                     <Link className="dropdown-item" to="/me">Profile</Link>
-                                    {/* <Link className="dropdown-item" to="/chat">Inbox</Link> */}
+                                    <Link className="dropdown-item" to="/chat">Inbox</Link>
                                     <Link className="dropdown-item" to="/manage-requests">Manage Request</Link>
                                     <Link className="dropdown-item" to="/post-request">Post a Job</Link>
                                     <hr></hr>

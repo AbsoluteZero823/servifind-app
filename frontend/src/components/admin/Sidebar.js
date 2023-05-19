@@ -96,7 +96,7 @@ const Sidebar = () => {
                     {/* )} */}
                     {user && user.role === 'admin' && (
                         <li>
-                            <Link to="/admin/reviews"><i className="fa fa-flag"></i> Reports</Link>
+                            <Link to="/reports"><i className="fa fa-flag"></i> Reports</Link>
                         </li>
                     )}
                 </ul>

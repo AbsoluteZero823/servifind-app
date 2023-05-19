@@ -584,7 +584,7 @@ const UserTransactions = () => {
 
                                                 <div className='sixty' style={{ width: '60%', backgroundColor: 'transparent', padding: '10px' }}>
 
-
+<div style={{display:'flex' ,justifyContent:'center'}}>
                                                     <img
 
                                                         src={transaction.inquiry_id.freelancer.user_id.avatar.url}
@@ -596,7 +596,7 @@ const UserTransactions = () => {
 
                                                     />
 
-
+</div>
                                                     <h4>Amount to pay: 100</h4>
                                                     {/* <h4>Gcash Name: {transaction.isPaid}</h4> */}
 
@@ -619,8 +619,19 @@ const UserTransactions = () => {
                                                     <h4>Gcash QR Code</h4>
                                                 </div>
 
-
+                                                <div className='paymentMethod mtop' style={{display:'flex', justifyContent:'center', width:'100%'}}>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputCash' type="radio" id="a25" name="amount" />
+                                                        <label className='labelCash' for="a25">Cash</label>
+                                                    </div>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputGcash' type="radio" id="a50" name="amount" />
+                                                        <label className='labelGcash' for="a50">GCash</label>
+                                                    </div>
+                                                </div>
+                                             
                                             </div>
+
                                         )}
                                         {transaction.inquiry_id && transaction.offer_id && (
                                             <div className='row' >
@@ -628,7 +639,7 @@ const UserTransactions = () => {
 
                                                 <div className='sixty' style={{ width: '60%', backgroundColor: 'transparent', padding: '10px' }}>
 
-
+<div style={{display:'flex' ,justifyContent:'center'}}>
                                                     <img
 
                                                         src={transaction.inquiry_id.freelancer.user_id.avatar.url}
@@ -639,7 +650,7 @@ const UserTransactions = () => {
 
 
                                                     />
-
+</div>
 
                                                     <h4>Amount to pay: ₱{transaction.price}</h4>
                                                     {/* <h4>Gcash Name: {transaction.isPaid}</h4> */}
@@ -663,6 +674,20 @@ const UserTransactions = () => {
                                                     <h4>Gcash QR Code</h4>
                                                 </div>
 
+                                                <div className='paymentMethod mtop' style={{display:'flex', justifyContent:'center', width:'100%'}}>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputCash' type="radio" id="a25" name="amount" />
+                                                        <label className='labelCash' for="a25">Cash</label>
+                                                    </div>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputGcash' type="radio" id="a50" name="amount" />
+                                                        <label className='labelGcash' for="a50">GCash</label>
+                                                    </div>
+                                                </div>
+                                                <div style={{ width: '100%', border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px',textAlign:'center' }}>
+                                        If you prefer to pay cash, please hand over the payment to the freelancer, before submiting payment here
+                                    </div>
+
 
                                             </div>
                                         )}
@@ -674,7 +699,7 @@ const UserTransactions = () => {
 
                                                 <div className='sixty' style={{ width: '60%', backgroundColor: 'transparent', padding: '10px' }}>
 
-
+<div style={{display:'flex' ,justifyContent:'center'}}>
 
                                                     <img
 
@@ -686,7 +711,7 @@ const UserTransactions = () => {
 
 
                                                     />
-
+</div>
                                                     <h4>Amount to pay: 100</h4>
                                                     {/* <h4>Gcash Name: {transaction.isPaid}</h4> */}
 
@@ -709,7 +734,16 @@ const UserTransactions = () => {
 
                                                     <h4>Gcash QR Code</h4>
                                                 </div>
-
+                                                <div className='paymentMethod mtop' style={{display:'flex', justifyContent:'center', width:'100%'}}>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputCash' type="radio" id="a25" name="amount" />
+                                                        <label className='labelCash' for="a25">Cash</label>
+                                                    </div>
+                                                    <div className='alternativeforLi'>
+                                                        <input className='inputGcash' type="radio" id="a50" name="amount" />
+                                                        <label className='labelGcash' for="a50">GCash</label>
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         )}

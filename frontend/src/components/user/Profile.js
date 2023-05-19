@@ -24,18 +24,18 @@ const Profile = () => {
                 <Fragment>
                     <MetaData title={'My Profile'} />
                     <div style={{height:"calc(100vh - 100px)", display:'flex', justifyContent:'center', alignItems:'center'}}>
-                    <div class="profile-card">
-                        <h1 class="profile-header">Profile Information</h1>
-                        <div class="profile-info__container">
+                    <div className="profile-card">
+                        <h1 className="profile-header">Profile Information</h1>
+                        <div className="profile-info__container">
                             <img src={user && user.avatar.url} alt="" />
-                            <div class="profile-info">
-                                <div class="name">{user && user.name}</div>
-                                <div class="emailaddress">{user && user.email}</div>
-                                <div class="gender"><i class="fa-solid fa-user"></i>{user && user.gender}</div>
-                                <div class="address"><i class="fa-solid fa-location-dot"></i> #24 Ilang-ilang Street Purok 6-C Lower
-                                    Bicutan Taguig City</div>
-                                <div class="phonenum"><i class="fa-solid fa-phone"></i>{user && user.contact}</div>
-                                <div class="profile-button">
+                            <div className="profile-info">
+                                <div className="name">{user && user.name}</div>
+                                <div className="emailaddress">{user && user.email}</div>
+                                <div className="gender"><i className="fa-solid fa-user"></i>{user && user.gender}</div>
+                                {/* <div className="address"><i className="fa-solid fa-location-dot"></i> #24 Ilang-ilang Street Purok 6-C Lower
+                                    Bicutan Taguig City</div> */}
+                                <div className="phonenum"><i className="fa-solid fa-phone"></i>{user && user.contact}</div>
+                                <div className="profile-button">
                                     <Link to="/me/update" id="edit_profile">
                                         Edit Profile
                                     </Link>

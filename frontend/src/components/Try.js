@@ -8,7 +8,7 @@ import Loader from './layout/Loader'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
-import { getServices, getServicesToDisplay } from '../actions/serviceActions'
+import { getServicesToDisplay } from '../actions/serviceActions'
 // import { allUsers } from '../actions/userActions'
 // import Slider from 'rc-slider'
 // import 'rc-slider/assets/index.css'

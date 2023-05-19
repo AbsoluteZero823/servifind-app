@@ -28,6 +28,7 @@ import UpdatePassword from './components/user/UpdatePassword'
 import SingleService from './components/service/SingleService';
 
 
+import Reports from './components/admin/Reports';
 
 import Services from './components/service/Services'
 import NewService from './components/service/NewService'
@@ -161,7 +162,11 @@ function App() {
                     </div>
                   
                 } exact /> */}
-                  
+                       <Route path="/reports" element={
+                    <ProtectedRoute isAdmin={true}>
+                      <Reports />
+                    </ProtectedRoute>
+                  } exact="true" />
 
                   <Route path="/services" element={
                     <ProtectedRoute isAdmin={true}>

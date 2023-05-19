@@ -115,7 +115,7 @@ const UsersList = () => {
                                     bordered
                                     striped
                                     hover
-                                    // scrollY
+                                    scrollY
                                     maxHeight='48vh'
                                     responsive
                                 />

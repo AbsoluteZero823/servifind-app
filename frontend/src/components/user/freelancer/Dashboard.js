@@ -17,8 +17,8 @@ import { AVAILABILITY_UPDATE_RESET, FREELANCER_SETUP_RESET } from '../../../cons
 
 const Dashboard = () => {
     const { user } = useSelector(state => state.auth)
-    const { isUpdated, loading } = useSelector(state => state.updateFreelancer)
-    const { services } = useSelector(state => state.services)
+    const { isUpdated, loading: updateLoading } = useSelector(state => state.updateFreelancer)
+    const { services, loading: servicesLoading } = useSelector(state => state.services)
 
     const dispatch = useDispatch()
 
@@ -27,6 +27,7 @@ const Dashboard = () => {
     const [gcash_num, setGcashNum] = useState('');
     const [qrCodeName, setQRCodeName] = useState('')
     const [qrCode, setQRCode] = useState('')
+    const [qrCodePreview, setQrCodePreview] = useState('/images/default_avatar.jpg')
     // const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -65,6 +66,7 @@ const Dashboard = () => {
         if (user.freelancer_id.gcash_name) {
             setGcashName(user.freelancer_id.gcash_name);
             setGcashNum(user.freelancer_id.gcash_num);
+            setQrCodePreview(user.freelancer_id.qrCode.url)
         }
 
     }, [dispatch, isUpdated])
@@ -77,7 +79,7 @@ const Dashboard = () => {
             if (reader.readyState === 2) {
 
                 setQRCode(reader.result)
-
+                setQrCodePreview(reader.result)
                 setQRCodeName(e.target.files[0].name)
                 // console.log(avatarName)
             }
@@ -109,7 +111,8 @@ const Dashboard = () => {
         freelancerData.set('gcash_num', gcash_num);
         freelancerData.set('qrCode', qrCode);
 
-        // dispatch(completeFreelancerSetup(freelancerData))
+        dispatch(completeFreelancerSetup(freelancerData))
+        $('.close').click();
         // setLoading(true);
         //     dispatch(updateUser(user._id, formData))
     }
@@ -220,7 +223,7 @@ const Dashboard = () => {
         <Fragment>
             <div className='containerDashboardFull' >
                 <MetaData title={'Freelancer Dashboard'} />
-                {loading ? <Loader /> : (
+                {updateLoading ? <Loader /> : (
                     <div className='dashboard'>
 
 
@@ -359,7 +362,7 @@ const Dashboard = () => {
                             <div className='paymentDetails'>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', paddingRight: '10px' }}>
                                     <p style={{ fontWeight: 'bold' }}>Payment Details</p>
-                                    <span><i className='fa fa-pencil'></i></span>
+                                    <span><i className='fa fa-pencil' data-toggle="modal" data-target="#editDetailsModal"></i></span>
                                 </div>
                                 <div className='completeSetup'>
                                     {/* {user.freelancer_id && (
@@ -383,11 +386,9 @@ const Dashboard = () => {
                                     <Link to={`/services/${user.freelancer_id._id}`} style={{ marginTop: '20px' }} ><span >see all</span></Link>
 
                                 </div>
-                                <div className='servicesContainer'>
 
-                                    {/* <div className='wideCard' >
-
-                                </div> */}
+{servicesLoading ? <Loader/> : (
+      <div className='servicesContainer'>
                                     {services && services.map(service => (
 
                                         // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
@@ -405,12 +406,11 @@ const Dashboard = () => {
                                             </div>
                                         </div>
                                     ))}
-
-
-
-
-
                                 </div>
+
+)}
+                              
+
                             </div>
                         </div>
                     </div>
@@ -551,7 +551,7 @@ const Dashboard = () => {
                                 </div>
 
 
-                                <label htmlFor="email_field">GCash QRCode</label>
+                                {/* <label htmlFor="email_field">GCash QRCode</label>
                                 <div className='d-flex align-items-center'>
 
                                     <div className='custom-file'>
@@ -582,7 +582,35 @@ const Dashboard = () => {
                                         }
 
                                     </div>
+                                </div> */}
+
+<div className='form-group'>
+                            <label htmlFor='avatar_upload'>QR Code</label>
+                            <div className='d-flex align-items-center'>
+                                <div>
+                                    <figure className='avatar mr-3 item-rtl'>
+                                        <img
+                                            src={qrCodePreview}
+                                            className='rounded-circle'
+                                            alt='Avatar Preview'
+                                        />
+                                    </figure>
                                 </div>
+                                <div className='custom-file'>
+                                    <input
+                                        type='file'
+                                        name='qrcode'
+                                        className='custom-file-input'
+                                        id='customFile'
+                                        accept='image/*'
+                                        onChange={OnChange}
+                                    />
+                                    <label className='custom-file-label' htmlFor='customFile'>
+                                        Choose QR Code
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                             </div>
 
                             <div className="modal-footer">
@@ -595,6 +623,8 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+
+            
             {/* {loading ? <Loader /> : (
                 <Fragment>
 

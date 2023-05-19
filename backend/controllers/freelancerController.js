@@ -357,29 +357,28 @@ exports.completeFreelancerSetup = async (req, res, next) => {
     try {
         let freelancer = await Freelancer.findById(req.user.freelancer_id._id);
 
-        const result = await cloudinary.v2.uploader.upload(req.body.qrCode, {
+        const freelancerData = {
+            gcash_name: req.body.gcash_name,
+            gcash_num: req.body.gcash_num,
+         
+        }
+
+
+        if(req.body.qrCode !== ''){
+              const result = await cloudinary.v2.uploader.upload(req.body.qrCode, {
             folder: 'servifind/freelancer/qrcode',
             // width: 150,
             // crop: "scale"
         })
-
-        const freelancerData = {
-            gcash_name: req.body.gcash_name,
-            gcash_num: req.body.gcash_num,
-            qrCode: {
+        
+   
+           freelancerData.qrCode = {
                 public_id: result.public_id,
                 url: result.secure_url
 
             }
         }
-
-
-
-
-
-
-
-
+       
         if (!freelancer) {
             return next(new ErrorHandler('User  not found', 404));
         }

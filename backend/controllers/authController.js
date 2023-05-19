@@ -224,12 +224,16 @@ exports.loginUser = async (req, res, next) => {
     if (!user) {
         return next(new ErrorHandler('Invalid Email or Password', 401));
     }
+    
+    if(user.status === 'deactivated'){
+        return next(new ErrorHandler('Your account is deactivated by the admin', 401));
+    }
 
     // Checks if password is correct or not
     const isPasswordMatched = await user.comparePassword(password);
 
     if (!isPasswordMatched) {
-        return next(new ErrorHandler('Invalid Email or Password', 401));
+        return res.status(401).send({ message: "Invalid Email or Password" });
     }
 
     // if (user.status !== 'activated') {
@@ -446,9 +450,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
                 width: 150,
                 crop: "scale"
             })
-
-
-
 
             newUserData.avatar = {
                 public_id: result.public_id,

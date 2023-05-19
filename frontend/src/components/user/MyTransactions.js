@@ -665,6 +665,7 @@ const MyTransactions = () => {
 
 
                                             <div className='sixty' style={{ width: '60%', backgroundColor: 'transparent', padding: '10px' }}>
+                                               
                                                 <img
                                                     src={transaction.inquiry_id && transaction.inquiry_id.freelancer.user_id.avatar.url}
                                                     // alt={service.user && service.user.name}

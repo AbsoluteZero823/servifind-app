@@ -62,10 +62,10 @@ const FlashCard = ({ services }) => {
                 </div>
                 
                 <div className='product-details mtop'>
-                <div class="services-avatar">
+                <div className="services-avatar">
                     <img src={service.user.avatar.url} alt=""/>
-                    <div class="avatar-name" style={{color:'black', display:'flex'}}>
-                        <div class="avatar-name-title" style={{color:'black'}}></div>
+                    <div className="avatar-name" style={{color:'black', display:'flex'}}>
+                        <div className="avatar-name-title" style={{color:'black'}}></div>
                         {service.user.name}
                     </div>
                 </div>

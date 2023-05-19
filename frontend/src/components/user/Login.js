@@ -33,9 +33,9 @@ const Login = () => {
         }
 
         if (error) {
-            return alert.error(error);
-            swal()
-            dispatch(clearErrors());
+            // return alert.error(error);
+            swal("Error", error, "error")
+            // dispatch(clearErrors());
         }
         if (success) {
 

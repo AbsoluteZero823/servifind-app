@@ -136,6 +136,9 @@ const MyServices = () => {
                 actions: <Fragment>
 
                     <div className='action'>
+                    <Link to={`/service/details/${service._id}`} className="btn btn-success py-1 px-2">
+                            <i className="fa fa-eye"></i>
+                        </Link>
                         <Link to='' className="btn btn-primary py-1 px-2">
                             <i className="fa fa-pencil-alt"></i>
                         </Link>

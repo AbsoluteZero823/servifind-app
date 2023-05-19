@@ -1,5 +1,6 @@
 const { reset } = require('nodemon');
 const Report = require('../models/report');
+const User = require('../models/user');
 // const User = require('../models/user');
 const ErrorHandler = require('../utils/errorHandler');
 const APIFeatures = require('../utils/apiFeatures');
@@ -22,34 +23,53 @@ exports.newReport = async (req, res, next) => {
 exports.getReports = async (req, res, next) => {
 
 
-    const reports = await Report.find().populate([{
-        path: 'inquiry_id',
+    // const reports = await Report.find().populate(['reported_by', 'user_reported', 'transaction_id']);
+    // res.status(200).json({
+    //     success: true,
+    //     reports
+    // })
 
-        populate: { path: 'customer' }
-    },
-    {
-        path: 'inquiry_id',
-        model: 'Inquiry',
-        populate: {
-            path: 'freelancer',
-            model: 'Freelancer',
-            populate: {
-                path: 'user_id',
-                model: 'user'
-            }
+    // const userReported = await Report.find().populate(['reported_by', 'user_reported', 'transaction_id']);
+    const userReported = await Report.find().populate('user_reported').select('user_reported');
+    
+    const uniqueUserReported = userReported.reduce((accumulator, report) => {
+        const userReportedId = report.user_reported._id.toString();
+        if (!accumulator.some(item => item._id.toString() === userReportedId)) {
+          accumulator.push(report.user_reported);
         }
-    },
-    {
-        path: 'inquiry_id',
-        model: 'Inquiry',
-        populate: {
-            path: 'service_id'
-        }
-    }
-    ]);
+        return accumulator;
+      }, []);
+      
+      console.log(uniqueUserReported);
+    const userReportedIds = userReported.map(report => report.user_reported._id);
+    const reports = await Report.find({ user_reported: { $in: userReportedIds } });
+// console.log(reports)
+ 
+    // Merge reports with userReported
+    const userWithReports = uniqueUserReported.map(userReported => {
+        const userReports = reports.filter(report => report.user_reported.toString() === userReported._id.toString());
+        // const reportCount = userReports.reduce((acc, rating) => acc[rating] = (acc[rating] || 0) + 1);
+        reportCount = userReports.length
+
+        return {
+            ...userReported.toJSON(),
+            reports: userReports,
+            reportCount
+        };
+    });
+
+    // const countReports = reportIds.reduce((map, item) => {
+    //     map[item] = (map[item] || 0) + 1;
+    //     return map;
+    //   }, {});
+
+    //   const sortedService = Object.entries(countService).sort((a, b) => b[1] - a[1])
+    //   .map(([service, count]) => ({ service, count }));
+
+
     res.status(200).json({
         success: true,
-        reports
+        reports:userWithReports
     })
 }
 

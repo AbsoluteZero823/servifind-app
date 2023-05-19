@@ -12,6 +12,7 @@ import { getCategoriesReducer } from './reducers/categoryReducers';
 import { getOffersReducer, newOfferReducer, offerDetailsReducer, getRequestOffersReducer, updateReducer } from './reducers/offerReducers';
 import { chatsReducer, newChatReducer } from './reducers/chatReducers';
 import { messagesReducer, newMessageReducer } from './reducers/messageReducers';
+import {getReportsReducer} from './reducers/reportReducers';
 
 // import { getTransactions } from '../../backend/controllers/transactionController';
 const reducer = combineReducers({
@@ -70,6 +71,8 @@ const reducer = combineReducers({
 
     messages: messagesReducer,
     addMessage: newMessageReducer,
+
+    reports:getReportsReducer,
 
 })
 let initialState = {
