@@ -27,8 +27,8 @@ app.use(fileUpload());
 app.use(
     cors({
 
-        // origin: "https://servifind-app.onrender.com", //website
-        origin: "http://localhost:3000", //localhost
+        origin: "https://servifind-app.onrender.com", //website
+        // origin: "http://localhost:3000", //localhost
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
 
