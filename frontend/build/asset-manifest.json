@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.120d3f0f.css",
-    "main.js": "/static/js/main.14b23000.js",
+    "main.css": "/static/css/main.8144a78c.css",
+    "main.js": "/static/js/main.27043d19.js",
     "static/media/thisisengineering-raeng-lx8CooX66ms-unsplash.jpg": "/static/media/thisisengineering-raeng-lx8CooX66ms-unsplash.8b81f29b1bb1255ed522.jpg",
     "static/media/667341.jpg": "/static/media/667341.bfba9bf412dd86bd84ba.jpg",
     "static/media/fa-solid-900.svg": "/static/media/fa-solid-900.7a8b4f130182d19a2d7c.svg",
@@ -32,11 +32,11 @@
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "static/media/arrow_left.svg": "/static/media/arrow_left.db6e2d88c7c35a775ce4.svg",
     "static/media/arrow_right.svg": "/static/media/arrow_right.f7c6ac6d310d3b82f0a0.svg",
-    "main.120d3f0f.css.map": "/static/css/main.120d3f0f.css.map",
-    "main.14b23000.js.map": "/static/js/main.14b23000.js.map"
+    "main.8144a78c.css.map": "/static/css/main.8144a78c.css.map",
+    "main.27043d19.js.map": "/static/js/main.27043d19.js.map"
   },
   "entrypoints": [
-    "static/css/main.120d3f0f.css",
-    "static/js/main.14b23000.js"
+    "static/css/main.8144a78c.css",
+    "static/js/main.27043d19.js"
   ]
 }
