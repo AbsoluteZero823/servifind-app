@@ -20,31 +20,24 @@ exports.newReport = async (req, res, next) => {
 }
 
 //all Reports
-exports.getReports = async (req, res, next) => {
+exports.getUserWithReports = async (req, res, next) => {
 
 
-    // const reports = await Report.find().populate(['reported_by', 'user_reported', 'transaction_id']);
-    // res.status(200).json({
-    //     success: true,
-    //     reports
-    // })
-
-    // const userReported = await Report.find().populate(['reported_by', 'user_reported', 'transaction_id']);
     const userReported = await Report.find().populate('user_reported').select('user_reported');
-    
+
     const uniqueUserReported = userReported.reduce((accumulator, report) => {
         const userReportedId = report.user_reported._id.toString();
         if (!accumulator.some(item => item._id.toString() === userReportedId)) {
-          accumulator.push(report.user_reported);
+            accumulator.push(report.user_reported);
         }
         return accumulator;
-      }, []);
-      
-      console.log(uniqueUserReported);
+    }, []);
+
+    console.log(uniqueUserReported);
     const userReportedIds = userReported.map(report => report.user_reported._id);
     const reports = await Report.find({ user_reported: { $in: userReportedIds } });
-// console.log(reports)
- 
+    // console.log(reports)
+
     // Merge reports with userReported
     const userWithReports = uniqueUserReported.map(userReported => {
         const userReports = reports.filter(report => report.user_reported.toString() === userReported._id.toString());
@@ -58,18 +51,26 @@ exports.getReports = async (req, res, next) => {
         };
     });
 
-    // const countReports = reportIds.reduce((map, item) => {
-    //     map[item] = (map[item] || 0) + 1;
-    //     return map;
-    //   }, {});
 
-    //   const sortedService = Object.entries(countService).sort((a, b) => b[1] - a[1])
-    //   .map(([service, count]) => ({ service, count }));
 
 
     res.status(200).json({
         success: true,
-        reports:userWithReports
+        reports: userWithReports
+    })
+}
+
+exports.getUserReports = async (req, res, next) => {
+    const reports = await Report.find({ user_reported: req.params.id }).populate('reported_by');
+
+
+
+    if (!reports) {
+        return next(new ErrorHandler('Report not found', 404));
+    }
+    res.status(200).json({
+        success: true,
+        reports
     })
 }
 

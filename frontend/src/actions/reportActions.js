@@ -15,6 +15,10 @@ import {
     GET_REPORTS_SUCCESS,
     GET_REPORTS_FAIL,
 
+    GET_USERREPORTS_REQUEST,
+    GET_USERREPORTS_SUCCESS,
+    GET_USERREPORTS_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/reportConstants';
 
@@ -58,7 +62,7 @@ export const newReport = (reportData) => async (dispatch) => {
 
 
 
-export const getReports = () => async (dispatch) => {
+export const getUserWithReports = () => async (dispatch) => {
     try {
 
         dispatch({ type: GET_REPORTS_REQUEST })
@@ -78,6 +82,26 @@ export const getReports = () => async (dispatch) => {
     }
 }
 
+
+export const getUserReports = (id) => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_USERREPORTS_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/user-reports/${id}`)
+
+        dispatch({
+            type: GET_USERREPORTS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_USERREPORTS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 export const SingleReport = (id) => async (dispatch) => {
     try {

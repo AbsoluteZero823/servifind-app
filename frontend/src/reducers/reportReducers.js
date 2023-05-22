@@ -10,6 +10,11 @@ import {
     GET_REPORTS_SUCCESS,
     GET_REPORTS_FAIL,
 
+    GET_USERREPORTS_REQUEST,
+    GET_USERREPORTS_SUCCESS,
+    GET_USERREPORTS_FAIL,
+
+
     SINGLE_REPORT_REQUEST,
     SINGLE_REPORT_SUCCESS,
     SINGLE_REPORT_FAIL,
@@ -64,12 +69,14 @@ export const getReportsReducer = (state = { reports: [] }, action) => {
 
 
         case GET_REPORTS_REQUEST:
+        case GET_USERREPORTS_REQUEST:
             return {
                 ...state,
                 loading: true,
             }
 
         case GET_REPORTS_SUCCESS:
+        case GET_USERREPORTS_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -77,6 +84,7 @@ export const getReportsReducer = (state = { reports: [] }, action) => {
             }
 
         case GET_REPORTS_FAIL:
+        case GET_USERREPORTS_FAIL:
             return {
                 ...state,
                 loading: false,
@@ -93,6 +101,9 @@ export const getReportsReducer = (state = { reports: [] }, action) => {
             return state;
     }
 }
+
+
+
 
 export const reportDetailsReducer = (state = { report: {} }, action) => {
     switch (action.type) {
