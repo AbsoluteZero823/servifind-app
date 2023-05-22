@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import Loader from '../layout/Loader'
 import MetaData from '../layout/MetaData'
 
-import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, clearErrors } from '../../actions/userActions'
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +15,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const alert = useAlert();
+
     const dispatch = useDispatch();
     let navigate = useNavigate();
 
@@ -32,11 +31,11 @@ const Login = () => {
             swal("Email Sent!", message, "success")
         }
 
-        if (error) {
-            // return alert.error(error);
-            swal("Error", error, "error")
-            // dispatch(clearErrors());
-        }
+        // if (error) {
+
+        //     swal("Error", error, "error")
+
+        // }
         if (success) {
 
             swal("Success!", "Logged in Successfully!", "success");
@@ -53,14 +52,14 @@ const Login = () => {
             // dispatch({ type: NEW_SERVICES_RESET })
         }
 
-    }, [dispatch, alert, isAuthenticated, error, navigate, success, message])
+    }, [dispatch, isAuthenticated, error, navigate, success, message])
 
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password))
 
 
-        // alert.success('Logged in successfully.')
+
     }
 
     return (

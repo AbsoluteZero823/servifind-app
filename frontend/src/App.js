@@ -29,6 +29,7 @@ import SingleService from './components/service/SingleService';
 
 
 import Reports from './components/admin/Reports';
+import UserReports from './components/admin/UserReports'
 
 import Services from './components/service/Services'
 import NewService from './components/service/NewService'
@@ -162,9 +163,15 @@ function App() {
                     </div>
                   
                 } exact /> */}
-                       <Route path="/reports" element={
+                  <Route path="/reports" element={
                     <ProtectedRoute isAdmin={true}>
                       <Reports />
+                    </ProtectedRoute>
+                  } exact="true" />
+
+                  <Route path="/user-reports/:id" element={
+                    <ProtectedRoute isAdmin={true}>
+                      <UserReports />
                     </ProtectedRoute>
                   } exact="true" />
 

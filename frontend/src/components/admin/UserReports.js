@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MDBDataTable } from 'mdbreact'
 
 import MetaData from '../layout/MetaData'
@@ -11,7 +11,7 @@ import moment from 'moment/moment'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserWithReports, clearErrors } from '../../actions/reportActions'
+import { getUserReports, clearErrors } from '../../actions/reportActions'
 // import { DELETE_SERVICES_RESET } from '../../constants/serviceConstants'
 
 const Reports = () => {
@@ -19,12 +19,13 @@ const Reports = () => {
     const alert = useAlert();
     const dispatch = useDispatch();
     let navigate = useNavigate();
+    let { id } = useParams();
 
     const { loading, error, reports } = useSelector(state => state.reports);
     // const { isDeleted } = useSelector(state => state.updelService)
 
     useEffect(() => {
-        dispatch(getUserWithReports());
+        dispatch(getUserReports(id));
 
         if (error) {
             alert.error(error);
@@ -47,41 +48,27 @@ const Reports = () => {
     const setReports = () => {
         const data = {
             columns: [
-
                 {
-                    label: 'Reported',
-                    field: 'user_reported',
-
-                },
-                {
-                    label: 'Name',
-                    field: 'name',
+                    label: 'Reported By',
+                    field: 'reported_by',
 
                 },
                 {
-                    label: 'Role',
-                    field: 'role',
+                    label: 'Reason',
+                    field: 'reason',
 
                 },
                 {
-                    label: 'Contact Number',
-                    field: 'contact',
+                    label: 'Description',
+                    field: 'description',
 
                 },
                 {
-                    label: 'Email',
-                    field: 'email',
+                    label: 'Date Reported',
+                    field: 'created_At',
 
                 },
-                {
-                    label: 'Joined Date',
-                    field: 'createdAt',
 
-                },
-                {
-                    label: 'Reports',
-                    field: 'reports',
-                },
                 {
                     label: 'Actions',
                     field: 'actions',
@@ -94,34 +81,20 @@ const Reports = () => {
             data.rows.push({
 
                 // user_reported: report.user_reported.avatar.url,
-                user_reported: <Fragment>
+                reported_by: <Fragment>
 
                     <img
                         className="anim"
-                        src={report.avatar.url}
+                        src={report.reported_by.avatar.url}
                     />
 
                 </Fragment>,
-                name: report.name,
-                role: report.role,
-                contact: report.contact,
-                email: report.email,
-                createdAt: moment(report.createdAt).format('MMM/DD/yy'),
-                // status: animal.status,
-                reports: <Fragment>
+                reason: report.reason,
+                description: report.description,
+                created_At: moment(report.created_At).format('MMM/DD/yy'),
 
-                    {report.reportCount > 0 && (
-                        <Link className='offers' to={`/user-reports/${report._id}`}>
-                            <a href="#" className="notification">
-                                <span style={{ color: 'white' }}>Reports</span>
-                                <span className="badge">{report.reportCount}</span>
-                                {/* <i className="fa fa-pencil-alt"></i> */}
-                            </a>
-                        </Link>
-                    )}
-                </Fragment>,
                 actions: <Fragment>
-                    <Link to={`/report/${report._id}`} className="btn btn-primary py-1 px-2">
+                    <Link to={``} className="btn btn-primary py-1 px-2">
                         <i className="fa fa-pencil-alt"></i>
                     </Link>
                     {/* <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteUserHandler(report._id)}>
@@ -174,7 +147,7 @@ const Reports = () => {
                             //   width= "100%"
                             scrollX
                             maxHeight='48vh'
-                            theadStyle={headStyles}
+                            // theadStyle={headStyles}
                             style={tableStyles}
 
                         />
