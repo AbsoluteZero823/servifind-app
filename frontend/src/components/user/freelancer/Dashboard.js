@@ -8,8 +8,10 @@ import $ from 'jquery';
 
 import Loader from '../../layout/Loader';
 import MetaData from '../../layout/MetaData';
+import moment from 'moment/moment'
 
 import { availabilityUpdate, completeFreelancerSetup } from '../../../actions/freelancerActions';
+import { getTransactions } from '../../../actions/transactionActions'
 import { getFreelancerServices } from '../../../actions/serviceActions';
 import { loadUser } from '../../../actions/userActions';
 
@@ -19,6 +21,7 @@ const Dashboard = () => {
     const { user } = useSelector(state => state.auth)
     const { isUpdated, loading: updateLoading } = useSelector(state => state.updateFreelancer)
     const { services, loading: servicesLoading } = useSelector(state => state.services)
+    const { loading: transactionLoading, error, transactions } = useSelector(state => state.transactions);
 
     const dispatch = useDispatch()
 
@@ -45,6 +48,7 @@ const Dashboard = () => {
 
     }, [])
     useEffect(() => {
+        dispatch(getTransactions())
         if (user) {
             dispatch(getFreelancerServices(user.freelancer_id._id))
         }
@@ -70,6 +74,45 @@ const Dashboard = () => {
         }
 
     }, [dispatch, isUpdated])
+
+
+    const ClientTransactions = transactions.filter(function (ctransaction) {
+
+
+        if (ctransaction.inquiry_id) {
+            return ctransaction.inquiry_id.customer._id === user._id && ctransaction.status === 'processing';
+        }
+        else if (ctransaction.offer_id) {
+            return ctransaction.offer_id.request_id.requested_by._id === user._id && ctransaction.status === 'processing';
+        }
+
+    });
+    const ProcessingTransactions = transactions.filter(function (transaction) {
+
+
+        if (transaction.inquiry_id) {
+            if (transaction.inquiry_id.freelancer.user_id._id === user._id) {
+                return transaction.status === 'processing';
+            }
+            else if (transaction.inquiry_id.customer._id === user._id) {
+                return transaction.status === 'processing';
+            }
+
+        }
+        else if (transaction.offer_id) {
+
+            if (transaction.offer_id.offered_by._id === user._id) {
+                return transaction.status === 'processing';
+            }
+            else if (transaction.offer_id.request_id.requested_by._id === user._id) {
+                return transaction.status === 'processing';
+            }
+        }
+
+
+    });
+
+
 
 
     const OnChange = e => {
@@ -242,14 +285,14 @@ const Dashboard = () => {
                             )}
                             <div className='charts' >
                                 <div className='smallCardContainer' style={{ marginRight: '10px' }}>
-                                    <h5>My Request & Inquiries (Client)</h5>
+                                    <h5>My Jop Post & Inquiries (Client)</h5>
                                     <div className='smallCard' >
                                         <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightblue', borderRadius: '10px 0px 0px 10px' }}>
                                             <div className='count'>
                                                 0
                                             </div>
                                             <div className='countLabel'>
-                                                Request
+                                                Job Post
                                             </div>
                                         </div>
                                         <div className='smallCard-section' style={{ borderRight: '2px solid rgba(0, 0, 0, .09)', backgroundColor: 'lightgreen' }}>
@@ -302,11 +345,34 @@ const Dashboard = () => {
                             </div>
 
                             <div className='runningCourses' >
-                                <h5 style={{ paddingBottom: '10px' }}>Ongoing Transactions</h5>
+                                <div>
+
+
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    {/* <h4 style={{ fontWeight: 'bold', marginTop: "20px" }}>My Services</h4> */}
+                                    <h5 style={{ paddingBottom: '10px' }}>Ongoing Transactions</h5>
+                                    <Link to={`/my/transactions`} style={{ marginTop: '20px' }} ><span >see all</span></Link>
+
+                                </div>
                                 <div className='bigCardContainer'>
-                                    <div className='notClickedCard' style={{ height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    {ProcessingTransactions && ProcessingTransactions.map(transaction => (
+
+                                        // <CTransaction key={transaction._id} transaction={transaction} rating={rating} setRating={setRating} />
+                                        <div className='wideCard' style={{ height: '100px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 20 }}>
+                                            <div style={{ textAlign: 'center' }}>You are<br></br>{((transaction.inquiry_id && transaction.inquiry_id.freelancer.user_id._id === user._id) || transaction.offer_id.offered_by._id === user._id) ? 'Freelancer' : 'Client'}</div>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>{transaction.offer_id.service_id.name}</div>
+
+                                            <div>
+                                                <p>Created At: {moment(transaction.created_At).format('MMM/DD/yy')}</p>
+                                                <p>Expected Date: {moment(transaction.expected_Date).format('MMM/DD/yy')}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    {/* <div className='notClickedCard' style={{ height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <h1 style={{ display: 'flex', justifyContent: 'center' }}>No Transactions Yet</h1>
-                                    </div>
+                                    </div> */}
 
                                     {/* <div className='wideCard' >
 
@@ -387,29 +453,29 @@ const Dashboard = () => {
 
                                 </div>
 
-{servicesLoading ? <Loader/> : (
-      <div className='servicesContainer'>
-                                    {services && services.map(service => (
+                                {servicesLoading ? <Loader /> : (
+                                    <div className='servicesContainer'>
+                                        {services && services.map(service => (
 
-                                        // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
+                                            // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
 
-                                        <div className='serviceCard' >
-                                            <img
-                                                className='rounded-img'
-                                                src={service.images.url}
-                                                style={{ margin: 'auto 20px auto 0px' }}
-                                            />
-                                            <div className='serviceCardInfo'>
-                                                <p style={{ fontWeight: 'bold' }}>{service.category.name}</p>
-                                                <p className='limitTextLength'>{service.name}</p>
-                                                <p>₱{service.priceStarts_At}</p>
+                                            <div className='serviceCard' >
+                                                <img
+                                                    className='rounded-img'
+                                                    src={service.images.url}
+                                                    style={{ margin: 'auto 20px auto 0px' }}
+                                                />
+                                                <div className='serviceCardInfo'>
+                                                    <p style={{ fontWeight: 'bold' }}>{service.category.name}</p>
+                                                    <p className='limitTextLength'>{service.name}</p>
+                                                    <p>₱{service.priceStarts_At}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
+                                        ))}
+                                    </div>
 
-)}
-                              
+                                )}
+
 
                             </div>
                         </div>
@@ -453,7 +519,7 @@ const Dashboard = () => {
                                         name='gcash_num'
                                         placeholder='09XXXXXXXXX'
                                         pattern="[0-9]{11}"
-                                        maxlength="11"
+                                        maxLength="11"
                                         required
                                         title="Please use a 11 digit telephone number with no dashes or dots"
                                         value={gcash_num}
@@ -584,33 +650,33 @@ const Dashboard = () => {
                                     </div>
                                 </div> */}
 
-<div className='form-group'>
-                            <label htmlFor='avatar_upload'>QR Code</label>
-                            <div className='d-flex align-items-center'>
-                                <div>
-                                    <figure className='avatar mr-3 item-rtl'>
-                                        <img
-                                            src={qrCodePreview}
-                                            className='rounded-circle'
-                                            alt='Avatar Preview'
-                                        />
-                                    </figure>
+                                <div className='form-group'>
+                                    <label htmlFor='avatar_upload'>QR Code</label>
+                                    <div className='d-flex align-items-center'>
+                                        <div>
+                                            <figure className='avatar mr-3 item-rtl'>
+                                                <img
+                                                    src={qrCodePreview}
+                                                    className='rounded-circle'
+                                                    alt='Avatar Preview'
+                                                />
+                                            </figure>
+                                        </div>
+                                        <div className='custom-file'>
+                                            <input
+                                                type='file'
+                                                name='qrcode'
+                                                className='custom-file-input'
+                                                id='customFile'
+                                                accept='image/*'
+                                                onChange={OnChange}
+                                            />
+                                            <label className='custom-file-label' htmlFor='customFile'>
+                                                Choose QR Code
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className='custom-file'>
-                                    <input
-                                        type='file'
-                                        name='qrcode'
-                                        className='custom-file-input'
-                                        id='customFile'
-                                        accept='image/*'
-                                        onChange={OnChange}
-                                    />
-                                    <label className='custom-file-label' htmlFor='customFile'>
-                                        Choose QR Code
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                             </div>
 
                             <div className="modal-footer">
@@ -624,7 +690,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            
+
             {/* {loading ? <Loader /> : (
                 <Fragment>
 

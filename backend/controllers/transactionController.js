@@ -297,7 +297,7 @@ exports.updateTransaction = async (req, res, next) => {
 }
 
 
-exports.topTenServices = async (req,res,next) => {
+exports.topTenServices = async (req, res, next) => {
     // try {
     //     const transactions = await Transaction.find().populate([
     //     {
@@ -318,55 +318,55 @@ exports.topTenServices = async (req,res,next) => {
     //         transactions
     //     })
     // } catch (error) {
-        
+
     // }
 
     let topServicesArr = []
 
-    const NumberOfCategory = await Transaction.find({'transaction_done.client': true, 'transaction_done.freelancer': true}).populate([
-    
+    const NumberOfCategory = await Transaction.find({ 'transaction_done.client': true, 'transaction_done.freelancer': true }).populate([
+
         {
-                    path: 'offer_id',
-                    model: 'Offer',
-                    populate: {
-                        path: 'service_id',
-                        model: 'Service',
-                        populate: {
-                            path: 'category',
-                            model: 'category'
-                        }
-                    }
-                },
-        ]);
-    
-        for (let i = 0; i < NumberOfCategory.length; i++) {
-            // console.log(NumberOfSection[i].offer_id.offered_by.freelancer_id.course)
-            // console.log(NumberOfSection.length)
-            topServicesArr.push({ section: NumberOfCategory[i].offer_id.service_id.category.name, finishedDate: NumberOfCategory[i].transaction_done.transactionCompleted })
-        }
-        // console.log(topServicesArr);
-        res.status(200).json({
-            success: true,
-            topServicesArr
-        })
+            path: 'offer_id',
+            model: 'Offer',
+            populate: {
+                path: 'service_id',
+                model: 'Service',
+                populate: {
+                    path: 'category',
+                    model: 'category'
+                }
+            }
+        },
+    ]);
+
+    for (let i = 0; i < NumberOfCategory.length; i++) {
+        // console.log(NumberOfSection[i].offer_id.offered_by.freelancer_id.course)
+        // console.log(NumberOfSection.length)
+        topServicesArr.push({ section: NumberOfCategory[i].offer_id.service_id.category.name, finishedDate: NumberOfCategory[i].transaction_done.transactionCompleted })
+    }
+    // console.log(topServicesArr);
+    res.status(200).json({
+        success: true,
+        topServicesArr
+    })
 }
 
 exports.TransactionPerCourses = async (req, res, next) => {
     let sectionArr = []
 
-const NumberOfSection = await Transaction.find({'transaction_done.client': true, 'transaction_done.freelancer': true}).populate([
+    const NumberOfSection = await Transaction.find({ 'transaction_done.client': true, 'transaction_done.freelancer': true }).populate([
 
-    {
-        path: 'offer_id',
-        model: 'Offer',
-        populate: {
-            path: 'offered_by',
-            model:"user",
-            populate:{
-                path:"freelancer_id"
+        {
+            path: 'offer_id',
+            model: 'Offer',
+            populate: {
+                path: 'offered_by',
+                model: "user",
+                populate: {
+                    path: "freelancer_id"
+                }
             }
         }
-    }
     ]);
 
     for (let i = 0; i < NumberOfSection.length; i++) {
@@ -381,7 +381,7 @@ const NumberOfSection = await Transaction.find({'transaction_done.client': true,
     })
 }
 exports.TransactionPerMonth = async (req, res, next) => {
-    const completionDate = await Transaction.find({'transaction_done.client': true, 'transaction_done.freelancer': true}).select(['created_At']);
+    const completionDate = await Transaction.find({ 'transaction_done.client': true, 'transaction_done.freelancer': true }).select(['created_At']);
     // console.log(borrowedDate);
     res.status(200).json({
         success: true,
@@ -391,21 +391,21 @@ exports.TransactionPerMonth = async (req, res, next) => {
 
 
 exports.ServiceLeaderboards = async (req, res, next) => {
- 
-const transactions = await Transaction.find({'transaction_done.client': true, 'transaction_done.freelancer': true}).populate([
-    {
-        path: 'offer_id',
-        model: 'Offer',
-        populate: {
-            path: 'service_id',
-            model: 'Service',
+
+    const transactions = await Transaction.find({ 'transaction_done.client': true, 'transaction_done.freelancer': true }).populate([
+        {
+            path: 'offer_id',
+            model: 'Offer',
             populate: {
-                path: 'category',
-                model: 'category'
+                path: 'service_id',
+                model: 'Service',
+                populate: {
+                    path: 'category',
+                    model: 'category'
+                }
             }
-        }
-    },
-])
+        },
+    ])
 
     // Fetch ratings for each service
     const serviceName = transactions.map(transaction => transaction.offer_id.service_id.category.name);
@@ -413,11 +413,11 @@ const transactions = await Transaction.find({'transaction_done.client': true, 't
     const countService = serviceName.reduce((map, item) => {
         map[item] = (map[item] || 0) + 1;
         return map;
-      }, {});
+    }, {});
 
-      const sortedService = Object.entries(countService).sort((a, b) => b[1] - a[1])
-      .map(([service, count]) => ({ service, count }));
-  
+    const sortedService = Object.entries(countService).sort((a, b) => b[1] - a[1])
+        .map(([service, count]) => ({ service, count }));
+
     res.status(200).json({
         success: true,
         sortedService,
@@ -426,84 +426,84 @@ const transactions = await Transaction.find({'transaction_done.client': true, 't
 
 exports.getDashboardInfo = async (req, res, next) => {
     // const services = await Service.find().populate('freelancer_id');
-// const freelancer = await Freelancer.find({ approve_date: { $exists: true, $ne: null } }).populate('freelancer_id');
+    // const freelancer = await Freelancer.find({ approve_date: { $exists: true, $ne: null } }).populate('freelancer_id');
 
-const freelancerAndServiceCount = await Freelancer.aggregate([
-    {
-        $match: {
-            approved_date: { $exists: true }
-          }
-    },
-    {
-        $lookup: {
-            from: "services",
-            localField: "_id",
-            foreignField: "freelancer_id",
-            as: "services"
+    const freelancerAndServiceCount = await Freelancer.aggregate([
+        {
+            $match: {
+                approved_date: { $exists: true }
+            }
+        },
+        {
+            $lookup: {
+                from: "services",
+                localField: "_id",
+                foreignField: "freelancer_id",
+                as: "services"
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                freelancerCount: { $sum: 1 },
+                serviceCount: { $sum: { $size: "$services" } }
+            }
+        },
+        {
+            $sort: {
+                "transaction": 1
+            }
         }
-    },
-    {
-        $group: {
-          _id: null,
-          freelancerCount: { $sum: 1 },
-          serviceCount: { $sum: { $size: "$services" } }
+    ])
+
+
+    const userCount = await User.aggregate([
+        {
+            $match: {
+                status: 'activated', verified: true, isAdmin: false
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1 }
+            }
         }
-      },
-    {
-        $sort: {
-            "transaction": 1
+    ])
+
+    const transactionCount = await Transaction.aggregate([
+        {
+            $match: {
+                status: 'completed'
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                count: { $sum: 1 }
+            }
         }
-    }
-])
+    ])
 
+    const [freelancerAndServiceResult, userResult, transactionResult] = await Promise.all([
+        freelancerAndServiceCount,
+        userCount,
+        transactionCount
+    ]);
 
-const userCount = await User.aggregate([
-    {
-      $match: {
-        status:'activated', verified: true, isAdmin:false
-      }
-    },
-    {
-      $group: {
-        _id: null,
-        count: { $sum: 1 }
-      }
-    }
-  ])
-
-  const transactionCount = await Transaction.aggregate([
-    {
-        $match: {
-          status: 'completed'
-          }
-    },
-    {
-      $group: {
-        _id: null,
-        count: { $sum: 1 }
-      }
-    }
-  ])
-
-  const [freelancerAndServiceResult, userResult, transactionResult] = await Promise.all([
-    freelancerAndServiceCount,
-    userCount,
-    transactionCount
-  ]);
-
-  const result = {
-    freelancerCount: freelancerAndServiceResult[0].freelancerCount,
-    serviceCount: freelancerAndServiceResult[0].serviceCount,
-    userCount: userResult[0].count,
-    transactionCount: transactionResult[0].count
-  };
-// const freelancerCount = freelancer.length()
-// const freelancerCount = freelancer.length()
+    const result = {
+        freelancerCount: freelancerAndServiceResult[0].freelancerCount,
+        serviceCount: freelancerAndServiceResult[0].serviceCount,
+        userCount: userResult[0].count,
+        transactionCount: transactionResult[0].count
+    };
+    // const freelancerCount = freelancer.length()
+    // const freelancerCount = freelancer.length()
 
     res.status(200).json({
         success: true,
-       result
-    
+        result
+
     })
 
 }
@@ -728,11 +728,11 @@ exports.FetchTransactionbyOfferorInquiry = async (req, res, next) => {
             .populate({
                 path: 'offer_id',
                 populate: {
-                path: 'service_id',
-                populate: {
-                    path: 'freelancer_id',
-                    model: 'Freelancer'
-                }
+                    path: 'service_id',
+                    populate: {
+                        path: 'freelancer_id',
+                        model: 'Freelancer'
+                    }
                 }
             });
         if (!transaction) {

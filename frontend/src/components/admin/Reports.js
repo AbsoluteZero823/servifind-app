@@ -149,7 +149,7 @@ const Reports = () => {
             {report.reportCount > 0 && (
               <Link
                 className="offers"
-                to={`/user-reports/${(report._id, report.name)}`}
+                to={`/user-reports/${(report._id)}`}
               >
                 <a href="#" className="notification">
                   <span style={{ color: "white" }}>Reports</span>

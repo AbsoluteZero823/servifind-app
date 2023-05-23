@@ -2430,7 +2430,8 @@ input:checked+.slider:before {
 }
 
 .dashboardContent {
-
+  overflow-y: auto;
+  overflow-x: hidden;
   width: 75%;
   /* background-color: red; */
   /* height: 100px; */
@@ -2470,7 +2471,7 @@ input:checked+.slider:before {
 }
 
 .premiumCard .pic {
-  position: absolute;
+  /* position: absolute; */
   height: 280px;
   top: -9px;
   right: 35%;
@@ -2585,7 +2586,7 @@ input:checked+.slider:before {
   width: 100%;
   overflow-y: auto;
   padding-top: 20px;
-  max-height: 27vh;
+  max-height: 45vh;
 
 }
 
@@ -2597,7 +2598,7 @@ input:checked+.slider:before {
   width: auto;
   margin-bottom: 10px;
   border-radius: 10px;
-  background-color: rgb(240, 145, 145);
+  background-color: var(--bodyColor);
 
 }
 
@@ -3746,14 +3747,15 @@ a {
     height: 200px;
     width: 200px;
   }
-  
+
   .sixty .rounded-img-big {
     border-radius: 50% !important;
     /* left: 100px; */
     height: 150px;
     width: 150px;
-    margin:15px
+    margin: 15px
   }
+
   .first .profile-info .info {
     font-size: 15px;
     /* margin: 30px 30px; */
@@ -3774,7 +3776,7 @@ a {
     font-size: 15px;
   }
 
-  .serviceCardInfo p{
+  .serviceCardInfo p {
     font-size: 15px;
   }
 
@@ -3783,7 +3785,7 @@ a {
     overflow-y: auto;
     padding-top: 20px;
     max-height: 30vh;
-  
+
   }
 }
 
@@ -3861,6 +3863,7 @@ a {
     font-size: 20px;
     /* margin: 30px 30px; */
   }
+
   .dashboardProfile .profileInfo h3 {
     font-weight: bold;
     margin: 0;
@@ -3880,7 +3883,7 @@ a {
     overflow-y: auto;
     padding-top: 20px;
     max-height: 35vh;
-  
+
   }
 }
 
@@ -3975,21 +3978,22 @@ a {
 }
 
 /* dashboard */
-.card-body{
+.card-body {
   font-size: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.dashboard_count{
+
+.dashboard_count {
   font-size: 30px;
   text-align: center;
 }
 
-.card-footer{
- display:flex;
-  flex-direction:column;
-   justify-content:space-between;
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 /*end dashboard */
@@ -4016,30 +4020,36 @@ a {
 
 /* Featured Services End */
 
-.home{
+.home {
   margin: 40px 15px;
 }
+
 .homeSlide h1 {
   font-size: 45px;
   line-height: 55px;
   margin: 50px 0 20px 0;
 }
+
 .homeSlide p {
   margin: 20px 0;
 }
+
 .homeSlide ul {
   position: absolute;
   bottom: 20px;
 }
+
 .homeSlide ul li {
   border: 2px solid #b8b7b7;
   border-radius: 50%;
   padding: 10px;
 }
+
 .homeSlide ul li button {
   background: transparent !important;
   color: transparent !important;
 }
+
 .homeSlide ul li button::before {
   font-size: 15px !important;
   color: #0f3460;
@@ -4058,6 +4068,7 @@ a {
   text-align: center;
   border-radius: 50%;
 }
+
 .boxShadow {
   box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
 }
@@ -4066,6 +4077,7 @@ a {
 .contentWidth {
   width: 77%;
 }
+
 .category {
   box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
   background-color: #fff;
@@ -4075,20 +4087,24 @@ a {
   border-radius: 5px;
   margin-top: 5px;
 }
+
 .category img {
   width: 30px;
   height: 30px;
   margin-top: 10px;
   object-fit: contain;
 }
+
 .category span {
   margin: 10px 20px;
   text-transform: capitalize;
 }
+
 .category .box {
   transition: 0.5s;
   padding: 0 20px;
 }
+
 .category .box:hover {
   background-color: #ffe1e6;
   cursor: pointer;
@@ -4105,13 +4121,16 @@ a {
 .top {
   margin-top: 80px;
 }
+
 .mtop {
   margin-top: 40px;
 }
+
 .heading i {
   color: #e94560;
   margin: 10px;
 }
+
 .discount {
   position: absolute;
   top: 0;
@@ -4123,6 +4142,7 @@ a {
   color: #fff;
   margin: 10px;
 }
+
 /*---------product-----------*/
 .product {
   background: #fff;
@@ -4132,20 +4152,24 @@ a {
   box-shadow: rgb(3 0 71 / 9%) 0px 1px 3px;
   margin: 10px;
 }
+
 .product h3 {
   font-weight: 400;
   font-size: 17px;
 }
+
 .product .rate i {
   font-size: 15px;
   color: #ffcd4e;
   margin: 5px 5px 5px 0;
 }
+
 .product .price {
   display: flex;
   justify-content: space-between;
   color: #e94560;
 }
+
 .price button {
   background: none;
   color: #e94560;
@@ -4156,11 +4180,13 @@ a {
   height: 35px;
   border-radius: 5px;
 }
+
 .price button:hover {
   cursor: pointer;
   background-color: #e94560;
   color: #fff;
 }
+
 .product-like {
   position: absolute;
   top: 0;
@@ -4169,6 +4195,7 @@ a {
   opacity: 0;
   transition: 0.5s;
 }
+
 .product-like label {
   background-color: #0f3460;
   padding: 1px 10px;
@@ -4176,13 +4203,16 @@ a {
   color: white;
   border-radius: 50px;
 }
+
 .product-like i {
   font-size: 20px;
   margin: 10px 3px;
 }
+
 .product:hover .product-like {
   opacity: 1;
 }
+
 /*---------product-----------*/
 /*----- control btn -------*/
 .control-btn .next,
@@ -4197,44 +4227,53 @@ a {
   transform: 0.5s;
   z-index: 5;
 }
+
 .control-btn .prev {
   left: -20px;
 }
+
 .control-btn .next {
   right: -20px;
 }
+
 .control-btn .prev i,
 .control-btn .next i {
   font-size: 20px;
   transition: 0.5s;
   color: #fff;
 }
+
 .control-btn .prev:hover,
 .control-btn .next:hover {
   background: #e94560;
   color: white;
   cursor: pointer;
 }
+
 /*----- control btn -------*/
 /*----- heading -------*/
 .heading .heading-left i {
   font-size: 30px;
 }
+
 .heading .heading-left h2 {
   font-size: 25px;
   margin: 5px;
 }
+
 .heading .heading-right i,
 .heading .heading-right {
   text-align: right;
   color: grey;
 }
+
 /*----- heading -------*/
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 30px;
 }
+
 .grid2 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -4252,7 +4291,7 @@ a {
 
 
 
- 
+
 .paymentMethod .alternativeforLi {
   float: left;
   margin: 0 2px 0 0;
@@ -4270,8 +4309,8 @@ a {
   right: 0;
   bottom: 0;
   width: 100%;
-    height: 40px;
-    border-radius: 0px 10px 10px 0px;
+  height: 40px;
+  border-radius: 0px 10px 10px 0px;
 }
 
 .paymentMethod .labelCash,
@@ -4283,8 +4322,8 @@ a {
   right: 0;
   bottom: 0;
   width: 100%;
-    height: 40px;
-    border-radius: 10px 0px 0px 10px;
+  height: 40px;
+  border-radius: 10px 0px 0px 10px;
 }
 
 .paymentMethod input[type="radio"]:checked+label,
@@ -4305,6 +4344,7 @@ a {
 .paymentMethod input:hover {
   background: #910000;
 }
+
 .paymentMethod input[type="radio"] {
   opacity: 0.01;
   z-index: 100;
