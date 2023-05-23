@@ -59,6 +59,10 @@ import {
     GET_DASHBOARDINFO_SUCCESS,
     GET_DASHBOARDINFO_FAIL,
 
+    GET_DASHBOARDCOUNTS_REQUEST,
+    GET_DASHBOARDCOUNTS_SUCCESS,
+    GET_DASHBOARDCOUNTS_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
 
@@ -404,6 +408,26 @@ export const getDashboardInfo = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_DASHBOARDINFO_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getDashboardCounts= () => async (dispatch) => {
+    try {
+
+        dispatch({ type:GET_DASHBOARDCOUNTS_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/dashboard/counts`)
+
+        dispatch({
+            type: GET_DASHBOARDCOUNTS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_DASHBOARDCOUNTS_FAIL,
             payload: error.response.data.message
         })
     }

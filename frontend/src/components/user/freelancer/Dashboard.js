@@ -15,6 +15,7 @@ import {
 } from "../../../actions/freelancerActions";
 import { getTransactions } from "../../../actions/transactionActions";
 import { getFreelancerServices } from "../../../actions/serviceActions";
+import { getDashboardCounts } from "../../../actions/transactionActions";
 import { loadUser } from "../../../actions/userActions";
 
 import {
@@ -35,6 +36,8 @@ const Dashboard = () => {
     error,
     transactions,
   } = useSelector((state) => state.transactions);
+
+  const { success, result } = useSelector(state => state.dashboardInfo);
 
   const dispatch = useDispatch();
 
@@ -61,6 +64,7 @@ const Dashboard = () => {
   }, []);
   useEffect(() => {
     dispatch(getTransactions());
+    dispatch(getDashboardCounts())
     if (user) {
       dispatch(getFreelancerServices(user.freelancer_id._id));
     }
@@ -271,7 +275,7 @@ const Dashboard = () => {
                   className="smallCardContainer"
                   style={{ marginRight: "10px" }}
                 >
-                  <h5>My Jop Post & Inquiries (Client)</h5>
+                  <h5>My Job Post & Inquiries (Client)</h5>
                   <div className="smallCard">
                     <div
                       className="smallCard-section"
@@ -281,8 +285,8 @@ const Dashboard = () => {
                         borderRadius: "10px 0px 0px 10px",
                       }}
                     >
-                      <div className="count">0</div>
-                      <div className="countLabel">Job Post</div>
+                      <div className="count">{result.request}</div>
+                      <div className="countLabel">Job Posts</div>
                     </div>
                     <div
                       className="smallCard-section"
@@ -291,7 +295,7 @@ const Dashboard = () => {
                         backgroundColor: "lightgreen",
                       }}
                     >
-                      <div className="count">0</div>
+                      <div className="count">{result.inquiries}</div>
                       <div className="countLabel">Inquiries</div>
                     </div>
                     <div
@@ -301,7 +305,7 @@ const Dashboard = () => {
                         borderRadius: "0px 10px 10px 0px",
                       }}
                     >
-                      <div className="count">0</div>
+                      <div className="count">{result.totalInquiriesAndRequest}</div>
                       <div className="countLabel">Total</div>
                     </div>
                   </div>
@@ -320,7 +324,7 @@ const Dashboard = () => {
                         borderRadius: "10px 0px 0px 10px",
                       }}
                     >
-                      <div className="count">0</div>
+                      <div className="count">{result.total}</div>
                       <div className="countLabel">All</div>
                     </div>
                     <div
@@ -330,7 +334,7 @@ const Dashboard = () => {
                         backgroundColor: "lightgreen",
                       }}
                     >
-                      <div className="count">0</div>
+                      <div className="count">{result.completed}</div>
                       <div className="countLabel">Completed</div>
                     </div>
                     <div
@@ -340,7 +344,7 @@ const Dashboard = () => {
                         borderRadius: "0px 10px 10px 0px",
                       }}
                     >
-                      <div className="count">0</div>
+                      <div className="count">{result.processing}</div>
                       <div className="countLabel">Pending</div>
                     </div>
                   </div>
@@ -361,48 +365,59 @@ const Dashboard = () => {
                   </Link>
                 </div>
                 <div className="bigCardContainer">
-                  {ProcessingTransactions &&
-                    ProcessingTransactions.map((transaction) => (
-                      // <CTransaction key={transaction._id} transaction={transaction} rating={rating} setRating={setRating} />
-                      <div
-                        className="wideCard"
-                        style={{
-                          height: "100px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          padding: 20,
-                        }}
-                      >
-                        <div style={{ textAlign: "center" }}>
-                          {(transaction.inquiry_id &&
-                            transaction.inquiry_id.freelancer.user_id._id ===
-                              user._id) ||
-                          transaction.offer_id.offered_by._id === user._id
-                            ? "Freelancer"
-                            : "Client"}
-                          <br></br> Mode
-                        </div>
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          {transaction.offer_id.service_id.name}
-                        </div>
+                  {transactionLoading ? (
+                    <Loader />
+                  ) : (
+                    <Fragment>
+                      {ProcessingTransactions &&
+                        ProcessingTransactions.map((transaction) => (
+                          // <CTransaction key={transaction._id} transaction={transaction} rating={rating} setRating={setRating} />
+                          <div
+                            className="wideCard"
+                            style={{
+                              height: "100px",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              padding: 20,
+                            }}
+                          >
+                            <div style={{ textAlign: "center" }}>
+                              {(transaction.inquiry_id &&
+                                transaction.inquiry_id.freelancer.user_id
+                                  ._id === user._id) ||
+                              transaction.offer_id.offered_by._id === user._id
+                                ? "Freelancer"
+                                : "Client"}
+                              <br></br> Mode
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {transaction.offer_id.service_id.name}
+                            </div>
 
-                        <div>
-                          <p>
-                            Created At:{" "}
-                            {moment(transaction.created_At).format("MMM/DD/yy")}
-                          </p>
-                          <p>
-                            Expected Date:{" "}
-                            {moment(transaction.expected_Date).format(
-                              "MMM/DD/yy"
-                            )}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                            <div>
+                              <p>
+                                Created At:{" "}
+                                {moment(transaction.created_At).format(
+                                  "MMM/DD/yy"
+                                )}
+                              </p>
+                              <p>
+                                Expected Date:{" "}
+                                {moment(transaction.expected_Date).format(
+                                  "MMM/DD/yy"
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                    </Fragment>
+                  )}
 
                   {/* <div className='notClickedCard' style={{ height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                         <h1 style={{ display: 'flex', justifyContent: 'center' }}>No Transactions Yet</h1>

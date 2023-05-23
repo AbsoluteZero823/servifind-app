@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Link } from 'react-router-dom'
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
@@ -88,9 +89,10 @@ priceStarts_At}.00 </h4>
                     {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                    <button >
-                      <i className='fa fa-plus'></i>
-                    </button>
+                   <Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
+                            <button><i className="fa fa-eye"></i></button>
+                        </Link>
+                        
                   </div>
                 </div>
               </div>

@@ -344,10 +344,17 @@ const Transaction = ({ transaction, rating, setRating }) => {
                             <button className='buttonInTrans' style={{ border: '1px solid rgba(0,0,0,.09)', color: '#555' }}>Contact Freelancer</button>
                         </div>
                         {transaction && transaction.transaction_done.client === 'false' && (
-                            <div className='inTransDiv'>
-                                <button className='buttonInTransCircle' style={{ backgroundColor: 'transparent', color: 'red' }}> <i className="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="bottom" title='Report this Freelancer'></i></button>
+                            <div className='inTransDiv' data-toggle="tooltip" data-placement="bottom" title="Report this Freelancer" onClick={() => transactionDetailsHandler(transaction._id)}>
+                                <Link to={''} className='buttonInTransCircle' data-toggle="modal" data-target="#ReportServiceModal" style={{ backgroundColor: 'transparent', color: 'red' }}> <i className="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="bottom" title='Report this Freelancer'></i></Link>
                             </div>
                         )}
+                            {/* {ctransaction && ctransaction.transaction_done.client === 'false' && (
+                            <div data-toggle="tooltip" data-placement="bottom" title="Report this Freelancer" onClick={() => transactionDetailsHandler(transaction._id)}>
+                                <Link to={''} className="btn btn-danger py-1 px-2 ml-2" data-toggle="modal" data-target="#ReportServiceModal">
+                                    <i className="fa fa-exclamation-circle" ></i>
+                                </Link>
+                            </div>
+                        )} */}
                     </div>
                 </div>
 

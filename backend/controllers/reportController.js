@@ -33,7 +33,7 @@ exports.getUserWithReports = async (req, res, next) => {
         return accumulator;
     }, []);
 
-    console.log(uniqueUserReported);
+    // console.log(uniqueUserReported);
     const userReportedIds = userReported.map(report => report.user_reported._id);
     const reports = await Report.find({ user_reported: { $in: userReportedIds } });
     // console.log(reports)

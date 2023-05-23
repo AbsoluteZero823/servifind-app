@@ -1,49 +1,40 @@
-
-import React, { Fragment, useState, useEffect } from 'react'
-import Pagination from 'react-js-pagination';
+import React, { Fragment, useState, useEffect } from "react";
+import Pagination from "react-js-pagination";
 import { useParams } from "react-router-dom";
-import MetaData from './layout/MetaData'
+import MetaData from "./layout/MetaData";
 // import Animal from './animal/Animal'
-import Loader from './layout/Loader'
-import Footer from './layout/Footer'
+import Loader from "./layout/Loader";
+import Footer from "./layout/Footer";
 
-import FlashDeals from './FlashDeals';
+import FlashDeals from "./FlashDeals";
 
-import { useDispatch, useSelector } from 'react-redux'
-import { useAlert } from 'react-alert';
+import { useDispatch, useSelector } from "react-redux";
+import { useAlert } from "react-alert";
 
-import { getPremiumServices } from '../actions/serviceActions';
+import { getPremiumServices } from "../actions/serviceActions";
 
 // import { getAnimals } from '../actions/animalActions'
 
 // import Slider from 'rc-slider'
 // import 'rc-slider/assets/index.css'
 
-
 const Home = () => {
-
   // const { createSliderWithToolTip } = Slider;
   // const Range = createSliderWithToolTip(Slider.Range);
-
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { services, success } = useSelector(state => state.services)
+  const { services, success } = useSelector((state) => state.services);
 
   useEffect(() => {
-    
     dispatch(getPremiumServices());
-
-  }, [])
-
+  }, []);
 
   // const { loading, animals, error, animalsCount, resPerPage, filteredAnimalsCount } = useSelector(state => state.animals);
 
-
   // const [currentPage, setCurrentPage] = useState(1)
   // let { keyword } = useParams();
-
 
   // useEffect(() => {
   //   if (error) {
@@ -52,7 +43,6 @@ const Home = () => {
   //   }
 
   // dispatch(getAnimals(currentPage, keyword))
-
 
   // }, [dispatch, alert, error, currentPage, keyword]);
 
@@ -66,35 +56,46 @@ const Home = () => {
   // }
   return (
     <Fragment>
-      <MetaData title={'Home'} />
-      <div className='landing-page_container'>
+      <MetaData title={"Home"} />
+      <div className="landing-page_container">
         <div className="hero-container">
           <div className="hero-greet">
             <div className="hero-greet_text">
               <h1>Welcome to ServiFind</h1>
-              <p>Where you can find the best service in the right time on the right person</p>
-              <a href="/login">Get Started <i className="fa fa-arrow-right"></i></a>
+              <p>
+                Where you can find the best service in the right time on the
+                right person
+              </p>
+              <a href="/login">
+                Get Started <i className="fa fa-arrow-right"></i>
+              </a>
             </div>
           </div>
           <div className="mobile-version">
-            <img className="mobile-ver-img" src="../images/mobile-servifind.png" alt="" />
-            <a className="app-btn blu flex vert"
-              href="https://expo.dev/artifacts/eas/uFJT6JkPfm2PvUENyRiVku.apk">
-
+            <img
+              className="mobile-ver-img"
+              src="../images/mobile-servifind.png"
+              alt=""
+            />
+            <a
+              className="app-btn blu flex vert"
+              href="https://expo.dev/artifacts/eas/ebDXgduw39BiEnUgoJR1qJ.apk"
+            >
               <img src="../images/android.png" alt="" />
-              <p>Get it on <br /> <span className="big-txt">Google Play</span></p>
+              <p>
+                Get it on <br /> <span className="big-txt">Google Play</span>
+              </p>
             </a>
           </div>
         </div>
-        <section className='home'>
-        <div className='container d_flex'>
-          {/* <Categories /> */}
-          {/* <SliderHome /> */}
-          <FlashDeals services ={services}/>
-        </div>
-      </section>
+        <section className="home">
+          <div className="container d_flex">
+            {/* <Categories /> */}
+            {/* <SliderHome /> */}
+            <FlashDeals services={services} />
+          </div>
+        </section>
 
-  
         <div className="services-container">
           <h1>Our Services</h1>
           <div className="getry">
@@ -140,7 +141,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="feature-container" id='features'>
+        <div className="feature-container" id="features">
           <h1>Features</h1>
           <div className="feature-card">
             <div className="fcard">
@@ -149,7 +150,8 @@ const Home = () => {
                 Search
               </div>
               <div className="feature-text">
-                The ServiFind application has a search function where users can search desired services.
+                The ServiFind application has a search function where users can
+                search desired services.
               </div>
             </div>
             <div className="fcard">
@@ -157,12 +159,11 @@ const Home = () => {
                 <img src="images/icons8-chat-96.png" alt="" />
                 Chat
               </div>
-              <div className="feature-text">The ServiFind application come up with this feature for both users can
-                communicate and
-                negotiate to
-                each other by
-                sending a message or query about the said services and services that the freelancer wants to
-                cater.
+              <div className="feature-text">
+                The ServiFind application come up with this feature for both
+                users can communicate and negotiate to each other by sending a
+                message or query about the said services and services that the
+                freelancer wants to cater.
               </div>
             </div>
             <div className="fcard">
@@ -171,9 +172,8 @@ const Home = () => {
                 Feed
               </div>
               <div className="feature-text">
-                The ServiFind application has a 2-way post feed, both users can post on feed either finding
-                a
-                freelancer or a client.
+                The ServiFind application has a 2-way post feed, both users can
+                post on feed either finding a freelancer or a client.
               </div>
             </div>
             <div className="fcard">
@@ -182,16 +182,11 @@ const Home = () => {
                 Payment
               </div>
               <div className="feature-text">
-                The ServiFind application primarily promotes the social distancing and paying online can be
-                done
-                at
-                any place.
-                Payment feature
-                will be optional for
-                users, either they want to transfer payment on <strong>GCash QR code</strong> or they want
-                to
-                transfer the
-                payment personally.
+                The ServiFind application primarily promotes the social
+                distancing and paying online can be done at any place. Payment
+                feature will be optional for users, either they want to transfer
+                payment on <strong>GCash QR code</strong> or they want to
+                transfer the payment personally.
               </div>
             </div>
           </div>
@@ -202,7 +197,9 @@ const Home = () => {
             <div className="subscription__card-basic">
               <div className="subscription-header">
                 <h2>Basic</h2>
-                <h2>₱0 <span></span></h2>
+                <h2>
+                  ₱0 <span></span>
+                </h2>
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
@@ -225,7 +222,9 @@ const Home = () => {
             <div className="subscription__card-premium">
               <div className="subscription-header">
                 <h2>Premium</h2>
-                <h2>₱50 <span></span></h2>
+                <h2>
+                  ₱50 <span></span>
+                </h2>
               </div>
               <p>
                 <img src="../images/check.png" alt="" />
@@ -244,7 +243,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="meet-team" id='our-team'>
+        <div className="meet-team" id="our-team">
           <h1>Meet Our Team</h1>
           <div className="meet-card-wrapper">
             <div className="meet-card">
@@ -256,7 +255,6 @@ const Home = () => {
               <img src="images/KENDRICK.png" alt="" />
               <h3>Kendrick Galan</h3>
               <div className="teamrole">Lead Developer/ Mobile Developer</div>
-
             </div>
             <div className="meet-card">
               <img src="images/LENAL.png" alt="" />
@@ -350,5 +348,5 @@ const Home = () => {
 
     // </Fragment>
   );
-}
-export default Home
+};
+export default Home;

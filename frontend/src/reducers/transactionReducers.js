@@ -63,6 +63,10 @@ import {
     GET_DASHBOARDINFO_SUCCESS,
     GET_DASHBOARDINFO_FAIL,
 
+    GET_DASHBOARDCOUNTS_REQUEST,
+    GET_DASHBOARDCOUNTS_SUCCESS,
+    GET_DASHBOARDCOUNTS_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -405,12 +409,14 @@ export const getServiceLeaderboardsReducer = (state = { sortedService:[] }, acti
 export const getDashboardInfoReducer = (state = { result:[] }, action) => {
     switch(action.type) {
         case GET_DASHBOARDINFO_REQUEST:
+            case GET_DASHBOARDCOUNTS_REQUEST:
         return {
             ...state,
             loading: true,
-            // borrowedDate: []
+            
         }
         case GET_DASHBOARDINFO_SUCCESS:
+            case GET_DASHBOARDCOUNTS_SUCCESS:
         return {
             ...state,
             loading: false,
@@ -418,6 +424,7 @@ export const getDashboardInfoReducer = (state = { result:[] }, action) => {
             success: action.payload.success,
         }
         case GET_DASHBOARDINFO_FAIL:
+            case GET_DASHBOARDCOUNTS_FAIL:
         return {
             loading:false,
             error: action.payload
