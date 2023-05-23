@@ -69,14 +69,14 @@ export const getReportsReducer = (state = { reports: [] }, action) => {
 
 
         case GET_REPORTS_REQUEST:
-        case GET_USERREPORTS_REQUEST:
+       
             return {
                 ...state,
                 loading: true,
             }
 
         case GET_REPORTS_SUCCESS:
-        case GET_USERREPORTS_SUCCESS:
+     
             return {
                 ...state,
                 loading: false,
@@ -84,6 +84,44 @@ export const getReportsReducer = (state = { reports: [] }, action) => {
             }
 
         case GET_REPORTS_FAIL:
+      
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const getUserReportsReducer = (state = { reports: [] }, action) => {
+    switch (action.type) {
+
+
+     
+        case GET_USERREPORTS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+   
+        case GET_USERREPORTS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                reports: action.payload.reports,
+            }
+
+ 
         case GET_USERREPORTS_FAIL:
             return {
                 ...state,

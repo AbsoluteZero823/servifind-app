@@ -61,7 +61,7 @@ exports.getUserWithReports = async (req, res, next) => {
 }
 
 exports.getUserReports = async (req, res, next) => {
-    const reports = await Report.find({ user_reported: req.params.id }).populate('reported_by');
+    const reports = await Report.find({ user_reported: req.params.id }).populate(['reported_by', 'user_reported']);
 
 
 
