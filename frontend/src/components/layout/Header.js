@@ -121,7 +121,12 @@ const Header = () => {
                       className="rounded-circle"
                     />
                   </figure>
-                  <span>{user && user.role} : {user && user.name}</span>
+                  {user && user.role !== 'customer' && (
+                    <span>{user && user.role} : {user && user.name}</span>
+                  )} 
+                   {user && user.role === 'customer' && (
+                    <span>client : {user && user.name}</span>
+                  )} 
                 </Link>
 
                 <div
