@@ -120,10 +120,10 @@ const Message = () => {
 
       <div className="container clearfix" style={{ backgroundColor: '#444753', width: '21vw' }}>
         <div className="people-list" id="people-list">
-          <div className="search">
+          {/* <div className="search">
             <input type="text" placeholder="search" />
-            {/* <i className="fa fa-search"></i> */}
-          </div>
+            
+          </div> */}
           <ul className="list">
             <li className="clearfix">
               <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_04.jpg" alt="avatar" />
