@@ -638,7 +638,7 @@ const UserTransactions = () => {
                     >
                       Completed
                     </a>
-                    <a
+                    {/* <a
                       name="sixth"
                       className={
                         activeButton === "sixth"
@@ -648,7 +648,7 @@ const UserTransactions = () => {
                       onClick={clickedButtonHandler}
                     >
                       Cancelled
-                    </a>
+                    </a> */}
                   </Fragment>
                 )}
                 {user.role === "freelancer" && (

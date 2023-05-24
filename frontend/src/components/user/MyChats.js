@@ -26,10 +26,10 @@ const MyChats = ({ fetchAgain }) => {
     return (
         <div className="container clearfix" style={{ backgroundColor: '#444753', width: '25.3vw', paddingLeft: '0px' }}>
             <div className="people-list" id="people-list">
-                <div className="search">
+                {/* <div className="search">
                     <input type="text" placeholder="search" />
-                    {/* <i className="fa fa-search"></i> */}
-                </div>
+                   
+                </div> */}
                 <ul className="list">
                     {chats ? (<Fragment>
                         {chats && chats.map((chat) => (

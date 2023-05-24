@@ -261,9 +261,9 @@ const Transaction = ({ transaction }) => {
                             <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#0fa0dc', color: '#fff' }} data-toggle="tooltip" data-placement="bottom" title="Confirm if client is Paid" onClick={() => (paymentReceivedHandler(transaction._id))}>Payment Received</button>
                         </div>
                     )}
-                    <div className='inTransDiv'>
+                    {/* <div className='inTransDiv'>
                         <button className='buttonInTrans' style={{ border: '1px solid rgba(0,0,0,.09)', color: '#555' }}>Contact Client</button>
-                    </div>
+                    </div> */}
                     {/* {transaction && transaction.transaction_done.client === 'false' && (
                         <div className='inTransDiv'>
                             <button className='buttonInTransCircle' style={{ backgroundColor: 'transparent', color: 'red' }}> <i className="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="bottom" title='Report this Client'></i></button>

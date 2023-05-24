@@ -273,9 +273,9 @@ const Offers = ({ offer }) => {
                         <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#ee4d2d', color: '#fff' }} onClick={() => acceptOfferHandler(offer._id)} >Accept</button>
                         </div>
-                        <div className='inTransDiv'>
+                        {/* <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid rgba(0,0,0,.09)', color: '#555' }}>Contact Seller</button>
-                        </div>
+                        </div> */}
                         <div className='inTransDiv'>
                             <button className='buttonInTransCircle' style={{ backgroundColor: 'transparent', color: 'red' }}> <i className="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="bottom" title='Report this Freelancer'></i></button>
                         </div>
