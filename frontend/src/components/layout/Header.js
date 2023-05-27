@@ -97,13 +97,43 @@ const Header = () => {
 
           {user ? (
             <Fragment>
+
+              {/* <!-- Notification dropdown --> */}
+              <li className="nav-item dropdown">
+                <a className="me-3 me-lg-0 dropdown-toggle hidden-arrow" href="#" id="navbarDropdownMenuLink"
+                  role="button" data-toggle="dropdown" aria-expanded="false"
+                  style={{ padding: '0px 5px' }}>
+                  <i className="fas fa-bell" style={{ fontSize: '20px' }}></i>
+                  <span className="badge rounded-pill badge-notification bg-danger">1</span>
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
+                  style={{
+                    top: '150%',
+                    right: '-50%',
+                    left: 'unset'
+                  }}>
+                  <li>
+                    <a className="dropdown-item" href="#">Kendrick Sent a message</a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">Another news</a>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+
+
+
+
               {/* <div className="btn text-white mr-4" type="button" id="dropDownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i className="fa fa-envelope"></i>
+                <i className="fa fa-envelope"></i>
 
-                                <div className="dropdown-menu" aria-labelledby="dropDownMenuButton">
+                <div className="dropdown-menu" aria-labelledby="dropDownMenuButton">
 
-                                    <Link className="dropdown-item" to="/me">Profile</Link></div>
-                            </div> */}
+                  <Link className="dropdown-item" to="/me">Profile</Link></div>
+              </div> */}
               <div className="ml-4 dropdown d-inline">
                 <Link
                   to="#!"
@@ -123,15 +153,16 @@ const Header = () => {
                   </figure>
                   {user && user.role !== 'customer' && (
                     <span>{user && user.role} : {user && user.name}</span>
-                  )} 
-                   {user && user.role === 'customer' && (
+                  )}
+                  {user && user.role === 'customer' && (
                     <span>client : {user && user.name}</span>
-                  )} 
+                  )}
                 </Link>
 
                 <div
                   className="dropdown-menu"
                   aria-labelledby="dropDownMenuButton"
+                  style={{ left: '46%' }}
                 >
                   {user && user.role === "admin" && (
                     <Link className="dropdown-item" to="/dashboard">
@@ -219,7 +250,7 @@ const Header = () => {
         </button>
       </nav>
       <nav className="navbar" style={{ position: "static" }}></nav>
-    </div>
+    </div >
   );
 };
 

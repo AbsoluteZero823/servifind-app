@@ -811,7 +811,8 @@ a[data-toggle='collapse'] {
   position: absolute;
   top: 50%;
   right: 20px;
-  transform: translateY(-50%);
+  /* transform: translateY(-50%); */
+  transform: translateY(-50%) translateX(10px);
 }
 
 ul ul a {
@@ -1129,6 +1130,10 @@ a:not([href]):hover {
 
 #dropDownMenuButton {
   box-shadow: none;
+}
+
+.navbar .dropdown-menu a {
+  padding: 10px 20px;
 }
 
 #edit-right {

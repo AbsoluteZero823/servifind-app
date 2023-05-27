@@ -36,8 +36,8 @@ import moment from "moment/moment";
 import io from "socket.io-client";
 import Swal from "sweetalert2";
 
-// const ENDPOINT = "http://localhost:4002"; //localhost
-const ENDPOINT = "https://servifind-app.onrender.com" //website
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
@@ -522,7 +522,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
               {OfferExists[0] &&
                 OfferExists[0].request_id &&
                 OfferExists[0].request_id ===
-                  selectedChat.offer_id.request_id._id && (
+                selectedChat.offer_id.request_id._id && (
                   <Fragment>
                     {OfferExists[0].offer_status === "granted" ? (
                       <button
@@ -593,7 +593,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                   {OfferExists[0] && (
                     <Fragment>
                       {OfferExists[0] &&
-                      OfferExists[0].offer_status === "granted" ? (
+                        OfferExists[0].offer_status === "granted" ? (
                         <button
                           type="button"
                           className="custom-offer"
@@ -663,7 +663,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                           }}
                         ></i>
                         <div style={{ width: "80%" }}>
-                         <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
+                          <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
                           {/* <p style={{ padding: '10px' }}>Description: {OfferExists[0].description}</p> */}
                         </div>
                       </div>
@@ -744,7 +744,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                           }}
                         ></i>
                         <div style={{ width: "80%" }}>
-                        <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
+                          <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
                           {/* <p style={{ padding: '10px' }}>Description: {OfferExists[0].description}</p> */}
                         </div>
                       </div>
@@ -839,8 +839,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                   that supposed to be done on{" "}
                                   {moment(
                                     OfferExists[0].transaction[0] &&
-                                      OfferExists[0].transaction[0]
-                                        .expected_Date
+                                    OfferExists[0].transaction[0]
+                                      .expected_Date
                                   ).format("MMM/DD/yy")}{" "}
                                   is currently waiting
                                 </p>
@@ -853,8 +853,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                   that supposed to be done on{" "}
                                   {moment(
                                     OfferExists[0].transaction[0] &&
-                                      OfferExists[0].transaction[0]
-                                        .expected_Date
+                                    OfferExists[0].transaction[0]
+                                      .expected_Date
                                   ).format("MMM/DD/yy")}{" "}
                                   is currently cancelled
                                 </p>
@@ -944,8 +944,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                   that supposed to be done on{" "}
                                   {moment(
                                     OfferExists[0].transaction[0] &&
-                                      OfferExists[0].transaction[0]
-                                        .expected_Date
+                                    OfferExists[0].transaction[0]
+                                      .expected_Date
                                   ).format("MMM/DD/yy")}{" "}
                                   is currently waiting
                                 </p>
@@ -958,8 +958,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                                   that supposed to be done on{" "}
                                   {moment(
                                     OfferExists[0].transaction[0] &&
-                                      OfferExists[0].transaction[0]
-                                        .expected_Date
+                                    OfferExists[0].transaction[0]
+                                      .expected_Date
                                   ).format("MMM/DD/yy")}{" "}
                                   is currently cancelled
                                 </p>
@@ -1212,8 +1212,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                 </div>
               </div>
               {OfferExists[0] &&
-              OfferExists[0].transaction[0] &&
-              OfferExists[0].transaction[0].status === "completed" ? (
+                OfferExists[0].transaction[0] &&
+                OfferExists[0].transaction[0].status === "completed" ? (
                 <div
                   style={{
                     minWidth: 50,
@@ -1238,8 +1238,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
                   }}
                 >
                   {OfferExists[0] &&
-                  OfferExists[0].transaction[0] &&
-                  OfferExists[0].offered_by._id === user._id
+                    OfferExists[0].transaction[0] &&
+                    OfferExists[0].offered_by._id === user._id
                     ? " You should start working now"
                     : "Freelancer should start working now"}
                 </div>
