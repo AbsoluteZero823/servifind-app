@@ -19,7 +19,7 @@ const Header = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { notification, SetNotification } = ChatState();
+  const { setSelectedChat, notification, setNotification } = ChatState();
 
   const { user, loading, isAuthenticated } = useSelector((state) => state.auth);
 
@@ -104,7 +104,8 @@ const Header = () => {
                   role="button" data-toggle="dropdown" aria-expanded="false"
                   style={{ padding: '0px 5px' }}>
                   <i className="fas fa-bell" style={{ fontSize: '20px' }}></i>
-                  <span className="badge rounded-pill badge-notification bg-danger">1</span>
+
+                  <span className="badge rounded-pill badge-notification bg-danger">{notification && notification.length > 0 ? notification.length : ''}</span>
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
                   style={{
@@ -112,7 +113,25 @@ const Header = () => {
                     right: '-50%',
                     left: 'unset'
                   }}>
-                  <li>
+                  {!notification.length &&
+                    (<li>
+                      <a className="dropdown-item" href="#">No New Notification</a>
+                    </li>)
+                  }
+                  {notification.map(notif => (
+                    <li key={notif._id}
+                    >
+                      <a className="dropdown-item" href="#" onClick={() => {
+
+                        // SetNotification(notification.filter((n) => n._id !== notif._id));
+                        setSelectedChat(notif.chat);
+                        setNotification(notification.filter(n => n._id !== notif._id));
+
+                        console.log(notification)
+                      }}>{`New Message from ${notif.sender.name}`}</a>
+                    </li>
+                  ))}
+                  {/* <li>
                     <a className="dropdown-item" href="#">Kendrick Sent a message</a>
                   </li>
                   <li>
@@ -120,7 +139,7 @@ const Header = () => {
                   </li>
                   <li>
                     <a className="dropdown-item" href="#">Something else here</a>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
 

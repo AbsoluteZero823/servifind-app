@@ -10,10 +10,11 @@ const SampleNextArrow = (props) => {
   return (
     <div className='control-btn' onClick={onClick}>
       <button className='next'>
-        <i className='fa fa-long-arrow-alt-right' style={{display: 'flex',
-    justifyContent: 'center',
-    fontSize: '25px'
-    }}></i>
+        <i className='fa fa-long-arrow-alt-right' style={{
+          display: 'flex',
+          justifyContent: 'center',
+          fontSize: '25px'
+        }}></i>
       </button>
     </div>
   )
@@ -23,10 +24,11 @@ const SamplePrevArrow = (props) => {
   return (
     <div className='control-btn' onClick={onClick}>
       <button className='prev'>
-        <i className='fa fa-long-arrow-alt-left' style={{display: 'flex',
-    justifyContent: 'center',
-    fontSize: '25px'
-    }}></i>
+        <i className='fa fa-long-arrow-alt-left' style={{
+          display: 'flex',
+          justifyContent: 'center',
+          fontSize: '25px'
+        }}></i>
       </button>
     </div>
   )
@@ -51,31 +53,31 @@ const FlashCard = ({ services }) => {
       <Slider {...settings}>
         {services.map((service) => {
           return (
-            <div className='box'>
+            <div className='box' key={service._id}>
               <div className='product mtop'>
                 <div className='img'>
                   <span className='discount'>{service.category.name}</span>
-                  <img src={service.images.url} alt='' style={{ objectFit: 'contain', width:'200px', margin:'auto'}}/>
+                  <img src={service.images.url} alt='' style={{ objectFit: 'contain', width: '200px', margin: 'auto' }} />
                   <div className='product-like'>
                     <label>{count}</label> <br />
                     <i className='fa-regular fa-heart' onClick={increment}></i>
                   </div>
                 </div>
-                
+
                 <div className='product-details mtop'>
-                <div className="services-avatar">
-                    <img src={service.user.avatar.url} alt=""/>
-                    <div className="avatar-name" style={{color:'black', display:'flex'}}>
-                        <div className="avatar-name-title" style={{color:'black'}}></div>
-                        {service.user.name}
+                  <div className="services-avatar">
+                    <img src={service.user.avatar.url} alt="" />
+                    <div className="avatar-name" style={{ color: 'black', display: 'flex' }}>
+                      <div className="avatar-name-title" style={{ color: 'black' }}></div>
+                      {service.user.name}
                     </div>
-                </div>
-                <h3 style={{color:'black', marginTop:'20px'}}  >
-                    Service: 
-                    </h3>
-                  <h3 style={{color:'black'}}>
+                  </div>
+                  <h3 style={{ color: 'black', marginTop: '20px' }}  >
+                    Service:
+                  </h3>
+                  <h3 style={{ color: 'black' }}>
                     {service.name}
-                    </h3>
+                  </h3>
                   <div className='rate'>
                     <i className='fa fa-star'></i>
                     <i className='fa fa-star'></i>
@@ -85,14 +87,14 @@ const FlashCard = ({ services }) => {
                   </div>
                   <div className='price'>
                     <h4>Starting Price: ₱{service.
-priceStarts_At}.00 </h4>
+                      priceStarts_At}.00 </h4>
                     {/* step : 3  
                      if hami le button ma click garryo bahne 
                     */}
-                   <Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
-                            <button><i className="fa fa-eye"></i></button>
-                        </Link>
-                        
+                    <Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
+                      <button><i className="fa fa-eye"></i></button>
+                    </Link>
+
                   </div>
                 </div>
               </div>

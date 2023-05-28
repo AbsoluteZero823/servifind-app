@@ -381,12 +381,13 @@ const Dashboard = () => {
                               alignItems: "center",
                               padding: 20,
                             }}
+                            key={transaction._id}
                           >
                             <div style={{ textAlign: "center" }}>
                               {(transaction.inquiry_id &&
                                 transaction.inquiry_id.freelancer.user_id
                                   ._id === user._id) ||
-                              transaction.offer_id.offered_by._id === user._id
+                                transaction.offer_id.offered_by._id === user._id
                                 ? "Freelancer"
                                 : "Client"}
                               <br></br> Mode
@@ -572,11 +573,12 @@ const Dashboard = () => {
                       services.map((service) => (
                         // <ClientInquiries key={inquiry._id} inquiry={inquiry} />
 
-                        <div className="serviceCard">
+                        <div className="serviceCard" key={service._id}>
                           <img
                             className="rounded-img"
                             src={service.images.url}
                             style={{ margin: "auto 20px auto 0px" }}
+
                           />
                           <div className="serviceCardInfo">
                             <p style={{ fontWeight: "bold" }}>
