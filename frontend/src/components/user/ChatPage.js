@@ -18,6 +18,7 @@ import { getOffers } from '../../actions/offerActions'
 
 const ChatPage = () => {
     const [fetchAgain, setFetchAgain] = useState(false);
+    const [fetchOffersAgain, setFetchOffersAgain] = useState(false);
     // const { user, loading } = useSelector(state => state.auth)
     const { offers,loading } = useSelector(state => state.offers)
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const ChatPage = () => {
     }
     useEffect(() => {
         dispatch(getOffers())
-    }, [fetchAgain]);
+    }, [fetchOffersAgain]);
     return (
 
 

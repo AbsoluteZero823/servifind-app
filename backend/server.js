@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
     console.log('connected to socket.io');
 
     socket.on('setup', (userData) => {
+        console.log("Setup na")
         socket.join(userData._id);
         // console.log(userData._id);
         socket.emit('connected');
@@ -69,6 +70,7 @@ io.on("connection", (socket) => {
 
     socket.on('new message', (newMessageReceived) => {
         socket.broadcast.emit("message received", newMessageReceived);
+        console.log("bagong message1")
         var chat = newMessageReceived.chat;
 
         if (!chat.users) return console.log('chat.users not defined');
@@ -77,7 +79,28 @@ io.on("connection", (socket) => {
             if (user._id === newMessageReceived.sender._id) return;
 
             socket.in(user._id).emit("message received", newMessageReceived);
+            console.log("bagong message2")
         });
+    });
+
+    socket.on('new inquiry', (newInquiryReceived) => {
+        socket.broadcast.emit("inquiry received", newInquiryReceived);
+        // console.log("bagong message1")
+        var inquiry = newInquiryReceived;
+
+        if (!inquiry.freelancer) return console.log('inquiry.freelancer not defined');
+        socket.in(inquiry.freelancer.user_id).emit("inquiry received", newInquiryReceived);
+       
+    });
+
+    socket.on('new offer', (newOfferReceived) => {
+        socket.broadcast.emit("offer received", newOfferReceived);
+        // console.log("bagong message1")
+        var offer = newOfferReceived;
+
+        if (!offer.freelancer) return console.log('offer.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("offer received", newOfferReceived);
+       
     });
 
     socket.off("setup", (userData) => {

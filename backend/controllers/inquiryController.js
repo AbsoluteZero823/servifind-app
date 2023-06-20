@@ -10,21 +10,21 @@ const Category = require('../models/category');
 exports.newInquiry = async (req, res, next) => {
     try {
 
-        req.body.customer = req.user._id;
+        // req.body.customer = req.user._id;
         if (!req.body.instruction) {
             return next(new ErrorHandler('Please Provide inquiry', 404));
         }
         const inquiry = await Inquiry.create(req.body);
 
-
+        const populatedInquiry = await inquiry.populate(['freelancer', 'customer']);
 
         res.status(201).json({
             success: true,
-            inquiry
+            inquiry: populatedInquiry
         })
 
     } catch (error) {
-        console.log(error)
+        return next(new ErrorHandler(error, 404));
     }
 
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom';
+import { ChatState } from "../../Context/ChatProvider";
 
 import { UserData } from './charts/data';
 import MetaData from '../layout/MetaData'
@@ -10,16 +11,19 @@ import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo } from '../../actions/transactionActions';
+import socket from '../../Context/socket';
+import axios from "axios";
 
 import { useDispatch, useSelector } from 'react-redux'
 
 // import { getAdminProducts } from '../../actions/productActions'
 // import { allOrders } from '../../actions/orderActions'
 // import { allUsers } from '../../actions/userActions'
+var selectedChatCompare;
 
 
 const Dashboard = () => {
-
+    const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
     const dispatch = useDispatch();
 
     // const { products } = useSelector(state => state.products)
@@ -27,7 +31,7 @@ const Dashboard = () => {
     // const { orders, totalAmount, loading } = useSelector(state => state.allOrders)
 
     const { success, result } = useSelector(state => state.dashboardInfo);
-
+    const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
     // let outOfStock = 0;
     // products.forEach(product => {
     //     if (product.stock === 0) {
@@ -43,6 +47,83 @@ const Dashboard = () => {
         }
 
     }, [dispatch, success])
+
+    useEffect(() => {
+        socket.on('message received', (newMessageReceived) => {
+          setNewMessageReceivedLocal(newMessageReceived);
+        });
+    
+        // Cleanup function
+        return () => {
+          socket.off('message received');
+        };
+      }, []);
+      console.log(notification, 'waaaah')
+      useEffect(() => {
+        if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+          // Execute your code when a new message is received
+          console.log('New message received:', newMessageReceivedLocal);
+    
+          if (
+            !selectedChatCompare || // if chat is not selected or doesn't match current chat
+            selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+          ) {
+              addNotif()
+          } else {
+            // setFetchAgain(!fetchAgain);
+            // setMessages([...messages, newMessageReceived]);
+            console.log("over")
+          }
+    
+          // Reset the newMessageReceived state
+          setFetchNotificationAgain(!fetchNotificationAgain);
+          setNewMessageReceivedLocal(null);
+        }
+      }, [newMessageReceivedLocal]);
+
+
+      const addNotif = async () => {
+        console.log("awot")
+       
+       let userid = ""
+        
+         if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
+           userid = newMessageReceivedLocal.chat.users[1]._id
+         }
+         else {
+          userid = newMessageReceivedLocal.chat.users[0]._id
+         }
+       
+           // event.preventDefault();
+       
+           try {
+             const config = {
+               headers: {
+                 "Content-type": "application/json",
+                 // Authorization: `Bearer ${user.token}`,
+               },
+             };
+            
+             const { data } = await axios.post(
+               "/api/v1/notification/new",
+               {
+                 type: "message",
+                 message: `New message from ${newMessageReceivedLocal.sender.name}`,
+                 type_id: newMessageReceivedLocal._id,
+                 user_id: userid
+               },
+               config
+             );
+             console.log(data);
+             // socket.emit("new message", data.message);
+             // setMessages([...messages, data.message]);
+       
+             // setFetchAgain(!fetchAgain);
+           } catch (error) {
+             console.log(error);
+           }
+       
+       };
 
     const [userData, setUserData] = useState({
         labels: UserData.map((data)=> data.year),

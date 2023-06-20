@@ -48,6 +48,7 @@ const category = require('./routes/category');
 const offer = require('./routes/offer');
 const chat = require('./routes/chat');
 const message = require('./routes/message');
+const notification = require('./routes/notification');
 
 app.use('/api/v1', service);
 app.use('/api/v1', auth);
@@ -61,6 +62,7 @@ app.use('/api/v1', category);
 app.use('/api/v1', offer);
 app.use('/api/v1', chat);
 app.use('/api/v1', message);
+app.use('/api/v1', notification);
 
 app.use(errorMiddleware);
 

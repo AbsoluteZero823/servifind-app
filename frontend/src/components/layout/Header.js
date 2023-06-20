@@ -1,9 +1,12 @@
-import React, { Fragment, useRef, useState } from "react";
-import { Route, Link } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
+import { getMyUnreadNotifications,readMyNotification, newNotification } from "../../actions/notificationActions";
+
 
 import swal from "sweetalert";
 import Search from "./Search";
@@ -12,16 +15,90 @@ import "mdbreact/dist/css/mdb.css";
 import "../../App.css";
 import { ChatState } from "../../Context/ChatProvider";
 
+import io from "socket.io-client";
+// import state from "sweetalert/typings/modules/state";
+
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
+var socket, selectedChatCompare;
+
 // import Header from "./Header";
 
 const Header = () => {
+  // const [fetchNotificationAgain, setFetchNotificationAgain] = useState(false);
+  const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+  let navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const alert = useAlert();
   const dispatch = useDispatch();
+  const currentUrl = window.location.href;
 
-  const { setSelectedChat, notification, setNotification } = ChatState();
+  const { setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
 
   const { user, loading, isAuthenticated } = useSelector((state) => state.auth);
+  const { notifications } = useSelector((state)=> state.notifications)
+  const { notification: newNotif} = useSelector((state)=> state.addNotification)
+  useEffect(() => {
+    let isMounted = true; // Flag to track if component is mounted
+    socket = io(ENDPOINT);
+    // console.log(isAuthenticated)
+  if(user){
+    socket.emit("setup", user);
+  }
+  
+
+  return () => {
+    isMounted = false; // Set the flag to false when component is unmounted
+    socket.disconnect(); // Disconnect the socket connection
+  };
+  }, [])
+  
+
+  useEffect(()=> {
+    if(user){
+    //  dispatch(getMyUnreadNotifications());
+     getMyNotifications();
+
+    }
+if(notification){
+
+
+  console.log(notification)
+  
+}
+  },[dispatch, fetchNotificationAgain])
+
+
+
+
+
+const getMyNotifications = async () => {
+  // if (!selectedChat) return;
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+
+    // setLoading(true);
+
+    const { data } = await axios.get(
+      // `/api/v1/messages/${id}`
+      `/api/v1/my-notifications`,
+      config
+    );
+    setNotification(data.notifications);
+   
+    console.log(data.notifications);
+    console.log(notification);
+    // setLoading(false);
+
+    
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -105,32 +182,67 @@ const Header = () => {
                   style={{ padding: '0px 5px' }}>
                   <i className="fas fa-bell" style={{ fontSize: '20px' }}></i>
 
-                  <span className="badge rounded-pill badge-notification bg-danger">{notification && notification.length > 0 ? notification.length : ''}</span>
+                  {/* <span className="badge rounded-pill badge-notification bg-danger">{ (notification && notification[0] && ((user._id === notification[0].chat.users[0]._id) || (user._id === notification[0].chat.users[1]._id)) && user._id !== notification[0].sender._id) ? notification.length : ''}</span> */}
+                 <span className="badge rounded-pill badge-notification bg-danger">{ (notification.length > 0) ? notification.length : ''}</span>
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
                   style={{
                     top: '150%',
                     right: '-50%',
-                    left: 'unset'
+                    left: 'unset',
+                    overflowY: 'auto',
+                    maxHeight: "calc(100vh - 100px)"
                   }}>
-                  {!notification.length &&
+                  {/* {(notification && notification[0] && ((user._id !== notification[0].chat.users[0]._id) || (user._id !== notification[0].chat.users[1]._id)) && user._id === notification[0].sender._id) && */}
+                  {(notification.length === 0) &&
                     (<li>
-                      <a className="dropdown-item" href="#">No New Notification</a>
+                      <a className="dropdown-item">No New Notification</a>
                     </li>)
                   }
+
+                  {/* { (notification && notification[0] && ((user._id === notification[0].chat.users[0]._id) || (user._id === notification[0].chat.users[1]._id)) && user._id !== notification[0].sender._id) && ( */}
+
+
+{ (notification) && (
+                  <Fragment>
+                  
                   {notification.map(notif => (
                     <li key={notif._id}
                     >
+                      {/* PAG NASA CHAT PAGE ANG RERECEIVE */}
+       {currentUrl === `${process.env.BASE_URL}chat` && (               
                       <a className="dropdown-item" href="#" onClick={() => {
 
                         // SetNotification(notification.filter((n) => n._id !== notif._id));
+
+  
+
                         setSelectedChat(notif.chat);
                         setNotification(notification.filter(n => n._id !== notif._id));
 
-                        console.log(notification)
-                      }}>{`New Message from ${notif.sender.name}`}</a>
+                        // console.log(notification)
+                      }}>{`${notif.message}`}</a>
+                     )} 
+{/* PAG WALA SA CHAT PAGE ANG RERECEIVE */}
+{currentUrl !== `${process.env.BASE_URL}chat` && (               
+                      <a className="dropdown-item" href="#" onClick={() => {
+
+                        // SetNotification(notification.filter((n) => n._id !== notif._id));
+
+  
+
+                        setSelectedChat(notif.chat);
+                        setNotification(notification.filter(n => n._id !== notif._id));
+                        navigate(`/chat`)
+
+                        // console.log(notification)
+                      }}>{`${notif.message}`}</a>
+                     )} 
                     </li>
                   ))}
+{/* NOTIFICATION MAP END */}
+</Fragment>
+   ) }
                   {/* <li>
                     <a className="dropdown-item" href="#">Kendrick Sent a message</a>
                   </li>

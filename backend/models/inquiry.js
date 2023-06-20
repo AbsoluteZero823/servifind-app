@@ -5,10 +5,10 @@ const inquirySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    attachments: {
-        type: String,
-        required: false
-    },
+    // attachments: {
+    //     type: String,
+    //     required: false
+    // },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',

@@ -6,7 +6,7 @@ import axios from "axios";
 import { getMessages, addMessage } from "../../actions/messageActions";
 import Loader from "../layout/Loader";
 import { Form } from "react-bootstrap";
-import { event } from "jquery";
+import { event, type } from "jquery";
 import ScrollableChat from "./ScrollableChat";
 import $ from "jquery";
 import Lottie from "react-lottie";
@@ -30,6 +30,7 @@ import {
   updateOffer,
 } from "../../actions/offerActions";
 import { updateStatus } from "../../actions/inquiryActions";
+import { newNotification } from "../../actions/notificationActions";
 
 import moment from "moment/moment";
 
@@ -41,6 +42,8 @@ const ENDPOINT = "http://localhost:4002"; //localhost
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
+
+  const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const dispatch = useDispatch();
   const defaultOptions = {
     loop: true,
@@ -51,12 +54,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     },
   };
 
-  const { selectedChat, setSelectedChat, notification, setNotification } =
+  const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } =
     ChatState();
   const { user } = useSelector((state) => state.auth);
   const { offer, success, newOfferLoading } = useSelector(
     (state) => state.addOffer
   );
+  const {notification: newNotif} = useSelector((state)=> state.addNotification);
   // const {updateloading} = useSelector(state=>state.updatePayment)
 
   const { singleoffer, loadings } = useSelector((state) => state.singleOffer);
@@ -96,7 +100,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   useEffect(() => {
     let isMounted = true; // Flag to track if component is mounted
     socket = io(ENDPOINT);
-    socket.emit("setup", user);
+    // socket.emit("setup", user);
 
     socket.on("connected", () => {
       if (isMounted) {
@@ -146,6 +150,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     }
     // console.log(expectedDate);
     if (success) {
+      socket.emit("new offer", offer);
       const formData = new FormData();
       formData.set("offer_id", offer._id);
       formData.set("price", price);
@@ -208,6 +213,73 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     // };
   }, [selectedChat]);
 
+
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived) => {
+      setNewMessageReceivedLocal(newMessageReceived);
+    });
+
+    // Cleanup function
+    return () => {
+      socket.off('message received');
+    };
+  }, []);
+  console.log(notification, 'waaaah')
+  useEffect(() => {
+    if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('New message received:', newMessageReceivedLocal);
+
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+      ) {
+       
+        
+       
+          //dito mo lagay ung add notif
+
+          // const formData = new FormData();
+          // // console.log(newMessageReceivedLocal);
+    
+          // formData.set("type", "message");
+          // formData.set("message", `New message from ${newMessageReceivedLocal.sender.name}`);
+          // if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
+          //   formData.set("user_id", newMessageReceivedLocal.chat.users[1]._id)
+          // }
+          // else {
+          //   formData.set("user_id", newMessageReceivedLocal.chat.users[0]._id)
+          // }
+          // formData.set("type_id", newMessageReceivedLocal._id)
+        
+          // dispatch(newNotification(formData))
+
+          addNotif()
+
+          // setNotification(prevNotification => {
+          //   const updatedNotification = [newMessageReceived, ...prevNotification];
+          //   return updatedNotification.filter((item, index) => {
+          //     return (
+          //       index === updatedNotification.findIndex(
+          //         obj => obj._id === item._id
+          //       )
+          //     );
+          //   });
+          // });
+          // console.log(newMessageReceived);
+      
+        //give notification
+      } else {
+        // setFetchAgain(!fetchAgain);
+        // setMessages([...messages, newMessageReceived]);
+        console.log("over")
+      }
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewMessageReceivedLocal(null);
+    }
+  }, [newMessageReceivedLocal]);
   //NOT WORKING WELL ------------------------------------->
   // useEffect(() => {
   //   if (selectedChat) {
@@ -218,54 +290,75 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   // }, [notification]);
   //NOT WORKING WELL <-------------------------------------
 
-  console.log(notification, 'waaaah')
-  useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
-        selectedChatCompare._id !== newMessageReceived.chat._id
-      ) {
-        //ORIGINAL-------------------------------------------------->
-        // if (!notification.includes(newMessageReceived)) {
 
-        //   setNotification([newMessageReceived, ...notification]);
-        //   // console.log(notification, 'waaaah')
-        //   console.log(newMessageReceived)
-        //   // setFetchAgain(!fetchAgain);
-        // }
-        //1st-------------------------------------------------->
-        // if (!notification.includes(newMessageReceived)) {
-        //   setNotification(prevNotification => [newMessageReceived, ...prevNotification]);
-        //   console.log(newMessageReceived);
-        // }
-        // SECOND-------------------------------------------------->
-        // if (!notification.some(item => item._id === newMessageReceived._id)) {
-        //   setNotification(prevNotification => [newMessageReceived, ...prevNotification]);
-        //   console.log(newMessageReceived);
-        // }
-        if (!notification.some(item => item._id === newMessageReceived._id)) {
-          setNotification(prevNotification => {
-            const updatedNotification = [newMessageReceived, ...prevNotification];
-            return updatedNotification.filter((item, index) => {
-              return (
-                index === updatedNotification.findIndex(
-                  obj => obj._id === item._id
-                )
-              );
-            });
-          });
-          console.log(newMessageReceived);
-        }
-        else {
-          console.log('meron')
-        }
-        //give notification
-      } else {
-        setFetchAgain(!fetchAgain);
-        // setMessages([...messages, newMessageReceived]);
-      }
-    });
-  });
+  // useEffect(() => {
+  //   socket.on('message received', (newMessageReceived) => {
+  //     setNewMessageReceivedLocal(newMessageReceived);
+  //   });
+
+  //   // Cleanup function
+  //   return () => {
+  //     socket.off('message received');
+  //   };
+  // }, []);
+  // console.log(notification, 'waaaah')
+  // useEffect(() => {
+  //   if (newMessageReceivedLocal) {
+  //     // Execute your code when a new message is received
+  //     console.log('New message received:', newMessageReceivedLocal);
+
+  //     if (
+  //       !selectedChatCompare || // if chat is not selected or doesn't match current chat
+  //       selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+  //     ) {
+       
+        
+       
+  //         //dito mo lagay ung add notif
+
+  //         const formData = new FormData();
+  //         console.log(newMessageReceivedLocal);
+    
+  //         formData.set("type", "message");
+  //         formData.set("message", `New message from ${newMessageReceivedLocal.sender.name}`);
+  //         if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
+  //           formData.set("user_id", newMessageReceivedLocal.chat.users[1]._id)
+  //         }
+  //         else {
+  //           formData.set("user_id", newMessageReceivedLocal.chat.users[0]._id)
+  //         }
+  //         formData.set("type_id", newMessageReceivedLocal._id)
+        
+  //         dispatch(newNotification(formData))
+
+  //         // setNotification(prevNotification => {
+  //         //   const updatedNotification = [newMessageReceived, ...prevNotification];
+  //         //   return updatedNotification.filter((item, index) => {
+  //         //     return (
+  //         //       index === updatedNotification.findIndex(
+  //         //         obj => obj._id === item._id
+  //         //       )
+  //         //     );
+  //         //   });
+  //         // });
+  //         // console.log(newMessageReceived);
+      
+  //       //give notification
+  //     } else {
+  //       setFetchAgain(!fetchAgain);
+  //       // setMessages([...messages, newMessageReceived]);
+  //     }
+
+  //     // Reset the newMessageReceived state
+  //     setFetchNotificationAgain(!fetchNotificationAgain);
+  //     setNewMessageReceivedLocal(null);
+  //   }
+  // }, [newMessageReceivedLocal]);
+  // useEffect(() => {
+  //   socket.on("message received", (newMessageReceived) => {
+     
+  //   });
+  // });
   // useEffect(() => {
   //     socket.on('message received', (newMessageReceived) => {
   //         if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
@@ -275,6 +368,49 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   //         }
   //     });
   // })
+
+  const addNotif = async () => {
+    console.log("awot")
+   
+   let userid = ""
+    
+     if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
+       userid = newMessageReceivedLocal.chat.users[1]._id
+     }
+     else {
+      userid = newMessageReceivedLocal.chat.users[0]._id
+     }
+   
+       // event.preventDefault();
+   
+       try {
+         const config = {
+           headers: {
+             "Content-type": "application/json",
+             // Authorization: `Bearer ${user.token}`,
+           },
+         };
+        
+         const { data } = await axios.post(
+           "/api/v1/notification/new",
+           {
+             type: "message",
+             message: `New message from ${newMessageReceivedLocal.sender.name}`,
+             type_id: newMessageReceivedLocal._id,
+             user_id: userid
+           },
+           config
+         );
+         console.log(data);
+         // socket.emit("new message", data.message);
+         // setMessages([...messages, data.message]);
+   
+         // setFetchAgain(!fetchAgain);
+       } catch (error) {
+         console.log(error);
+       }
+   
+   };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;

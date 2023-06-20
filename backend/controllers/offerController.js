@@ -12,7 +12,7 @@ exports.newOffer = async (req, res, next) => {
 
     req.body.offered_by = req.user._id;
     const offer = await Offer.create(req.body);
-
+    const populatedOffer = await offer.populate(['inquiry_id', 'offered_by']);
     res.status(201).json({
         success: true,
         offer

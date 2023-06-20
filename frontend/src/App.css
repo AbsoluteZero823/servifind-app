@@ -2472,7 +2472,7 @@ input:checked+.slider:before {
   display: grid;
   justify-content: center;
   padding: 30px 60px;
-  justify-items: start;
+  justify-items: flex-start;
 }
 
 .premiumCard .pic {
@@ -2497,7 +2497,7 @@ input:checked+.slider:before {
 .premiumCard .picContainer {
   width: 40%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .dashboardProfile .picContainer {

@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 
 import axios from 'axios'
 import MetaData from '../layout/MetaData'
+import socket from '../../Context/socket';
 // import Sidebar from './Sidebar'
 import Loader from '../layout/Loader';
 import { useAlert } from 'react-alert'
@@ -34,6 +35,7 @@ const SingleService = () => {
     const { user, isAuthenticated } = useSelector(state => state.auth)
 
     const { inquiry, error, success } = useSelector(state => state.inquiry)
+    
     // const { loading, error, services } = useSelector(state => state.services);
     const { id } = useParams();
 
@@ -61,6 +63,7 @@ const SingleService = () => {
 
         if (success) {
             // navigate('/');
+            socket.emit("new inquiry", inquiry);
             const chatData = new FormData();
 
             chatData.set('userId', service.user._id);
@@ -70,6 +73,7 @@ const SingleService = () => {
             accessChat(chatData);
             alert.success('Inquiry created successfully');
             dispatch({ type: NEW_INQUIRY_RESET })
+        
         }
 
 
