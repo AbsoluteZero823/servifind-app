@@ -90,7 +90,7 @@ io.on("connection", (socket) => {
 
         if (!inquiry.freelancer) return console.log('inquiry.freelancer not defined');
         socket.in(inquiry.freelancer.user_id).emit("inquiry received", newInquiryReceived);
-       
+
     });
 
     socket.on('new offer', (newOfferReceived) => {
@@ -100,9 +100,19 @@ io.on("connection", (socket) => {
 
         if (!offer.freelancer) return console.log('offer.freelancer not defined');
         socket.in(offer.inquiry_id.customer).emit("offer received", newOfferReceived);
-       
-    });
 
+    });
+    // NEED TO DO ----------------------------------------------------------
+    //Notification for accept offer
+    //Notification for reject offer
+    //Notification for refuse offer
+    //Notification for work completed
+    //Notification for payment sent
+    //Notification for payment received
+    //Notification for rating
+    //Notification for pag may nag offer sa request
+    //Notification for pag inaccept ang offer
+    // NEED TO DO ----------------------------------------------------------
     socket.off("setup", (userData) => {
         console.log("User Disconnected");
         socket.leave(userData._id);
