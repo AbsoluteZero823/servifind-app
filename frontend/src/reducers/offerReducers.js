@@ -205,7 +205,8 @@ export const updateReducer = (state = {}, action) => {
             return {
                 ...state,
                 updateloading: false,
-                isUpdated: action.payload
+                success: action.payload.success,
+                offer: action.payload.offer,
             }
 
         case UPDATE_STATUS_RESET:
@@ -213,7 +214,7 @@ export const updateReducer = (state = {}, action) => {
         case UPDATE_OFFER_RESET:
             return {
                 ...state,
-                isUpdated: false
+                success: false
             }
 
         case UPDATE_STATUS_FAIL:

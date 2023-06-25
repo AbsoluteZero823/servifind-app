@@ -5,6 +5,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import MetaData from './layout/MetaData';
 import Request from './Request';
 import Loader from './layout/Loader';
+import $ from 'jquery';
+import socket from '../Context/socket';
+import Swal from 'sweetalert2';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
@@ -12,8 +15,12 @@ import { useAlert } from 'react-alert';
 // import { allUsers } from '../actions/userActions'
 // import Slider from 'rc-slider'
 // import 'rc-slider/assets/index.css'
+import { getFreelancerServices } from '../actions/serviceActions';
 import { getCategories } from '../actions/categoryActions';
 import { getRequests, clear } from '../actions/requestActions';
+import { newOffer } from '../actions/offerActions';
+import { NEW_OFFER_RESET } from '../constants/offerConstants';
+
 // import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone } from '../../../actions/transactionActions';
 // import { UPDATE_PSENT_RESET, UPDATE_PRECEIVED_RESET, UPDATE_TRANSACTIONDONE_RESET } from '../../../actions/transactionActions';
 const Feed = () => {
@@ -31,13 +38,19 @@ const Feed = () => {
 
     const { loading, error, requests } = useSelector(state => state.requests);
     const { categories } = useSelector(state => state.categories);
+    const { services } = useSelector(state => state.freelancerServices);
+    const { offer, success, newOfferLoading } = useSelector((state) => state.addOffer);
     // const { loadings, detailserror, transaction } = useSelector(state => state.transactionDetails);
     const { user, isAuthenticated } = useSelector(state => state.auth)
     // const [currentPage, setCurrentPage] = useState(1)
 
-
+    const [selectedRequest, setSelectedRequest] = useState('');
     const [category, setCategory] = useState('');
     let { categoryId } = useParams();
+
+    const [service_id, setServiceId] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
 
     useEffect(() => {
         if (error) {
@@ -53,8 +66,33 @@ const Feed = () => {
 
 
 
-    }, [dispatch, alert, error, category]);
+    }, [dispatch, alert, error]);
+    useEffect(() => {
+  
+        if(user.role === 'freelancer'){
+            dispatch(getFreelancerServices(user.freelancer_id._id));
+       }
 
+    }, []);
+
+    useEffect(() => {
+  console.log(selectedRequest)
+     
+
+    }, [selectedRequest]);
+    useEffect(() => {
+     
+           
+       if (success) {
+        socket.emit("new offer", offer); 
+        dispatch({ type: NEW_OFFER_RESET });
+ console.log('bakit ako')
+        Swal.fire("Offer sent Successfully!", "", "success");
+       
+      }
+          }, [success]);
+      
+   
     // function setCurrentPageNo(pageNumber) {
     //     setCurrentPage(pageNumber)
     // }
@@ -64,6 +102,35 @@ const Feed = () => {
     //     count = filteredServicesCount
     // }
 
+    const submitOfferHandler = (e) => {
+        e.preventDefault();
+        // console.log(e)
+        // const { requestId } = e.target;
+        const offerData = new FormData();
+
+
+        offerData.set('service_id', service_id);
+        offerData.set('description', description);
+        offerData.set('price', price);
+        // offerData.set('offered_by', user._id);
+        offerData.set('request_id', selectedRequest);
+
+
+        dispatch(newOffer(offerData));
+        // Swal.fire(
+        //     'Offer sent Successfully!',
+        //     '',
+        //     'success'
+        // )
+        //closes the modal
+        $('.close').click();
+
+
+
+
+        // dispatch(updateProfile(formData))
+
+    }
 
     const categoryHandler = (id) => {
         if (id && id !== "") {
@@ -110,7 +177,7 @@ const Feed = () => {
 
                                 {sortedRequests && sortedRequests.map(request => (
 
-                                    <Request key={request._id} request={request} />
+                                    <Request key={request._id} request={request} services={services} setSelectedRequest = {setSelectedRequest} />
                                 ))}
 
 
@@ -154,7 +221,88 @@ const Feed = () => {
                 </div>
 
             </Fragment>
+  {/* MAKE OFFER MODAL */}
 
+  <div className="modal fade" id="MakeOfferModal" tabIndex="-1" role="dialog" aria-labelledby="MakeOfferModalTitle" aria-hidden="true" >
+                <div className="modal-dialog modal-dialog-centered" role="document" style={{ maxWidth: '700px' }}>
+                    <div className="modal-content" >
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="MakeOfferModalTitle">Make Offer</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <form className="a" onSubmit={submitOfferHandler} encType='multipart/form-data' >
+                            <div className="modal-body">
+
+                                <div style={{ padding: '10px 10px' }}>
+                                    {/* populate the service of the logged in freelancer */}
+                                    <label htmlFor="service_id">Service to offer:</label>
+
+                                    <select
+                                        name="service_id"
+                                        id="service_id"
+                                        className='form-control'
+                                        value={service_id}
+                                        onChange={(e) => setServiceId(e.target.value)}
+                                    >
+                                        <option value="">Select Service</option>
+
+                                        {services.map((service) => (
+                                            <option key={service._id} value={service._id}>{service.name}</option>
+                                            //   <li key={season.id}>{season}</li>
+                                        ))}
+                                        {/* <option value="spam">service1</option>
+                                        <option value="harassment">service2</option>
+                                        <option value="inappropriate-content">service3</option> */}
+                                    </select>
+                                    <br />
+                                    <label>Description: </label>
+                                    <textarea
+                                        name="description"
+                                        id="description" className="form-control mt-3"
+                                        style={{ minHeight: '200px' }}
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    >
+                                    </textarea>
+
+                                    <div className="form-group">
+                                        <label htmlFor="stock_field">Price</label>
+                                        <input
+                                            type="number"
+                                            id="stock_field"
+                                            className="form-control"
+                                            value={price}
+                                            onChange={(e) => setPrice(e.target.value)}
+                                        />
+                                    </div>
+
+                               
+                                </div>
+
+
+
+
+
+
+
+
+                            </div>
+
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" className="btn btn-primary" >Submit</button>
+
+
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </Fragment >
     );
 }

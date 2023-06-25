@@ -32,12 +32,13 @@ var selectedChatCompare;
 const Dashboard = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
+  const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { isUpdated, loading: updateLoading } = useSelector(
     (state) => state.updateFreelancer
   );
   const { services, loading: servicesLoading } = useSelector(
-    (state) => state.services
+    (state) => state.freelancerServices
   );
   const {
     loading: transactionLoading,
@@ -71,6 +72,9 @@ const Dashboard = () => {
       setNewInquiryReceivedLocal(newInquiryReceived);
     });
 
+    socket.on('accept_offer received', (acceptOfferReceived) => {
+      setAcceptOfferReceivedLocal(acceptOfferReceived);
+    });
     // Cleanup function
     // return () => {
     //   socket.off('message received');
@@ -118,6 +122,54 @@ const Dashboard = () => {
       setNewInquiryReceivedLocal(null);
     }
   }, [newInquiryReceivedLocal]);
+
+  useEffect(() => {
+    if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('accept offer received:', acceptOfferReceivedLocal);
+
+  
+          addAcceptedOfferNotif()
+  
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setAcceptOfferReceivedLocal(null);
+    }
+  }, [acceptOfferReceivedLocal]);
+
+  const addAcceptedOfferNotif = async () => {
+   
+       try {
+         const config = {
+           headers: {
+             "Content-type": "application/json",
+             // Authorization: `Bearer ${user.token}`,
+           },
+         };
+        
+         const { data } = await axios.post(
+           "/api/v1/notification/new",
+           {
+             type: "accept_offer",
+             message: (acceptOfferReceivedLocal.request_id) 
+             ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` 
+             : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`,
+             type_id: acceptOfferReceivedLocal._id,
+             user_id: acceptOfferReceivedLocal.offered_by
+           },
+           config
+         );
+         console.log(data, "ito yon kens");
+         // socket.emit("new message", data.message);
+         // setMessages([...messages, data.message]);
+   
+         // setFetchAgain(!fetchAgain);
+       } catch (error) {
+         console.log(error);
+       }
+   
+   };
 
   const addInquiryNotif = async () => {
     console.log("awot")

@@ -49,7 +49,7 @@ export const servicesReducer = (state = { services: [] }, action) => {
         case ALL_SERVICES_REQUEST:
         case DISPLAYED_SERVICES_REQUEST:
             case PREMIUM_SERVICES_REQUEST:
-        case FREELANCER_SERVICES_REQUEST:
+        // case FREELANCER_SERVICES_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -57,7 +57,7 @@ export const servicesReducer = (state = { services: [] }, action) => {
 
         case ALL_SERVICES_SUCCESS:
         case DISPLAYED_SERVICES_SUCCESS:
-        case FREELANCER_SERVICES_SUCCESS:
+        // case FREELANCER_SERVICES_SUCCESS:
             case PREMIUM_SERVICES_SUCCESS:
             return {
                 ...state,
@@ -67,8 +67,52 @@ export const servicesReducer = (state = { services: [] }, action) => {
 
         case ALL_SERVICES_FAIL:
         case DISPLAYED_SERVICES_FAIL:
-        case FREELANCER_SERVICES_FAIL:
+        // case FREELANCER_SERVICES_FAIL:
             case PREMIUM_SERVICES_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+export const freelancerServicesReducer = (state = { services: [] }, action) => {
+    switch (action.type) {
+
+        // case ALL_SERVICES_REQUEST:
+        // case DISPLAYED_SERVICES_REQUEST:
+            // case PREMIUM_SERVICES_REQUEST:
+        case FREELANCER_SERVICES_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        // case ALL_SERVICES_SUCCESS:
+        // case DISPLAYED_SERVICES_SUCCESS:
+        case FREELANCER_SERVICES_SUCCESS:
+            // case PREMIUM_SERVICES_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                services: action.payload.services,
+            }
+
+        // case ALL_SERVICES_FAIL:
+        // case DISPLAYED_SERVICES_FAIL:
+        case FREELANCER_SERVICES_FAIL:
+            // case PREMIUM_SERVICES_FAIL:
             return {
                 ...state,
                 loading: false,

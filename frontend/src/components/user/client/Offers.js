@@ -5,8 +5,11 @@ import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
+import socket from '../../../Context/socket'
 import Swal from 'sweetalert2'
 import { NEW_CHAT_RESET } from '../../../constants/chatConstants'
+
+import { UPDATE_OFFER_RESET } from '../../../constants/offerConstants'
 
 import { CancelOtherOffer, AcceptOffer } from '../../../actions/offerActions'
 import { newTransaction, clearErrors } from '../../../actions/transactionActions';
@@ -17,6 +20,9 @@ const Offers = ({ offer }) => {
 
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const { success } = useSelector(state => state.newChat)
+    const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector(
+        (state) => state.updateoffer
+      );
 
     const dispatch = useDispatch();
     let navigate = useNavigate();
@@ -29,6 +35,14 @@ const Offers = ({ offer }) => {
             dispatch({ type: NEW_CHAT_RESET })
             navigate(`/chat`)
         }
+        if (isUpdated) {
+            console.log(updatedOffer)
+            socket.emit("accept offer", updatedOffer);
+          
+          
+            dispatch({ type: UPDATE_OFFER_RESET });
+          }
+      
         // dispatch(allUsers())
 
         // if (error) {
@@ -51,7 +65,7 @@ const Offers = ({ offer }) => {
 
         // }
 
-    }, [dispatch, alert, success])
+    }, [dispatch, alert, success, isUpdated])
 
     // const accessChat = async (chatData) => {
 

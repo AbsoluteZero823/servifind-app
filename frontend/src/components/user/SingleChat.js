@@ -66,7 +66,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   const { singleoffer, loadings } = useSelector((state) => state.singleOffer);
 
   //sa update offer
-  const { updateloading, isUpdated } = useSelector(
+  const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector(
     (state) => state.updateoffer
   );
 
@@ -164,6 +164,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     }
 
     if (isUpdated) {
+      console.log(updatedOffer)
+      socket.emit("accept offer", updatedOffer);
+      
       setFetchAgain(!fetchAgain);
       dispatch({ type: UPDATE_OFFER_RESET });
     }

@@ -12,10 +12,10 @@ exports.newOffer = async (req, res, next) => {
 
     req.body.offered_by = req.user._id;
     const offer = await Offer.create(req.body);
-    const populatedOffer = await offer.populate(['inquiry_id', 'offered_by']);
+    const populatedOffer = await offer.populate(['inquiry_id', 'offered_by', 'request_id']);
     res.status(201).json({
         success: true,
-        offer
+        offer:populatedOffer
     })
 }
 
@@ -200,10 +200,15 @@ exports.acceptOffer = async (req, res, next) => {
         new: true,
         runValidators: true,
         // useFindandModify:false
-    })
+    }).populate([{ path: 'request_id', populate: 'requested_by' }, { path: 'inquiry_id', populate: 'customer' }])
+
+    // const myoffers = await Offer.find({ offered_by: req.user._id }).populate(['offered_by', { path: 'request_id', populate: 'requested_by' }, { path: 'service_id', populate: 'category' }, { path: 'inquiry_id', populate: 'customer' }]);
+
+
+    console.log(offer)
     res.status(200).json({
         success: true,
-
+offer
     })
 }
 

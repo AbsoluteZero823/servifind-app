@@ -177,7 +177,7 @@ export const AcceptOffer = (id) => async (dispatch) => {
 
         dispatch({
             type: ACCEPT_OFFER_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {

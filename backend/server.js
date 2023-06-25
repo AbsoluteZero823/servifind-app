@@ -98,20 +98,100 @@ io.on("connection", (socket) => {
         // console.log("bagong message1")
         var offer = newOfferReceived;
 
-        if (!offer.freelancer) return console.log('offer.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("offer received", newOfferReceived);
+        if (!offer.inquiry_id && !offer.request_id) return console.log('offer not defined');
+        socket.in((offer.request_id) ? offer.request_id.requested_by : offer.inquiry_id.customer).emit("offer received", newOfferReceived);
 
     });
+
+      //Notification for accept offer
+      socket.on('accept offer', (acceptOfferReceived) => {
+        socket.broadcast.emit("accept_offer received", acceptOfferReceived);
+        var offer = acceptOfferReceived;
+
+        if (!offer.offered_by) return console.log('offer.offered_by not defined');
+        socket.in(offer.offered_by).emit("accept_offer received", acceptOfferReceived);
+
+    });
+
+   
+
+
     // NEED TO DO ----------------------------------------------------------
-    //Notification for accept offer
+
     //Notification for reject offer
+    socket.on('reject offer', (rejectOfferReceived) => {
+        socket.broadcast.emit("reject_offer received", rejectOfferReceived);
+        var offer = rejectOfferReceived;
+
+        if (!offer.freelancer) return console.log('offer.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("reject_offer received", rejectOfferReceived);
+
+    });
+    
     //Notification for refuse offer
+    socket.on('refuse offer', (refuseOfferReceived) => {
+        socket.broadcast.emit("refuse_offer received", 'refuseOfferReceived');
+        var offer = refuseOfferReceived;
+
+        if (!offer.freelancer) return console.log('offer.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("refuse_offer received", refuseOfferReceived);
+
+    });
+
     //Notification for work completed
+    socket.on('work completed', (workCompletedReceived) => {
+        socket.broadcast.emit("work_completed received", 'workCompletedReceived');
+        var transaction = workCompletedReceived;
+
+        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
+
+    });
+    
     //Notification for payment sent
+    socket.on('payment sent', (paymentSentReceived) => {
+        socket.broadcast.emit("payment_sent received", 'paymentSentReceived');
+        var transaction = paymentSentReceived;
+
+        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("payment_sent received", paymentSentReceived);
+
+    });
+
     //Notification for payment received
+    socket.on('payment received', (paymentReceivedReceived) => {
+        socket.broadcast.emit("payment_received received", 'paymentReceivedReceived');
+        var transaction = paymentReceievedReceived;
+
+        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("payment_received received", paymentReceivedReceived);
+
+    });
+
     //Notification for rating
+    socket.on('new rating', (newRatingReceived) => {
+        socket.broadcast.emit("rating received", 'newRatingReceived');
+        var transaction = newRatingReceived;
+
+        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("rating received", newRatingReceived);
+
+    });
+
     //Notification for pag may nag offer sa request
-    //Notification for pag inaccept ang offer
+    socket.on('offer_in request ', (offerInRequestReceived) => {
+        socket.broadcast.emit("offerIn_request received", 'offerInRequestReceived');
+        var transaction = offerInRequestReceived;
+
+        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        socket.in(offer.inquiry_id.customer).emit("offerIn_request received", offerInRequestReceived);
+
+    });
+
+    //Notification for pag inaccept ang offer ng freelancer sa isang request
+    
+
+
     // NEED TO DO ----------------------------------------------------------
     socket.off("setup", (userData) => {
         console.log("User Disconnected");

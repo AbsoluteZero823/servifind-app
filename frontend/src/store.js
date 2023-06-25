@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension'
 // import { animalsReducer, animalDetailsReducer, newAnimalReducer, UpDelAnimalReducer, allAnimalsReducer, singleAnimalReducer, adoptReducer, getAdoptReducer } from './reducers/animalReducers'
 import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserReducer, userDetailsReducer } from './reducers/userReducers'
-import { servicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
+import { servicesReducer, freelancerServicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
 import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer,getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer,getDashboardInfoReducer } from './reducers/transactionReducers';
 import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer } from './reducers/freelancerReducers';
@@ -20,7 +20,7 @@ const reducer = combineReducers({
 
     addUser: newUserReducer,
 
-
+    freelancerServices:freelancerServicesReducer,
     services: servicesReducer,
     serviceDetails: serviceDetailsReducer,
     userDetails: userDetailsReducer,

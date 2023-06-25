@@ -225,7 +225,7 @@ const Try = () => {
 
        const addOfferNotif = async () => {
    
-        const userid = newOfferReceivedLocal.inquiry_id.customer
+        const userid = (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer;
        
        
            // event.preventDefault();
@@ -241,7 +241,7 @@ const Try = () => {
              const { data } = await axios.post(
                "/api/v1/notification/new",
                {
-                 type: "offer",
+                 type: (newOfferReceivedLocal.request_id)? "offer_request" :"offer_inquiry",
                  message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
                  type_id: newOfferReceivedLocal._id,
                  user_id: userid
