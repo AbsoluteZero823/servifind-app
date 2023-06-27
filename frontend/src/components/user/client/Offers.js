@@ -15,14 +15,12 @@ import { CancelOtherOffer, AcceptOffer } from '../../../actions/offerActions'
 import { newTransaction, clearErrors } from '../../../actions/transactionActions';
 import { accessChat } from '../../../actions/chatActions';
 
-const Offers = ({ offer }) => {
+const Offers = ({ offer, setSelectedOffer }) => {
     // console.log(users)
 
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const { success } = useSelector(state => state.newChat)
-    const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector(
-        (state) => state.updateoffer
-      );
+    const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector((state) => state.updateoffer);
 
     const dispatch = useDispatch();
     let navigate = useNavigate();
@@ -30,112 +28,11 @@ const Offers = ({ offer }) => {
     const alert = useAlert();
 
 
-    useEffect(() => {
-        if (success) {
-            dispatch({ type: NEW_CHAT_RESET })
-            navigate(`/chat`)
-        }
-        if (isUpdated) {
-            console.log(updatedOffer)
-            socket.emit("accept offer", updatedOffer);
-          
-          
-            dispatch({ type: UPDATE_OFFER_RESET });
-          }
-      
-        // dispatch(allUsers())
-
-        // if (error) {
-        //     alert.error(error);
-        //     dispatch(clearErrors())
-        // }
-
-        // if (isDeleted) {
-        //     alert.success('Animal deleted successfully');
-        //     navigate('/animals');
-        //     dispatch({ type: DELETE_ANIMALS_RESET })
-        // }
-        // for (let index = 0; index < 3; index++) {
-
-        //     if (service.user_id == users[index]._id) {
-        //         const i = index;
-        //         console.log(i)
-        //     }
 
 
-        // }
-
-    }, [dispatch, alert, success, isUpdated])
-
-    // const accessChat = async (chatData) => {
-
-    //     console.log(chatData);
-
-    //     try {
-    //         // setLoadingChat(true);
-    //         const config = {
-    //             headers: {
-    //                 "Content-type": "multipart/form-data",
-    //                 // Authorization: `Bearer ${user.token}`,
-    //             },
-    //         };
-    //         const { data } = await axios.post(`/api/v1/chat`, chatData, config);
-    //         console.log(data);
-    //         // if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
-    //         // setSelectedChat(data);
-    //         // setLoadingChat(false);
-    //         // onClose();
-    //         // navigate(`/chat`)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // };
-
-    const acceptOfferHandler = (id) => {
-        const offerData = new FormData();
-        offerData.set('request_id', offer.request_id._id);
-        // formData.set('client', 'false');
+ 
 
 
-        const formData = new FormData();
-        formData.set('offer_id', id);
-        formData.set('price', offer.price)
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Accepting this offer will decline all other offers?",
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                const chatData = new FormData();
-                chatData.set('userId', offer.offered_by._id);
-                chatData.set('offerId', offer._id);
-                chatData.set('chatName', offer.service_id.name);
-
-                dispatch(CancelOtherOffer(offer.request_id._id))
-                dispatch(AcceptOffer(id))
-                dispatch(newTransaction(formData));
-
-                dispatch(accessChat(chatData));
-                Swal.fire(
-                    'Offer Accepted!',
-                    'Thank you',
-                    'success'
-                )
-
-                //closes the modal
-                // $('.close').click();
-
-            }
-        })
-
-
-    }
 
     return (
 
@@ -285,7 +182,7 @@ const Offers = ({ offer }) => {
                     <div className='bottomInfo'></div>
                     <div style={{ display: 'flex', overflow: 'hidden' }}>
                         <div className='inTransDiv'>
-                            <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#ee4d2d', color: '#fff' }} onClick={() => acceptOfferHandler(offer._id)} >Accept</button>
+                            <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#ee4d2d', color: '#fff' }} onClick={() => setSelectedOffer(offer)} >Accept</button>
                         </div>
                         {/* <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid rgba(0,0,0,.09)', color: '#555' }}>Contact Seller</button>

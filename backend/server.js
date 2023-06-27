@@ -178,17 +178,9 @@ io.on("connection", (socket) => {
 
     });
 
-    //Notification for pag may nag offer sa request
-    socket.on('offer_in request ', (offerInRequestReceived) => {
-        socket.broadcast.emit("offerIn_request received", 'offerInRequestReceived');
-        var transaction = offerInRequestReceived;
+ 
 
-        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("offerIn_request received", offerInRequestReceived);
 
-    });
-
-    //Notification for pag inaccept ang offer ng freelancer sa isang request
     
 
 
