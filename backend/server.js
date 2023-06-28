@@ -103,8 +103,8 @@ io.on("connection", (socket) => {
 
     });
 
-      //Notification for accept offer
-      socket.on('accept offer', (acceptOfferReceived) => {
+    //Notification for accept offer
+    socket.on('accept offer', (acceptOfferReceived) => {
         socket.broadcast.emit("accept_offer received", acceptOfferReceived);
         var offer = acceptOfferReceived;
 
@@ -113,7 +113,7 @@ io.on("connection", (socket) => {
 
     });
 
-   
+
 
 
     // NEED TO DO ----------------------------------------------------------
@@ -127,7 +127,7 @@ io.on("connection", (socket) => {
         socket.in(offer.inquiry_id.customer).emit("reject_offer received", rejectOfferReceived);
 
     });
-    
+
     //Notification for refuse offer
     socket.on('refuse offer', (refuseOfferReceived) => {
         socket.broadcast.emit("refuse_offer received", 'refuseOfferReceived');
@@ -147,7 +147,7 @@ io.on("connection", (socket) => {
         socket.in(offer.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
 
     });
-    
+
     //Notification for payment sent
     socket.on('payment sent', (paymentSentReceived) => {
         socket.broadcast.emit("payment_sent received", 'paymentSentReceived');
@@ -178,10 +178,10 @@ io.on("connection", (socket) => {
 
     });
 
- 
 
 
-    
+
+
 
 
     // NEED TO DO ----------------------------------------------------------

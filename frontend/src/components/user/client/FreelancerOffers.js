@@ -7,6 +7,7 @@ import Offers from './Offers'
 import Loader from '../../layout/Loader';
 import socket from '../../../Context/socket';
 
+
 import Swal from 'sweetalert2'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,6 +24,10 @@ import { NEW_CHAT_RESET } from '../../../constants/chatConstants';
 // import 'rc-slider/assets/index.css'
 
 
+var selectedChatCompare;
+
+
+
 const FreelancerOffers = () => {
 
     // const { createSliderWithToolTip } = Slider;
@@ -37,7 +42,7 @@ const FreelancerOffers = () => {
     // const { loading, services, error, servicesCount, resPerPage, filteredServicesCount } = useSelector(state => state.services);
     const { loading, requestoffers, error } = useSelector(state => state.requestoffers)
     const { success } = useSelector(state => state.newChat)
-    const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector((state) => state.updateoffer);
+    const { offer: updatedOffer, updateloading, success: isUpdated } = useSelector((state) => state.updateoffer);
 
     const [selectedOffer, setSelectedOffer] = useState('');
     const { request_id } = useParams();
@@ -55,11 +60,11 @@ const FreelancerOffers = () => {
     }, [dispatch, alert, error, request_id]);
 
     useEffect(() => {
-    
-    if(selectedOffer){
-        console.log(selectedOffer, 'itooooo')
-        acceptOfferHandler(selectedOffer)
-    }   
+
+        if (selectedOffer) {
+            console.log(selectedOffer, 'itooooo')
+            acceptOfferHandler(selectedOffer)
+        }
 
 
     }, [selectedOffer]);
@@ -70,14 +75,14 @@ const FreelancerOffers = () => {
             // navigate(`/chat`)
         }
         if (isUpdated) {
-            console.log(updatedOffer,'nyawit')
+            console.log(updatedOffer, 'nyawit')
             socket.emit("accept offer", updatedOffer);
-          
-          
+
+
             dispatch({ type: UPDATE_OFFER_RESET });
-          }
-      
-    
+        }
+
+
     }, [dispatch, alert, success, isUpdated])
 
     // const requestOffers = offers.filter(function (o) {
@@ -96,7 +101,7 @@ const FreelancerOffers = () => {
 
 
     const acceptOfferHandler = (requestoffer) => {
-        if(!requestoffer) return;
+        if (!requestoffer) return;
         const offerData = new FormData();
         offerData.set('request_id', requestoffer.request_id._id);
         // formData.set('client', 'false');

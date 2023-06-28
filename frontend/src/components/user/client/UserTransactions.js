@@ -61,7 +61,7 @@ const UserTransactions = () => {
 
   const [reason, setReason] = useState("");
   const [description, setDescription] = useState("");
-  useEffect(() => {}, [dispatch, alert]);
+  useEffect(() => { }, [dispatch, alert]);
 
   useEffect(() => {
     if (error) {
@@ -318,40 +318,40 @@ const UserTransactions = () => {
     reportData.set("reported_by", user._id);
     reportData.set("transaction_id", transaction._id);
     // if user is the service provider
-    if ( transaction.inquiry_id &&
+    if (transaction.inquiry_id &&
       transaction.inquiry_id.freelancer &&
       transaction.inquiry_id.freelancer.user_id &&
       transaction.inquiry_id.freelancer.user_id._id ===
-        user._id) {
+      user._id) {
       reportData.set("user_reported", transaction.inquiry_id.customer._id);
-    }else if(
+    } else if (
       transaction.offer_id &&
       transaction.offer_id.request_id &&
       transaction.offer_id.offered_by &&
       transaction.offer_id.offered_by._id === user._id
-    ){
+    ) {
       reportData.set("user_reported", transaction.offer_id.request_id.requested_by);
     }
 
-      
+
     // if user is the client
     else if (
       transaction.inquiry_id &&
       transaction.inquiry_id.customer &&
       transaction.inquiry_id.customer._id ===
       user._id) {
-        console.log('dito1')
+      console.log('dito1')
       reportData.set("user_reported", transaction.inquiry_id.freelancer.user_id._id);
-      
+
     }
     else if (
       transaction.offer_id &&
       transaction.offer_id.request_id &&
       transaction.offer_id.request_id.requested_by._id ===
       user._id) {
-        console.log('dito2')
+      console.log('dito2')
       reportData.set("user_reported", transaction.offer_id.offered_by._id);
-      
+
     }
 
     const formData = new FormData();
@@ -360,37 +360,37 @@ const UserTransactions = () => {
       transaction.inquiry_id.freelancer &&
       transaction.inquiry_id.freelancer.user_id &&
       transaction.inquiry_id.freelancer.user_id._id ===
-        user._id) {
+      user._id) {
       formData.set("freelancer", "true");
       formData.set("client", transaction.reportedBy.client);
-    } else if(transaction.inquiry_id &&
+    } else if (transaction.inquiry_id &&
       transaction.inquiry_id.freelancer &&
       transaction.inquiry_id.freelancer.user_id &&
       transaction.inquiry_id.freelancer.user_id._id ===
-        user._id){
-          formData.set("freelancer", "true");
-          formData.set("client", transaction.reportedBy.client);
-        } 
-    
-   
-      // if user is the client
-      else if (
-        transaction.inquiry_id &&
-        transaction.inquiry_id.customer &&
-        transaction.inquiry_id.customer._id ===
-        user._id) {
-        // reportData.set("user_reported", transaction.inquiry_id.freelancer._id);
-        formData.set("freelancer", transaction.reportedBy.freelancer);
-        formData.set("client", "true");
-      }
-      else if (
-        transaction.offer_id &&
-        transaction.offer_id.request_id &&
-        transaction.offer_id.request_id.request_by ===
-        user._id) {
-        formData.set("freelancer", transaction.reportedBy.freelancer);
-        formData.set("client", "true");
-      }
+      user._id) {
+      formData.set("freelancer", "true");
+      formData.set("client", transaction.reportedBy.client);
+    }
+
+
+    // if user is the client
+    else if (
+      transaction.inquiry_id &&
+      transaction.inquiry_id.customer &&
+      transaction.inquiry_id.customer._id ===
+      user._id) {
+      // reportData.set("user_reported", transaction.inquiry_id.freelancer._id);
+      formData.set("freelancer", transaction.reportedBy.freelancer);
+      formData.set("client", "true");
+    }
+    else if (
+      transaction.offer_id &&
+      transaction.offer_id.request_id &&
+      transaction.offer_id.request_id.request_by ===
+      user._id) {
+      formData.set("freelancer", transaction.reportedBy.freelancer);
+      formData.set("client", "true");
+    }
 
     dispatch(ReportDone(transaction._id, formData));
     dispatch(newReport(reportData));
@@ -726,79 +726,79 @@ const UserTransactions = () => {
 
       {/* REPORT SERVICE MODAL */}
       <Fragment>
-                <div className="modal fade" id="ReportServiceModal" tabIndex="-1" role="dialog" aria-labelledby="ReportServiceModalTitle" aria-hidden="true" >
-                    <div className="modal-dialog modal-dialog-centered" role="document" style={{ maxWidth: '700px' }}>
-                        <div className="modal-content" >
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="ReportServiceModalTitle">Report User</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+        <div className="modal fade" id="ReportServiceModal" tabIndex="-1" role="dialog" aria-labelledby="ReportServiceModalTitle" aria-hidden="true" >
+          <div className="modal-dialog modal-dialog-centered" role="document" style={{ maxWidth: '700px' }}>
+            <div className="modal-content" >
+              <div className="modal-header">
+                <h5 className="modal-title" id="ReportServiceModalTitle">Report User</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
 
-                            <form className="a" onSubmit={submitReportHandler} encType='multipart/form-data' >
-                                <div className="modal-body">
+              <form className="a" onSubmit={submitReportHandler} encType='multipart/form-data' >
+                <div className="modal-body">
 
-                                    <div style={{ padding: '10px 10px' }}>
+                  <div style={{ padding: '10px 10px' }}>
 
-                                        <label htmlFor="reason">Reason:</label>
+                    <label htmlFor="reason">Reason:</label>
 
-                                        <select
-                                            name="reason"
-                                            id="reason"
-                                            className='form-control'
-                                            value={reason}
-                                            onChange={(e) => setReason(e.target.value)}
-                                        >
-                                            <option value="">Select Reason</option>
-                                            <option value="Missed deadlines">Missed deadlines</option>
-                                            <option value="Poor work quality">Poor work quality</option>
-                                            <option value="Plagiarism">Plagiarism</option>
-                                            <option value="Unprofessional behavior">Unprofessional behavior</option>
-                                            <option value="Harassment">Harassment</option>
-                                            <option value="Nudity or sexual content">Nudity or sexual content</option>
-                                            <option value="Terrorism or violence">Terrorism or violence</option>
-
-
-                                        </select>
-                                        <br />
-                                        <label>Description: </label>
-                                        <textarea
-                                            name="description"
-                                            id="description" className="form-control mt-3"
-                                            style={{ minHeight: '200px' }}
-                                            value={description}
-                                            onChange={(e) => setDescription(e.target.value)}
-                                        >
-                                        </textarea>
-
-                                        {/* Add proof or evidence here(optional) */}
+                    <select
+                      name="reason"
+                      id="reason"
+                      className='form-control'
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                    >
+                      <option value="">Select Reason</option>
+                      <option value="Missed deadlines">Missed deadlines</option>
+                      <option value="Poor work quality">Poor work quality</option>
+                      <option value="Plagiarism">Plagiarism</option>
+                      <option value="Unprofessional behavior">Unprofessional behavior</option>
+                      <option value="Harassment">Harassment</option>
+                      <option value="Nudity or sexual content">Nudity or sexual content</option>
+                      <option value="Terrorism or violence">Terrorism or violence</option>
 
 
-                                    </div>
+                    </select>
+                    <br />
+                    <label>Description: </label>
+                    <textarea
+                      name="description"
+                      id="description" className="form-control mt-3"
+                      style={{ minHeight: '200px' }}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    >
+                    </textarea>
+
+                    {/* Add proof or evidence here(optional) */}
 
 
+                  </div>
 
 
 
 
 
 
-                                </div>
-
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" className="btn btn-primary" >Submit</button>
 
 
-                                </div>
-
-                            </form>
-
-                        </div>
-                    </div>
                 </div>
-            </Fragment>
+
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" className="btn btn-primary" >Submit</button>
+
+
+                </div>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </Fragment>
 
       {/* PAYMENT MODAL */}
       <Fragment>

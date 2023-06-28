@@ -31,7 +31,7 @@ const Request = ({ request, services, setSelectedRequest }) => {
     // const { loading, error, transactions } = useSelector(state => state.transactions);
     const { loadings, detailserror, transaction } = useSelector(state => state.transactionDetails);
     const { error, singlerequest } = useSelector(state => state.requestDetails);
- 
+
     const { user, isAuthenticated } = useSelector(state => state.auth)
 
     // const [service_id, setServiceId] = useState('');
@@ -41,23 +41,23 @@ const Request = ({ request, services, setSelectedRequest }) => {
 
     useEffect(() => {
         if (error) {
-            
+
             return alert.error(error)
         }
-     
-      
+
+
         // if(request_id){
         //     setRequestId(request_id);
         // }
 
-    //     if(user.role === 'freelancer'){
-    //         dispatch(getFreelancerServices(user.freelancer_id._id));
-    //    }
+        //     if(user.role === 'freelancer'){
+        //         dispatch(getFreelancerServices(user.freelancer_id._id));
+        //    }
 
     }, [dispatch, alert, error]);
 
     // useEffect(() => {
-  
+
     //     if(user.role === 'freelancer'){
     //         dispatch(getFreelancerServices(user.freelancer_id._id));
     //    }
@@ -89,7 +89,7 @@ const Request = ({ request, services, setSelectedRequest }) => {
     return (
 
         <Fragment>
- 
+
             <div className="card post" style={{ margin: 'auto', margin: "10px 0px", flexDirection: 'column' }}>
                 <div className="post-header">
                     <div className="post-author-info">
@@ -146,8 +146,8 @@ const Request = ({ request, services, setSelectedRequest }) => {
 
 
             </div>
-    
-          
+
+
         </Fragment>
 
     );

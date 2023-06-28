@@ -7,7 +7,7 @@ import SingleChat from './SingleChat'
 import { ChatState } from '../../Context/ChatProvider'
 import Loader from '../layout/Loader'
 
-const ChatBox = ({ fetchAgain, setFetchAgain, offers, loading }) => {
+const ChatBox = ({ fetchAgain, setFetchAgain, offers, loading, setFetchOffersAgain, fetchOffersAgain }) => {
     // const { user, loading } = useSelector(state => state.auth)
     const { selectedChat } = ChatState();
     return (
@@ -15,7 +15,7 @@ const ChatBox = ({ fetchAgain, setFetchAgain, offers, loading }) => {
             {/* {selectedChat ? ( */}
             <Fragment>
                 {loading ? <Loader /> : (
-                    <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} />
+                    <SingleChat fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} offers={offers} setFetchOffersAgain={setFetchOffersAgain} fetchOffersAgain={fetchOffersAgain} />
                 )}
             </Fragment>
 

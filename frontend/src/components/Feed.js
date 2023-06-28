@@ -7,6 +7,7 @@ import Request from './Request';
 import Loader from './layout/Loader';
 import $ from 'jquery';
 import socket from '../Context/socket';
+
 import Swal from 'sweetalert2';
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,6 +21,9 @@ import { getCategories } from '../actions/categoryActions';
 import { getRequests, clear } from '../actions/requestActions';
 import { newOffer } from '../actions/offerActions';
 import { NEW_OFFER_RESET } from '../constants/offerConstants';
+
+
+var selectedChatCompare;
 
 // import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone } from '../../../actions/transactionActions';
 // import { UPDATE_PSENT_RESET, UPDATE_PRECEIVED_RESET, UPDATE_TRANSACTIONDONE_RESET } from '../../../actions/transactionActions';
@@ -52,6 +56,8 @@ const Feed = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
 
+
+
     useEffect(() => {
         if (error) {
             alert.success('success')
@@ -66,33 +72,33 @@ const Feed = () => {
 
 
 
-    }, [dispatch, alert, error]);
+    }, [dispatch, alert, error, success]);
     useEffect(() => {
-  
-        if(user.role === 'freelancer'){
+
+        if (user.role === 'freelancer') {
             dispatch(getFreelancerServices(user.freelancer_id._id));
-       }
+        }
 
     }, []);
 
     useEffect(() => {
-  console.log(selectedRequest)
-     
+        console.log(selectedRequest)
+
 
     }, [selectedRequest]);
     useEffect(() => {
-     
-           
-       if (success) {
-        socket.emit("new offer", offer); 
-        dispatch({ type: NEW_OFFER_RESET });
- console.log('bakit ako')
-        Swal.fire("Offer sent Successfully!", "", "success");
-       
-      }
-          }, [success]);
-      
-   
+
+
+        if (success) {
+            socket.emit("new offer", offer);
+            dispatch({ type: NEW_OFFER_RESET });
+            console.log('bakit ako')
+            Swal.fire("Offer sent Successfully!", "", "success");
+
+        }
+    }, [success]);
+
+
     // function setCurrentPageNo(pageNumber) {
     //     setCurrentPage(pageNumber)
     // }
@@ -177,7 +183,7 @@ const Feed = () => {
 
                                 {sortedRequests && sortedRequests.map(request => (
 
-                                    <Request key={request._id} request={request} services={services} setSelectedRequest = {setSelectedRequest} />
+                                    <Request key={request._id} request={request} services={services} setSelectedRequest={setSelectedRequest} />
                                 ))}
 
 
@@ -221,9 +227,9 @@ const Feed = () => {
                 </div>
 
             </Fragment>
-  {/* MAKE OFFER MODAL */}
+            {/* MAKE OFFER MODAL */}
 
-  <div className="modal fade" id="MakeOfferModal" tabIndex="-1" role="dialog" aria-labelledby="MakeOfferModalTitle" aria-hidden="true" >
+            <div className="modal fade" id="MakeOfferModal" tabIndex="-1" role="dialog" aria-labelledby="MakeOfferModalTitle" aria-hidden="true" >
                 <div className="modal-dialog modal-dialog-centered" role="document" style={{ maxWidth: '700px' }}>
                     <div className="modal-content" >
                         <div className="modal-header">
@@ -279,7 +285,7 @@ const Feed = () => {
                                         />
                                     </div>
 
-                               
+
                                 </div>
 
 

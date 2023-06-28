@@ -250,7 +250,7 @@ const Transaction = ({ transaction }) => {
                     <div>Date to be Finished: {moment(transaction.expected_Date).format('MMM/DD/yy')}</div>
                 </div>
                 <div style={{ display: 'flex', overflow: 'hidden' }}>
-           
+
                     {transaction.transaction_done && transaction.transaction_done.freelancer === 'false' && (
                         <div className='inTransDiv'>
                             <button className='buttonInTrans' style={{ border: '1px solid transparent', backgroundColor: '#0fa0dc', color: '#fff' }} onClick={() => workDoneHandler(transaction._id)} data-toggle="tooltip" data-placement="bottom" title="is Work done?">Work Done</button>
@@ -269,22 +269,22 @@ const Transaction = ({ transaction }) => {
                             <button className='buttonInTransCircle' style={{ backgroundColor: 'transparent', color: 'red' }}> <i className="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="bottom" title='Report this Client'></i></button>
                         </div>
                     )} */}
-                     {transaction && transaction.reportedBy.freelancer === 'false' && (
-                            <div className='inTransDiv' data-toggle="tooltip" data-placement="bottom" title="Report this Client" onClick={() => transactionDetailsHandler(transaction._id)}>
-                                <Link to={''} className= 'buttonInTransCircle' data-toggle="modal" data-target="#ReportServiceModal" style={{ backgroundColor: 'transparent', color: 'red' }}>
-                                  
-                                        <i className="fa fa-exclamation-circle" ></i>
-                                </Link>
-                            </div>
-                        )}
-                        {transaction && transaction.reportedBy.freelancer === 'true' && (
-                            <div className='inTransDiv' data-toggle="tooltip" data-placement="bottom" title="You reported this user already">
-                                <Link to={''} className= 'buttonInTransCircle' disabled style={{ backgroundColor: 'transparent', color: 'red' }}>
-                                    
-                                     <i className="fa fa-exclamation-circle" ></i>
-                                </Link>
-                            </div>
-                        )}
+                    {transaction && transaction.reportedBy.freelancer === 'false' && (
+                        <div className='inTransDiv' data-toggle="tooltip" data-placement="bottom" title="Report this Client" onClick={() => transactionDetailsHandler(transaction._id)}>
+                            <Link to={''} className='buttonInTransCircle' data-toggle="modal" data-target="#ReportServiceModal" style={{ backgroundColor: 'transparent', color: 'red' }}>
+
+                                <i className="fa fa-exclamation-circle" ></i>
+                            </Link>
+                        </div>
+                    )}
+                    {transaction && transaction.reportedBy.freelancer === 'true' && (
+                        <div className='inTransDiv' data-toggle="tooltip" data-placement="bottom" title="You reported this user already">
+                            <Link to={''} className='buttonInTransCircle' disabled style={{ backgroundColor: 'transparent', color: 'red' }}>
+
+                                <i className="fa fa-exclamation-circle" ></i>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

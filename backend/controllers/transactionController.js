@@ -493,10 +493,10 @@ exports.getDashboardInfo = async (req, res, next) => {
     await Promise.all([freelancerAndServiceCount, userCount, transactionCount]);
 
   const result = {
-    freelancerCount: freelancerAndServiceResult[0].freelancerCount,
-    serviceCount: freelancerAndServiceResult[0].serviceCount,
-    userCount: userResult[0].count,
-    transactionCount: transactionResult[0].count,
+    freelancerCount: (freelancerAndServiceResult[0]) ? freelancerAndServiceResult[0].freelancerCount : 0,
+    serviceCount: freelancerAndServiceResult[0] ? freelancerAndServiceResult[0].serviceCount : 0,
+    userCount: userResult[0] ? userResult[0].count : 0,
+    transactionCount: transactionResult[0] ? transactionResult[0].count : 0,
   };
   // const freelancerCount = freelancer.length()
   // const freelancerCount = freelancer.length()
@@ -568,7 +568,7 @@ exports.getDashboardCounts = async (req, res, next) => {
       transaction.inquiry_id.freelancer &&
       transaction.inquiry_id.freelancer.user_id &&
       transaction.inquiry_id.freelancer.user_id._id.toString() ===
-        req.user._id.toString()
+      req.user._id.toString()
   );
 
   const freelancerThroughRequest = transactions.filter(
@@ -595,10 +595,10 @@ exports.getDashboardCounts = async (req, res, next) => {
 
   console.log(completedTransaction.length);
 
-  const myinquiries = await Inquiry.find({customer: req.user._id})
-  const myrequests = await Request.find({requested_by: req.user._id})
+  const myinquiries = await Inquiry.find({ customer: req.user._id })
+  const myrequests = await Request.find({ requested_by: req.user._id })
   const totalInquiriesAndRequest = myinquiries.length + myrequests.length;
-    // console.log(myinquiries);
+  // console.log(myinquiries);
   //   console.log(total);
 
   const result = {

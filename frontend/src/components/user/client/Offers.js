@@ -20,7 +20,7 @@ const Offers = ({ offer, setSelectedOffer }) => {
 
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const { success } = useSelector(state => state.newChat)
-    const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector((state) => state.updateoffer);
+    const { offer: updatedOffer, updateloading, success: isUpdated } = useSelector((state) => state.updateoffer);
 
     const dispatch = useDispatch();
     let navigate = useNavigate();
@@ -30,7 +30,7 @@ const Offers = ({ offer, setSelectedOffer }) => {
 
 
 
- 
+
 
 
 

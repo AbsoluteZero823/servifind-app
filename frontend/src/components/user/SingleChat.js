@@ -33,15 +33,15 @@ import { updateStatus } from "../../actions/inquiryActions";
 import { newNotification } from "../../actions/notificationActions";
 
 import moment from "moment/moment";
+import socket from "../../Context/socket";
 
-import io from "socket.io-client";
+
 import Swal from "sweetalert2";
 
-const ENDPOINT = "http://localhost:4002"; //localhost
-// const ENDPOINT = "https://servifind-app.onrender.com" //website
-var socket, selectedChatCompare;
 
-const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
+var selectedChatCompare;
+
+const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fetchOffersAgain }) => {
 
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const dispatch = useDispatch();
@@ -57,16 +57,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } =
     ChatState();
   const { user } = useSelector((state) => state.auth);
-  const { offer, success, newOfferLoading } = useSelector(
+  const { offer, success, loading: newOfferLoading } = useSelector(
     (state) => state.addOffer
   );
-  const {notification: newNotif} = useSelector((state)=> state.addNotification);
+  const { notification: newNotif } = useSelector((state) => state.addNotification);
   // const {updateloading} = useSelector(state=>state.updatePayment)
 
   const { singleoffer, loadings } = useSelector((state) => state.singleOffer);
 
   //sa update offer
-  const { offer: updatedOffer,updateloading, success: isUpdated } = useSelector(
+  const { offer: updatedOffer, updateloading, success: isUpdated } = useSelector(
     (state) => state.updateoffer
   );
 
@@ -90,16 +90,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   const [istyping, setIsTyping] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
 
-  // useEffect(() => {
-  //   socket = io(ENDPOINT);
-  //   socket.emit("setup", user);
-  //   socket.on("connected", () => setSocketConnected(true));
-  //   socket.on("typing", () => setIsTyping(true));
-  //   socket.on("stop typing", () => setIsTyping(false));
-  // }, []);
+
   useEffect(() => {
     let isMounted = true; // Flag to track if component is mounted
-    socket = io(ENDPOINT);
+
     // socket.emit("setup", user);
 
     socket.on("connected", () => {
@@ -157,7 +151,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
       formData.set("expected_Date", expectedDate);
       formData.set("inquiry_id", selectedChat.inquiry_id._id);
       dispatch(newTransaction(formData));
-      setFetchAgain(!fetchAgain);
+      setFetchOffersAgain(!fetchOffersAgain)
+      // setFetchAgain(!fetchAgain);
       $(".close").click();
       Swal.fire("Offer sent Successfully!", "", "success");
       dispatch({ type: NEW_OFFER_RESET });
@@ -166,8 +161,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     if (isUpdated) {
       console.log(updatedOffer)
       socket.emit("accept offer", updatedOffer);
-      
-      setFetchAgain(!fetchAgain);
+      setFetchOffersAgain(!fetchOffersAgain)
+      // setFetchAgain(!fetchAgain);
       dispatch({ type: UPDATE_OFFER_RESET });
     }
 
@@ -237,40 +232,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageReceivedLocal.chat._id
       ) {
-       
-        
-       
-          //dito mo lagay ung add notif
 
-          // const formData = new FormData();
-          // // console.log(newMessageReceivedLocal);
-    
-          // formData.set("type", "message");
-          // formData.set("message", `New message from ${newMessageReceivedLocal.sender.name}`);
-          // if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
-          //   formData.set("user_id", newMessageReceivedLocal.chat.users[1]._id)
-          // }
-          // else {
-          //   formData.set("user_id", newMessageReceivedLocal.chat.users[0]._id)
-          // }
-          // formData.set("type_id", newMessageReceivedLocal._id)
-        
-          // dispatch(newNotification(formData))
 
-          addNotif()
 
-          // setNotification(prevNotification => {
-          //   const updatedNotification = [newMessageReceived, ...prevNotification];
-          //   return updatedNotification.filter((item, index) => {
-          //     return (
-          //       index === updatedNotification.findIndex(
-          //         obj => obj._id === item._id
-          //       )
-          //     );
-          //   });
-          // });
-          // console.log(newMessageReceived);
-      
+        //dito mo lagay ung add notif
+
+        // const formData = new FormData();
+        // // console.log(newMessageReceivedLocal);
+
+        // formData.set("type", "message");
+        // formData.set("message", `New message from ${newMessageReceivedLocal.sender.name}`);
+        // if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
+        //   formData.set("user_id", newMessageReceivedLocal.chat.users[1]._id)
+        // }
+        // else {
+        //   formData.set("user_id", newMessageReceivedLocal.chat.users[0]._id)
+        // }
+        // formData.set("type_id", newMessageReceivedLocal._id)
+
+        // dispatch(newNotification(formData))
+
+        addNotif()
+
+        // setNotification(prevNotification => {
+        //   const updatedNotification = [newMessageReceived, ...prevNotification];
+        //   return updatedNotification.filter((item, index) => {
+        //     return (
+        //       index === updatedNotification.findIndex(
+        //         obj => obj._id === item._id
+        //       )
+        //     );
+        //   });
+        // });
+        // console.log(newMessageReceived);
+
         //give notification
       } else {
         // setFetchAgain(!fetchAgain);
@@ -314,14 +309,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   //       !selectedChatCompare || // if chat is not selected or doesn't match current chat
   //       selectedChatCompare._id !== newMessageReceivedLocal.chat._id
   //     ) {
-       
-        
-       
+
+
+
   //         //dito mo lagay ung add notif
 
   //         const formData = new FormData();
   //         console.log(newMessageReceivedLocal);
-    
+
   //         formData.set("type", "message");
   //         formData.set("message", `New message from ${newMessageReceivedLocal.sender.name}`);
   //         if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
@@ -331,7 +326,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   //           formData.set("user_id", newMessageReceivedLocal.chat.users[0]._id)
   //         }
   //         formData.set("type_id", newMessageReceivedLocal._id)
-        
+
   //         dispatch(newNotification(formData))
 
   //         // setNotification(prevNotification => {
@@ -345,7 +340,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   //         //   });
   //         // });
   //         // console.log(newMessageReceived);
-      
+
   //       //give notification
   //     } else {
   //       setFetchAgain(!fetchAgain);
@@ -359,7 +354,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
   // }, [newMessageReceivedLocal]);
   // useEffect(() => {
   //   socket.on("message received", (newMessageReceived) => {
-     
+
   //   });
   // });
   // useEffect(() => {
@@ -374,46 +369,46 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
 
   const addNotif = async () => {
     console.log("awot")
-   
-   let userid = ""
-    
-     if(newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id){
-       userid = newMessageReceivedLocal.chat.users[1]._id
-     }
-     else {
+
+    let userid = ""
+
+    if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+      userid = newMessageReceivedLocal.chat.users[1]._id
+    }
+    else {
       userid = newMessageReceivedLocal.chat.users[0]._id
-     }
-   
-       // event.preventDefault();
-   
-       try {
-         const config = {
-           headers: {
-             "Content-type": "application/json",
-             // Authorization: `Bearer ${user.token}`,
-           },
-         };
-        
-         const { data } = await axios.post(
-           "/api/v1/notification/new",
-           {
-             type: "message",
-             message: `New message from ${newMessageReceivedLocal.sender.name}`,
-             type_id: newMessageReceivedLocal._id,
-             user_id: userid
-           },
-           config
-         );
-         console.log(data);
-         // socket.emit("new message", data.message);
-         // setMessages([...messages, data.message]);
-   
-         // setFetchAgain(!fetchAgain);
-       } catch (error) {
-         console.log(error);
-       }
-   
-   };
+    }
+
+    // event.preventDefault();
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/v1/notification/new",
+        {
+          type: "message",
+          message: `New message from ${newMessageReceivedLocal.sender.name}`,
+          type_id: newMessageReceivedLocal._id,
+          user_id: userid
+        },
+        config
+      );
+      console.log(data);
+      // socket.emit("new message", data.message);
+      // setMessages([...messages, data.message]);
+
+      // setFetchAgain(!fetchAgain);
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -544,6 +539,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers }) => {
     offerData.set("inquiry_id", selectedChat.inquiry_id._id);
 
     dispatch(newOffer(offerData));
+
   };
 
   const acceptHandler = (id, inquiry_or_offer_id, type) => {

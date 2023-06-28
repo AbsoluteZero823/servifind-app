@@ -35,7 +35,7 @@ const SingleService = () => {
     const { user, isAuthenticated } = useSelector(state => state.auth)
 
     const { inquiry, error, success } = useSelector(state => state.inquiry)
-    
+
     // const { loading, error, services } = useSelector(state => state.services);
     const { id } = useParams();
 
@@ -73,7 +73,7 @@ const SingleService = () => {
             accessChat(chatData);
             alert.success('Inquiry created successfully');
             dispatch({ type: NEW_INQUIRY_RESET })
-        
+
         }
 
 
@@ -192,23 +192,23 @@ const SingleService = () => {
 
                                     </div>
                                 </div>
-  {(!user && !isAuthenticated) &&
-                       <Link className='row' to={`/login`} style={{ justifyContent: 'space-around', paddingTop: '10px'  }}>
-                       <button className="custom-btn btn-5"><span style={{ margin: '10px' }} >Inquire</span></button>
-                       {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
+                                {(!user && !isAuthenticated) &&
+                                    <Link className='row' to={`/login`} style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
+                                        <button className="custom-btn btn-5"><span style={{ margin: '10px' }} >Inquire</span></button>
+                                        {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
 
-                   </Link> 
-                    }
+                                    </Link>
+                                }
 
 
-                    {(user && isAuthenticated) &&
-                      <div className='row' style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
-                                    <button className="custom-btn btn-5" data-toggle="modal" data-target="#exampleModalCenter" ><span style={{ margin: '10px' }} >Inquire</span></button>
-                                    {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
+                                {(user && isAuthenticated) &&
+                                    <div className='row' style={{ justifyContent: 'space-around', paddingTop: '10px' }}>
+                                        <button className="custom-btn btn-5" data-toggle="modal" data-target="#exampleModalCenter" ><span style={{ margin: '10px' }} >Inquire</span></button>
+                                        {/* <button className="custom-btn btn-5" ><span>Read More</span></button> */}
 
-                                </div>
-                    }
-                                
+                                    </div>
+                                }
+
 
                                 {service.freelancer_id && service.freelancer_id.availability ? (
                                     <div style={{ minWidth: 50, border: '2px solid', borderRadius: 10, borderColor: 'lightgreen', padding: 10, margin: '20px' }}>
