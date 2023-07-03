@@ -26,8 +26,7 @@ import { ChatState } from "../../Context/ChatProvider";
 
 const Header = () => {
 
-  const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
-  const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+  
   const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
 
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
@@ -55,12 +54,8 @@ const Header = () => {
   //   //   setNewMessageReceivedLocal(newMessageReceived);
   //   // });
 
-  //   socket.on('offer received', (newOfferReceived) => {
-  //     setNewOfferReceivedLocal(newOfferReceived);
-  //   });
-  //   socket.on('inquiry received', (newInquiryReceived) => {
-  //     setNewInquiryReceivedLocal(newInquiryReceived);
-  //   });
+ 
+
 
 
 
@@ -125,58 +120,9 @@ const Header = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
-  //     // Execute your code when a new message is received
-  //     console.log('New inquiry received:', newInquiryReceivedLocal);
+  
 
-
-  //     // addInquiryNotif()
-
-  //     const formData = new FormData();
-  //     formData.set("type", 'inquiry');
-  //     formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-  //     formData.set("type_id", newInquiryReceivedLocal._id);
-  //     formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
-
-  //     // type: "inquiry",
-  //     //   message: `New Inquiry from ${newInquiryReceivedLocal.customer.name}`,
-  //     //     type_id: newInquiryReceivedLocal._id,
-  //     //       user_id: newInquiryReceivedLocal.freelancer.user_id
-
-  //     dispatch(newNotification(formData));
-
-
-  //     // Reset the newMessageReceived state
-  //     setFetchNotificationAgain(!fetchNotificationAgain);
-  //     setNewInquiryReceivedLocal(null);
-  //   }
-  // }, [newInquiryReceivedLocal]);
-
-  // useEffect(() => {
-  //   if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
-  //     // Execute your code when a new offer is received
-  //     console.log('New offer received:', newOfferReceivedLocal);
-
-
-  //     // addOfferNotif()
-
-  //     const formData = new FormData();
-  //     formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-  //     formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-  //     formData.set("type_id", newOfferReceivedLocal._id);
-  //     formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-  //     dispatch(newNotification(formData));
-  //     // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-  //     //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-  //     //     type_id: newOfferReceivedLocal._id,
-  //     //       user_id: userid
-
-  //     // Reset the newOfferReceived state
-  //     setFetchNotificationAgain(!fetchNotificationAgain);
-  //     setNewOfferReceivedLocal(null);
-  //   }
-  // }, [newOfferReceivedLocal]);
+ 
 
 
   // useEffect(() => {
@@ -387,10 +333,10 @@ const Header = () => {
                     />
                   </figure>
                   {user && user.role !== 'customer' && (
-                    <span>{user && user.role} : {user && user.name}</span>
+                    <span> {user && user.role} : {user && user.name}</span>
                   )}
                   {user && user.role === 'customer' && (
-                    <span>client : {user && user.name}</span>
+                    <span> client : {user && user.name}</span>
                   )}
                 </Link>
 

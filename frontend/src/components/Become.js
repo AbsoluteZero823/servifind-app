@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
 
 import { getFreelancers } from '../actions/freelancerActions';
+import { newNotification } from '../actions/notificationActions';
+
 import axios from "axios";
 import { ChatState } from '../Context/ChatProvider';
 import socket from '../Context/socket';
@@ -21,6 +23,8 @@ const Become = () => {
 
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+  const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+
   const alert = useAlert();
   const dispatch = useDispatch();
 
@@ -35,7 +39,35 @@ const Become = () => {
       setNewMessageReceivedLocal(newMessageReceived);
     });
 
+       socket.on('offer received', (newOfferReceived) => {
+      setNewOfferReceivedLocal(newOfferReceived);
+    });
   }, []);
+
+   useEffect(() => {
+    if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('New offer received:', newOfferReceivedLocal);
+
+
+      // addOfferNotif()
+
+      const formData = new FormData();
+      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+      formData.set("type_id", newOfferReceivedLocal._id);
+      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+      dispatch(newNotification(formData));
+      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+      //     type_id: newOfferReceivedLocal._id,
+      //       user_id: userid
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewOfferReceivedLocal(null);
+    }
+  }, [newOfferReceivedLocal]);
 
   useEffect(() => {
     if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {

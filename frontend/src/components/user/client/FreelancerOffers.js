@@ -5,8 +5,6 @@ import { useParams } from "react-router-dom";
 import MetaData from '../../layout/MetaData';
 import Offers from './Offers'
 import Loader from '../../layout/Loader';
-import socket from '../../../Context/socket';
-
 
 import Swal from 'sweetalert2'
 
@@ -19,17 +17,20 @@ import { accessChat } from '../../../actions/chatActions';
 
 import { UPDATE_OFFER_RESET } from '../../../constants/offerConstants';
 import { NEW_CHAT_RESET } from '../../../constants/chatConstants';
-// import { allUsers } from '../actions/userActions'
-// import Slider from 'rc-slider'
-// import 'rc-slider/assets/index.css'
+import { newNotification } from '../../../actions/notificationActions';
 
+import axios from "axios";
+
+import { ChatState } from '../../../Context/ChatProvider';
+import socket from '../../../Context/socket';
 
 var selectedChatCompare;
 
-
-
 const FreelancerOffers = () => {
-
+    const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
+    const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+    const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
+    const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
     // const { createSliderWithToolTip } = Slider;
     // const Range = createSliderWithToolTip(Slider.Range);
 
@@ -84,6 +85,128 @@ const FreelancerOffers = () => {
 
 
     }, [dispatch, alert, success, isUpdated])
+
+    useEffect(() => {
+        socket.on('message received', (newMessageReceived) => {
+            setNewMessageReceivedLocal(newMessageReceived);
+        });
+
+        socket.on('inquiry received', (newInquiryReceived) => {
+            setNewInquiryReceivedLocal(newInquiryReceived);
+            });
+
+            socket.on('offer received', (newOfferReceived) => {
+                setNewOfferReceivedLocal(newOfferReceived);
+              });
+    }, []);
+
+    useEffect(() => {
+        if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+            // Execute your code when a new message is received
+            console.log('New message received:', newMessageReceivedLocal);
+
+            if (
+                !selectedChatCompare || // if chat is not selected or doesn't match current chat
+                selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+            ) {
+                addMessageNotif()
+            } else {
+                // setFetchAgain(!fetchAgain);
+                // setMessages([...messages, newMessageReceived]);
+                console.log("over")
+            }
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewMessageReceivedLocal(null);
+        }
+    }, [newMessageReceivedLocal]);
+
+    useEffect(() => {
+        if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
+          // Execute your code when a new message is received
+          console.log('New inquiry received:', newInquiryReceivedLocal);
+    
+    
+          // addInquiryNotif()
+    
+          const formData = new FormData();
+          formData.set("type", 'inquiry');
+          formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+          formData.set("type_id", newInquiryReceivedLocal._id);
+          formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+    
+          dispatch(newNotification(formData));
+    
+    
+          // Reset the newMessageReceived state
+          setFetchNotificationAgain(!fetchNotificationAgain);
+          setNewInquiryReceivedLocal(null);
+        }
+      }, [newInquiryReceivedLocal]);
+
+      useEffect(() => {
+        if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+          // Execute your code when a new offer is received
+          console.log('New offer received:', newOfferReceivedLocal);
+    
+    
+          // addOfferNotif()
+    
+          const formData = new FormData();
+          formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+          formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+          formData.set("type_id", newOfferReceivedLocal._id);
+          formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+          dispatch(newNotification(formData));
+          // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+          //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+          //     type_id: newOfferReceivedLocal._id,
+          //       user_id: userid
+    
+          // Reset the newOfferReceived state
+          setFetchNotificationAgain(!fetchNotificationAgain);
+          setNewOfferReceivedLocal(null);
+        }
+      }, [newOfferReceivedLocal]);
+
+    const addMessageNotif = async () => {
+
+
+        let userid = ""
+
+        if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+            userid = newMessageReceivedLocal.chat.users[1]._id
+        }
+        else {
+            userid = newMessageReceivedLocal.chat.users[0]._id
+        }
+
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+
+                },
+            };
+
+            const { data } = await axios.post(
+                "/api/v1/notification/new",
+                {
+                    type: "message",
+                    message: `New message from ${newMessageReceivedLocal.sender.name}`,
+                    type_id: newMessageReceivedLocal._id,
+                    user_id: userid
+                },
+                config
+            );
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
 
     // const requestOffers = offers.filter(function (o) {
     //     return o.request_id === request_id;

@@ -16,6 +16,7 @@ import { addMessage } from '../../actions/messageActions'
 import { NEW_INQUIRY_RESET } from '../../constants/inquiryConstants'
 import $ from 'jquery';
 import moment from 'moment/moment'
+import { newNotification } from '../../actions/notificationActions';
 
 import axios from "axios";
 
@@ -30,6 +31,7 @@ const SingleService = () => {
 
     const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
     const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+    const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
     const [instruction, setInstruction] = useState('')
     const [service_id, setService_id] = useState('')
     const [customer, setCustomer] = useState('')
@@ -96,6 +98,10 @@ const SingleService = () => {
             setNewMessageReceivedLocal(newMessageReceived);
         });
 
+        socket.on('inquiry received', (newInquiryReceived) => {
+            setNewInquiryReceivedLocal(newInquiryReceived);
+            });
+
     }, []);
 
     useEffect(() => {
@@ -119,6 +125,29 @@ const SingleService = () => {
             setNewMessageReceivedLocal(null);
         }
     }, [newMessageReceivedLocal]);
+
+    useEffect(() => {
+        if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
+          // Execute your code when a new message is received
+          console.log('New inquiry received:', newInquiryReceivedLocal);
+    
+    
+          // addInquiryNotif()
+    
+          const formData = new FormData();
+          formData.set("type", 'inquiry');
+          formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+          formData.set("type_id", newInquiryReceivedLocal._id);
+          formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+    
+          dispatch(newNotification(formData));
+    
+    
+          // Reset the newMessageReceived state
+          setFetchNotificationAgain(!fetchNotificationAgain);
+          setNewInquiryReceivedLocal(null);
+        }
+      }, [newInquiryReceivedLocal]);
 
     const addMessageNotif = async () => {
 

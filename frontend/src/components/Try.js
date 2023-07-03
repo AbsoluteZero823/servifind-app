@@ -9,6 +9,7 @@ import Loader from './layout/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
 import { getServicesToDisplay } from '../actions/serviceActions'
+import { newNotification } from '../actions/notificationActions';
 
 
 import axios from "axios";
@@ -19,6 +20,8 @@ import { ChatState } from '../Context/ChatProvider';
 var selectedChatCompare;
 const Try = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+  const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
+  const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
 
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
 
@@ -99,6 +102,12 @@ const Try = () => {
       setNewMessageReceivedLocal(newMessageReceived);
     });
 
+    socket.on('inquiry received', (newInquiryReceived) => {
+      setNewInquiryReceivedLocal(newInquiryReceived);
+      });
+      socket.on('offer received', (newOfferReceived) => {
+        setNewOfferReceivedLocal(newOfferReceived);
+      });
   }, []);
 
   useEffect(() => {
@@ -122,6 +131,54 @@ const Try = () => {
       setNewMessageReceivedLocal(null);
     }
   }, [newMessageReceivedLocal]);
+
+  useEffect(() => {
+    if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('New inquiry received:', newInquiryReceivedLocal);
+
+
+      // addInquiryNotif()
+
+      const formData = new FormData();
+      formData.set("type", 'inquiry');
+      formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+      formData.set("type_id", newInquiryReceivedLocal._id);
+      formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+
+      dispatch(newNotification(formData));
+
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewInquiryReceivedLocal(null);
+    }
+  }, [newInquiryReceivedLocal]);
+
+  useEffect(() => {
+    if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('New offer received:', newOfferReceivedLocal);
+
+
+      // addOfferNotif()
+
+      const formData = new FormData();
+      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+      formData.set("type_id", newOfferReceivedLocal._id);
+      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+      dispatch(newNotification(formData));
+      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+      //     type_id: newOfferReceivedLocal._id,
+      //       user_id: userid
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewOfferReceivedLocal(null);
+    }
+  }, [newOfferReceivedLocal]);
 
   const addMessageNotif = async () => {
 
@@ -160,44 +217,7 @@ const Try = () => {
     }
 
   };
-  // const addInquiryNotif = async () => {
-  //     console.log("awot")
-
-
-  //     const userid = newInquiryReceivedLocal.freelancer.user_id
-
-
-  //        // event.preventDefault();
-
-  //        try {
-  //          const config = {
-  //            headers: {
-  //              "Content-type": "application/json",
-  //              // Authorization: `Bearer ${user.token}`,
-  //            },
-  //          };
-
-  //          const { data } = await axios.post(
-  //            "/api/v1/notification/new",
-  //            {
-  //              type: "inquiry",
-  //              message: `New Inquiry from ${newInquiryReceivedLocal.customer.name}`,
-  //              type_id: newInquiryReceivedLocal._id,
-  //              user_id: userid
-  //            },
-  //            config
-  //          );
-  //          console.log(data);
-  //          // socket.emit("new message", data.message);
-  //          // setMessages([...messages, data.message]);
-
-  //          // setFetchAgain(!fetchAgain);
-  //        } catch (error) {
-  //          console.log(error);
-  //        }
-
-  //    };
-
+ 
 
 
 
