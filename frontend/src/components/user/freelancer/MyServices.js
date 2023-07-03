@@ -9,7 +9,19 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { getFreelancerServices, deleteService } from '../../../actions/serviceActions';
 import { DELETE_SERVICES_RESET } from '../../../constants/serviceConstants'
+
+import axios from "axios";
+
+import { ChatState } from '../../../Context/ChatProvider'
+import socket from '../../../Context/socket'
+
+
+var selectedChatCompare;
+
 const MyServices = () => {
+    const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
+    const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+
     const { user, isAuthenticated } = useSelector(state => state.auth)
     const { services, loading } = useSelector(state => state.services)
     const { isDeleted } = useSelector(state => state.updelService)
@@ -23,12 +35,81 @@ const MyServices = () => {
             dispatch(getFreelancerServices(user.freelancer_id._id))
         }
 
-        if(isDeleted){
+        if (isDeleted) {
             // alert.success('Service deleted successfully');
             // navigate('/services');
             dispatch({ type: DELETE_SERVICES_RESET })
         }
     }, [dispatch, isDeleted])
+
+
+    useEffect(() => {
+        socket.on('message received', (newMessageReceived) => {
+            setNewMessageReceivedLocal(newMessageReceived);
+        });
+
+    }, []);
+
+    useEffect(() => {
+        if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+            // Execute your code when a new message is received
+            console.log('New message received:', newMessageReceivedLocal);
+
+            if (
+                !selectedChatCompare || // if chat is not selected or doesn't match current chat
+                selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+            ) {
+                addMessageNotif()
+            } else {
+                // setFetchAgain(!fetchAgain);
+                // setMessages([...messages, newMessageReceived]);
+                console.log("over")
+            }
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewMessageReceivedLocal(null);
+        }
+    }, [newMessageReceivedLocal]);
+
+    const addMessageNotif = async () => {
+
+
+        let userid = ""
+
+        if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+            userid = newMessageReceivedLocal.chat.users[1]._id
+        }
+        else {
+            userid = newMessageReceivedLocal.chat.users[0]._id
+        }
+
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+
+                },
+            };
+
+            const { data } = await axios.post(
+                "/api/v1/notification/new",
+                {
+                    type: "message",
+                    message: `New message from ${newMessageReceivedLocal.sender.name}`,
+                    type_id: newMessageReceivedLocal._id,
+                    user_id: userid
+                },
+                config
+            );
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+
     const deleteServiceHandler = (id) => {
 
         Swal.fire({
@@ -136,7 +217,7 @@ const MyServices = () => {
                 actions: <Fragment>
 
                     <div className='action'>
-                    <Link to={`/service/details/${service._id}`} className="btn btn-success py-1 px-2">
+                        <Link to={`/service/details/${service._id}`} className="btn btn-success py-1 px-2">
                             <i className="fa fa-eye"></i>
                         </Link>
                         <Link to='' className="btn btn-primary py-1 px-2">

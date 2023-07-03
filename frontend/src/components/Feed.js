@@ -1,37 +1,39 @@
 
 import React, { Fragment, useState, useEffect } from 'react'
-// import Pagination from 'react-js-pagination';
+
 import { useParams, useNavigate } from "react-router-dom";
 import MetaData from './layout/MetaData';
 import Request from './Request';
 import Loader from './layout/Loader';
 import $ from 'jquery';
-import socket from '../Context/socket';
+
 
 import Swal from 'sweetalert2';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
 
-// import { allUsers } from '../actions/userActions'
-// import Slider from 'rc-slider'
-// import 'rc-slider/assets/index.css'
 import { getFreelancerServices } from '../actions/serviceActions';
 import { getCategories } from '../actions/categoryActions';
 import { getRequests, clear } from '../actions/requestActions';
 import { newOffer } from '../actions/offerActions';
 import { NEW_OFFER_RESET } from '../constants/offerConstants';
 
+import axios from "axios";
+
+
+
+import { ChatState } from '../Context/ChatProvider';
+import socket from '../Context/socket';
+
 
 var selectedChatCompare;
 
-// import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone } from '../../../actions/transactionActions';
-// import { UPDATE_PSENT_RESET, UPDATE_PRECEIVED_RESET, UPDATE_TRANSACTIONDONE_RESET } from '../../../actions/transactionActions';
+
 const Feed = () => {
 
-    // const { createSliderWithToolTip } = Slider;
-    // const Range = createSliderWithToolTip(Slider.Range);
-
+    const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
+    const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
     let navigate = useNavigate();
     const alert = useAlert();
     const dispatch = useDispatch();
@@ -98,15 +100,75 @@ const Feed = () => {
         }
     }, [success]);
 
+    useEffect(() => {
+        socket.on('message received', (newMessageReceived) => {
+            setNewMessageReceivedLocal(newMessageReceived);
+        });
 
-    // function setCurrentPageNo(pageNumber) {
-    //     setCurrentPage(pageNumber)
-    // }
-    // let count = servicesCount;
+    }, []);
 
-    // if (keyword) {
-    //     count = filteredServicesCount
-    // }
+    useEffect(() => {
+        if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+            // Execute your code when a new message is received
+            console.log('New message received:', newMessageReceivedLocal);
+
+            if (
+                !selectedChatCompare || // if chat is not selected or doesn't match current chat
+                selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+            ) {
+                addMessageNotif()
+            } else {
+                // setFetchAgain(!fetchAgain);
+                // setMessages([...messages, newMessageReceived]);
+                console.log("over")
+            }
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewMessageReceivedLocal(null);
+        }
+    }, [newMessageReceivedLocal]);
+
+    const addMessageNotif = async () => {
+
+
+        let userid = ""
+
+        if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+            userid = newMessageReceivedLocal.chat.users[1]._id
+        }
+        else {
+            userid = newMessageReceivedLocal.chat.users[0]._id
+        }
+
+        try {
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+
+                },
+            };
+
+            const { data } = await axios.post(
+                "/api/v1/notification/new",
+                {
+                    type: "message",
+                    message: `New message from ${newMessageReceivedLocal.sender.name}`,
+                    type_id: newMessageReceivedLocal._id,
+                    user_id: userid
+                },
+                config
+            );
+            console.log(data);
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+
+
+
 
     const submitOfferHandler = (e) => {
         e.preventDefault();

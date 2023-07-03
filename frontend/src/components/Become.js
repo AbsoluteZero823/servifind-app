@@ -3,25 +3,24 @@ import React, { Fragment, useState, useEffect } from 'react'
 import Pagination from 'react-js-pagination';
 import { Link, useParams } from "react-router-dom";
 import MetaData from './layout/MetaData'
-// import Animal from './animal/Animal'
+
 import Loader from './layout/Loader'
 import Swal from 'sweetalert2';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useAlert } from 'react-alert';
-// import { getAnimals } from '../actions/animalActions'
+
 import { getFreelancers } from '../actions/freelancerActions';
+import axios from "axios";
+import { ChatState } from '../Context/ChatProvider';
+import socket from '../Context/socket';
 
-// import Slider from 'rc-slider'
-// import 'rc-slider/assets/index.css'
-
-
+var selectedChatCompare;
 const Become = () => {
 
-  // const { createSliderWithToolTip } = Slider;
-  // const Range = createSliderWithToolTip(Slider.Range);
 
-
+  const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
+  const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const alert = useAlert();
   const dispatch = useDispatch();
 
@@ -31,7 +30,72 @@ const Become = () => {
   const [isApplied, setIsApplied] = useState();
 
 
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived) => {
+      setNewMessageReceivedLocal(newMessageReceived);
+    });
 
+  }, []);
+
+  useEffect(() => {
+    if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('New message received:', newMessageReceivedLocal);
+
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+      ) {
+        addMessageNotif()
+      } else {
+        // setFetchAgain(!fetchAgain);
+        // setMessages([...messages, newMessageReceived]);
+        console.log("over")
+      }
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewMessageReceivedLocal(null);
+    }
+  }, [newMessageReceivedLocal]);
+
+  const addMessageNotif = async () => {
+
+
+    let userid = ""
+
+    if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+      userid = newMessageReceivedLocal.chat.users[1]._id
+    }
+    else {
+      userid = newMessageReceivedLocal.chat.users[0]._id
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/v1/notification/new",
+        {
+          type: "message",
+          message: `New message from ${newMessageReceivedLocal.sender.name}`,
+          type_id: newMessageReceivedLocal._id,
+          user_id: userid
+        },
+        config
+      );
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
 
   // THIS FUNCTION VALIDATES IF EMAIL IS TUP EMAIL
 

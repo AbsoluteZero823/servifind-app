@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
 import { getMyUnreadNotifications, readMyNotification, newNotification } from "../../actions/notificationActions";
-import socket from "../../Context/socket";
+
 
 
 import swal from "sweetalert";
@@ -20,7 +20,7 @@ import { ChatState } from "../../Context/ChatProvider";
 
 
 
-var selectedChatCompare;
+// var selectedChatCompare;
 
 // import Header from "./Header";
 
@@ -43,38 +43,38 @@ const Header = () => {
   const { notifications } = useSelector((state) => state.notifications)
   const { notification: newNotif } = useSelector((state) => state.addNotification);
 
-  useEffect(() => {
+  // useEffect(() => {
 
 
-    if (user) {
-      socket.emit("setup", user);
-      console.log('sheesh')
-    }
+  //   if (user) {
+  //     socket.emit("setup", user);
+  //     console.log('sheesh')
+  //   }
 
-    // socket.on('message received', (newMessageReceived) => {
-    //   setNewMessageReceivedLocal(newMessageReceived);
-    // });
+  //   // socket.on('message received', (newMessageReceived) => {
+  //   //   setNewMessageReceivedLocal(newMessageReceived);
+  //   // });
 
-    socket.on('offer received', (newOfferReceived) => {
-      setNewOfferReceivedLocal(newOfferReceived);
-    });
-    socket.on('inquiry received', (newInquiryReceived) => {
-      setNewInquiryReceivedLocal(newInquiryReceived);
-    });
-
-
+  //   socket.on('offer received', (newOfferReceived) => {
+  //     setNewOfferReceivedLocal(newOfferReceived);
+  //   });
+  //   socket.on('inquiry received', (newInquiryReceived) => {
+  //     setNewInquiryReceivedLocal(newInquiryReceived);
+  //   });
 
 
-    socket.on('accept_offer received', (acceptOfferReceived) => {
-      setAcceptOfferReceivedLocal(acceptOfferReceived);
-    });
 
-    return () => {
-      // I-close ang socket connection kapag nag-unmount ang component
-      socket.disconnect();
-    };
 
-  }, [])
+  //   socket.on('accept_offer received', (acceptOfferReceived) => {
+  //     setAcceptOfferReceivedLocal(acceptOfferReceived);
+  //   });
+
+  //   return () => {
+  //     // I-close ang socket connection kapag nag-unmount ang component
+  //     socket.disconnect();
+  //   };
+
+  // }, [])
 
 
   useEffect(() => {
@@ -125,154 +125,84 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
-      // Execute your code when a new message is received
-      console.log('New inquiry received:', newInquiryReceivedLocal);
+  // useEffect(() => {
+  //   if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
+  //     // Execute your code when a new message is received
+  //     console.log('New inquiry received:', newInquiryReceivedLocal);
 
 
-      // addInquiryNotif()
+  //     // addInquiryNotif()
 
-      const formData = new FormData();
-      formData.set("type", 'inquiry');
-      formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-      formData.set("type_id", newInquiryReceivedLocal._id);
-      formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+  //     const formData = new FormData();
+  //     formData.set("type", 'inquiry');
+  //     formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+  //     formData.set("type_id", newInquiryReceivedLocal._id);
+  //     formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
 
-      // type: "inquiry",
-      //   message: `New Inquiry from ${newInquiryReceivedLocal.customer.name}`,
-      //     type_id: newInquiryReceivedLocal._id,
-      //       user_id: newInquiryReceivedLocal.freelancer.user_id
+  //     // type: "inquiry",
+  //     //   message: `New Inquiry from ${newInquiryReceivedLocal.customer.name}`,
+  //     //     type_id: newInquiryReceivedLocal._id,
+  //     //       user_id: newInquiryReceivedLocal.freelancer.user_id
 
-      dispatch(newNotification(formData));
-
-
-      // Reset the newMessageReceived state
-      setFetchNotificationAgain(!fetchNotificationAgain);
-      setNewInquiryReceivedLocal(null);
-    }
-  }, [newInquiryReceivedLocal]);
-
-  useEffect(() => {
-    if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
-      // Execute your code when a new offer is received
-      console.log('New offer received:', newOfferReceivedLocal);
+  //     dispatch(newNotification(formData));
 
 
-      // addOfferNotif()
+  //     // Reset the newMessageReceived state
+  //     setFetchNotificationAgain(!fetchNotificationAgain);
+  //     setNewInquiryReceivedLocal(null);
+  //   }
+  // }, [newInquiryReceivedLocal]);
 
-      const formData = new FormData();
-      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-      formData.set("type_id", newOfferReceivedLocal._id);
-      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-      dispatch(newNotification(formData));
-      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-      //     type_id: newOfferReceivedLocal._id,
-      //       user_id: userid
-
-      // Reset the newOfferReceived state
-      setFetchNotificationAgain(!fetchNotificationAgain);
-      setNewOfferReceivedLocal(null);
-    }
-  }, [newOfferReceivedLocal]);
+  // useEffect(() => {
+  //   if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+  //     // Execute your code when a new offer is received
+  //     console.log('New offer received:', newOfferReceivedLocal);
 
 
-  useEffect(() => {
-    if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
-      // Execute your code when a new message is received
-      console.log('accept offer received:', acceptOfferReceivedLocal);
+  //     // addOfferNotif()
+
+  //     const formData = new FormData();
+  //     formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+  //     formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+  //     formData.set("type_id", newOfferReceivedLocal._id);
+  //     formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+  //     dispatch(newNotification(formData));
+  //     // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+  //     //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+  //     //     type_id: newOfferReceivedLocal._id,
+  //     //       user_id: userid
+
+  //     // Reset the newOfferReceived state
+  //     setFetchNotificationAgain(!fetchNotificationAgain);
+  //     setNewOfferReceivedLocal(null);
+  //   }
+  // }, [newOfferReceivedLocal]);
 
 
-      // addAcceptedOfferNotif()
-      const formData = new FormData();
-      formData.set("type", "accept_offer");
-      // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
-      formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
-      formData.set("type_id", acceptOfferReceivedLocal._id);
-      formData.set("user_id", acceptOfferReceivedLocal.offered_by);
-      dispatch(newNotification(formData));
-
-      // Reset the newMessageReceived state
-      setFetchNotificationAgain(!fetchNotificationAgain);
-      setAcceptOfferReceivedLocal(null);
-    }
-  }, [acceptOfferReceivedLocal]);
-
-  const addInquiryNotif = async () => {
-    console.log("awot")
+  // useEffect(() => {
+  //   if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
+  //     // Execute your code when a new message is received
+  //     console.log('accept offer received:', acceptOfferReceivedLocal);
 
 
-    const userid = newInquiryReceivedLocal.freelancer.user_id
+  //     // addAcceptedOfferNotif()
+  //     const formData = new FormData();
+  //     formData.set("type", "accept_offer");
+  //     // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
+  //     formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
+  //     formData.set("type_id", acceptOfferReceivedLocal._id);
+  //     formData.set("user_id", acceptOfferReceivedLocal.offered_by);
+  //     dispatch(newNotification(formData));
+
+  //     // Reset the newMessageReceived state
+  //     setFetchNotificationAgain(!fetchNotificationAgain);
+  //     setAcceptOfferReceivedLocal(null);
+  //   }
+  // }, [acceptOfferReceivedLocal]);
 
 
-    // event.preventDefault();
-
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          // Authorization: `Bearer ${user.token}`,
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/v1/notification/new",
-        {
-          type: "inquiry",
-          message: `New Inquiry from ${newInquiryReceivedLocal.customer.name}`,
-          type_id: newInquiryReceivedLocal._id,
-          user_id: userid
-        },
-        config
-      );
-      console.log(data);
-      // socket.emit("new message", data.message);
-      // setMessages([...messages, data.message]);
-
-      // setFetchAgain(!fetchAgain);
-    } catch (error) {
-      console.log(error);
-    }
-
-  };
-
-  const addOfferNotif = async () => {
-
-    const userid = (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer;
 
 
-    // event.preventDefault();
-
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          // Authorization: `Bearer ${user.token}`,
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/v1/notification/new",
-        {
-          type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-          message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-          type_id: newOfferReceivedLocal._id,
-          user_id: userid
-        },
-        config
-      );
-      console.log(data);
-      // socket.emit("new message", data.message);
-      // setMessages([...messages, data.message]);
-
-      // setFetchAgain(!fetchAgain);
-    } catch (error) {
-      console.log(error);
-    }
-
-  };
 
   const logoutHandler = () => {
     dispatch(logout());

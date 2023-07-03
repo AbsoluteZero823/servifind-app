@@ -30,6 +30,7 @@ import {
 var selectedChatCompare;
 
 const Dashboard = () => {
+
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
 
   const { user } = useSelector((state) => state.auth);
@@ -67,7 +68,7 @@ const Dashboard = () => {
     });
 
   }, []);
-  console.log(notification, 'waaaah')
+
   useEffect(() => {
     if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
       // Execute your code when a new message is received

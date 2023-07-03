@@ -33,13 +33,17 @@ import { updateStatus } from "../../actions/inquiryActions";
 import { newNotification } from "../../actions/notificationActions";
 
 import moment from "moment/moment";
-import socket from "../../Context/socket";
+// import socket from "../../Context/socket";
+
+import io from 'socket.io-client';
 
 
 import Swal from "sweetalert2";
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
 
 
-var selectedChatCompare;
+var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fetchOffersAgain }) => {
 
@@ -94,6 +98,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
   useEffect(() => {
     let isMounted = true; // Flag to track if component is mounted
 
+    socket = io(ENDPOINT)
     // socket.emit("setup", user);
 
     socket.on("connected", () => {

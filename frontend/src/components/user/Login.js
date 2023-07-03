@@ -9,6 +9,7 @@ import { login, clearErrors } from '../../actions/userActions'
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
 import Swal from 'sweetalert2'
+import { ChatState } from '../../Context/ChatProvider'
 
 const Login = () => {
 
@@ -20,7 +21,7 @@ const Login = () => {
     let navigate = useNavigate();
 
     const { isAuthenticated, error, loading, success, user, message } = useSelector(state => state.auth);
-
+    const { fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
 
     useEffect(() => {
 
@@ -48,7 +49,7 @@ const Login = () => {
             else {
                 navigate('/all')
             }
-
+            setFetchNotificationAgain(!fetchNotificationAgain)
             // dispatch({ type: NEW_SERVICES_RESET })
         }
 

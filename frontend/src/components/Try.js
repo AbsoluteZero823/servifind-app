@@ -14,25 +14,21 @@ import { getServicesToDisplay } from '../actions/serviceActions'
 import axios from "axios";
 import socket from '../Context/socket';
 import { ChatState } from '../Context/ChatProvider';
-// import { allUsers } from '../actions/userActions'
-// import Slider from 'rc-slider'
-// import 'rc-slider/assets/index.css'
+
 
 var selectedChatCompare;
 const Try = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
-  // const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
-  // const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
-  // const { createSliderWithToolTip } = Slider;
-  // const Range = createSliderWithToolTip(Slider.Range);
+
 
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
 
-  // const { users } = useSelector(state => state.users)
+
   const { loading, services, error, servicesCount, resPerPage, filteredServicesCount } = useSelector(state => state.services);
 
 
@@ -46,12 +42,7 @@ const Try = () => {
   //     });
   // }, []);
 
-  useEffect(() => {
-    socket.on('message received', (newMessageReceived) => {
-      setNewMessageReceivedLocal(newMessageReceived);
-    });
 
-  }, []);
 
   // useEffect(() => {
   //   socket.on('offer received', (newOfferReceived) => {
@@ -74,27 +65,7 @@ const Try = () => {
   //     }
   //   }, [newInquiryReceivedLocal]);
 
-  useEffect(() => {
-    if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
-      // Execute your code when a new message is received
-      console.log('New message received:', newMessageReceivedLocal);
 
-      if (
-        !selectedChatCompare || // if chat is not selected or doesn't match current chat
-        selectedChatCompare._id !== newMessageReceivedLocal.chat._id
-      ) {
-        addMessageNotif()
-      } else {
-        // setFetchAgain(!fetchAgain);
-        // setMessages([...messages, newMessageReceived]);
-        console.log("over")
-      }
-
-      // Reset the newMessageReceived state
-      setFetchNotificationAgain(!fetchNotificationAgain);
-      setNewMessageReceivedLocal(null);
-    }
-  }, [newMessageReceivedLocal]);
 
 
   // useEffect(() => {
@@ -123,7 +94,72 @@ const Try = () => {
 
   }, [dispatch, alert, error, keyword]);
 
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived) => {
+      setNewMessageReceivedLocal(newMessageReceived);
+    });
 
+  }, []);
+
+  useEffect(() => {
+    if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('New message received:', newMessageReceivedLocal);
+
+      if (
+        !selectedChatCompare || // if chat is not selected or doesn't match current chat
+        selectedChatCompare._id !== newMessageReceivedLocal.chat._id
+      ) {
+        addMessageNotif()
+      } else {
+        // setFetchAgain(!fetchAgain);
+        // setMessages([...messages, newMessageReceived]);
+        console.log("over")
+      }
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewMessageReceivedLocal(null);
+    }
+  }, [newMessageReceivedLocal]);
+
+  const addMessageNotif = async () => {
+
+
+    let userid = ""
+
+    if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
+      userid = newMessageReceivedLocal.chat.users[1]._id
+    }
+    else {
+      userid = newMessageReceivedLocal.chat.users[0]._id
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/v1/notification/new",
+        {
+          type: "message",
+          message: `New message from ${newMessageReceivedLocal.sender.name}`,
+          type_id: newMessageReceivedLocal._id,
+          user_id: userid
+        },
+        config
+      );
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
   // const addInquiryNotif = async () => {
   //     console.log("awot")
 
@@ -163,48 +199,6 @@ const Try = () => {
   //    };
 
 
-  const addMessageNotif = async () => {
-    console.log("awot")
-
-    let userid = ""
-
-    if (newMessageReceivedLocal.sender._id === newMessageReceivedLocal.chat.users[0]._id) {
-      userid = newMessageReceivedLocal.chat.users[1]._id
-    }
-    else {
-      userid = newMessageReceivedLocal.chat.users[0]._id
-    }
-
-    // event.preventDefault();
-
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          // Authorization: `Bearer ${user.token}`,
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/v1/notification/new",
-        {
-          type: "message",
-          message: `New message from ${newMessageReceivedLocal.sender.name}`,
-          type_id: newMessageReceivedLocal._id,
-          user_id: userid
-        },
-        config
-      );
-      console.log(data);
-      // socket.emit("new message", data.message);
-      // setMessages([...messages, data.message]);
-
-      // setFetchAgain(!fetchAgain);
-    } catch (error) {
-      console.log(error);
-    }
-
-  };
 
 
   // const addOfferNotif = async () => {
