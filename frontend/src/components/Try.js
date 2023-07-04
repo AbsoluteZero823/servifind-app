@@ -104,10 +104,17 @@ const Try = () => {
 
     socket.on('inquiry received', (newInquiryReceived) => {
       setNewInquiryReceivedLocal(newInquiryReceived);
-      });
-      socket.on('offer received', (newOfferReceived) => {
-        setNewOfferReceivedLocal(newOfferReceived);
-      });
+    });
+
+    socket.on('offer received', (newOfferReceived) => {
+      setNewOfferReceivedLocal(newOfferReceived);
+    });
+    return () => {
+      // I-close ang socket connection kapag nag-unmount ang component
+      socket.disconnect();
+    };
+
+
   }, []);
 
   useEffect(() => {
@@ -217,7 +224,7 @@ const Try = () => {
     }
 
   };
- 
+
 
 
 

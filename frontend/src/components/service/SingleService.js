@@ -25,6 +25,7 @@ import { ChatState } from '../../Context/ChatProvider';
 import socket from '../../Context/socket';
 
 
+
 var selectedChatCompare;
 
 const SingleService = () => {
@@ -32,6 +33,8 @@ const SingleService = () => {
     const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
     const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
     const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
+    const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+
     const [instruction, setInstruction] = useState('')
     const [service_id, setService_id] = useState('')
     const [customer, setCustomer] = useState('')
@@ -93,6 +96,8 @@ const SingleService = () => {
 
     }, [dispatch, alert, navigate, error, success, serviceDetailsSuccess])
 
+
+
     useEffect(() => {
         socket.on('message received', (newMessageReceived) => {
             setNewMessageReceivedLocal(newMessageReceived);
@@ -100,7 +105,11 @@ const SingleService = () => {
 
         socket.on('inquiry received', (newInquiryReceived) => {
             setNewInquiryReceivedLocal(newInquiryReceived);
-            });
+        });
+
+        socket.on('offer received', (newOfferReceived) => {
+            setNewOfferReceivedLocal(newOfferReceived);
+        });
 
     }, []);
 
@@ -128,26 +137,51 @@ const SingleService = () => {
 
     useEffect(() => {
         if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
-          // Execute your code when a new message is received
-          console.log('New inquiry received:', newInquiryReceivedLocal);
-    
-    
-          // addInquiryNotif()
-    
-          const formData = new FormData();
-          formData.set("type", 'inquiry');
-          formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-          formData.set("type_id", newInquiryReceivedLocal._id);
-          formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
-    
-          dispatch(newNotification(formData));
-    
-    
-          // Reset the newMessageReceived state
-          setFetchNotificationAgain(!fetchNotificationAgain);
-          setNewInquiryReceivedLocal(null);
+            // Execute your code when a new message is received
+            console.log('New inquiry received:', newInquiryReceivedLocal);
+
+
+            // addInquiryNotif()
+
+            const formData = new FormData();
+            formData.set("type", 'inquiry');
+            formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+            formData.set("type_id", newInquiryReceivedLocal._id);
+            formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+
+            dispatch(newNotification(formData));
+
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewInquiryReceivedLocal(null);
         }
-      }, [newInquiryReceivedLocal]);
+    }, [newInquiryReceivedLocal]);
+
+    useEffect(() => {
+        if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+            // Execute your code when a new offer is received
+            console.log('New offer received:', newOfferReceivedLocal);
+
+
+            // addOfferNotif()
+
+            const formData = new FormData();
+            formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+            formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+            formData.set("type_id", newOfferReceivedLocal._id);
+            formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+            dispatch(newNotification(formData));
+            // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+            //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+            //     type_id: newOfferReceivedLocal._id,
+            //       user_id: userid
+
+            // Reset the newOfferReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewOfferReceivedLocal(null);
+        }
+    }, [newOfferReceivedLocal]);
 
     const addMessageNotif = async () => {
 
