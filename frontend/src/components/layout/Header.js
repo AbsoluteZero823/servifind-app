@@ -27,7 +27,7 @@ import { ChatState } from "../../Context/ChatProvider";
 const Header = () => {
 
   
-  const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
+  
 
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   let navigate = useNavigate();

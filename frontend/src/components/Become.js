@@ -24,6 +24,7 @@ const Become = () => {
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+ 
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -42,6 +43,13 @@ const Become = () => {
        socket.on('offer received', (newOfferReceived) => {
       setNewOfferReceivedLocal(newOfferReceived);
     });
+
+        
+
+        return () => {
+      // I-close ang socket connection kapag nag-unmount ang component
+      socket.disconnect();
+    };
   }, []);
 
    useEffect(() => {
@@ -90,6 +98,8 @@ const Become = () => {
       setNewMessageReceivedLocal(null);
     }
   }, [newMessageReceivedLocal]);
+
+  
 
   const addMessageNotif = async () => {
 
