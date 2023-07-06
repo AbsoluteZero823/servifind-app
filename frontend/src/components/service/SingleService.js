@@ -34,6 +34,7 @@ const SingleService = () => {
     const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
     const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
     const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+    const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
 
     const [instruction, setInstruction] = useState('')
     const [service_id, setService_id] = useState('')
@@ -111,6 +112,11 @@ const SingleService = () => {
             setNewOfferReceivedLocal(newOfferReceived);
         });
 
+
+        socket.on('accept_offer received', (acceptOfferReceived) => {
+            setAcceptOfferReceivedLocal(acceptOfferReceived);
+        });
+
     }, []);
 
     useEffect(() => {
@@ -182,6 +188,27 @@ const SingleService = () => {
             setNewOfferReceivedLocal(null);
         }
     }, [newOfferReceivedLocal]);
+
+    useEffect(() => {
+        if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
+            // Execute your code when a new message is received
+            console.log('accept offer received:', acceptOfferReceivedLocal);
+
+
+            // addAcceptedOfferNotif()
+            const formData = new FormData();
+            formData.set("type", "accept_offer");
+            // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
+            formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
+            formData.set("type_id", acceptOfferReceivedLocal._id);
+            formData.set("user_id", acceptOfferReceivedLocal.offered_by);
+            dispatch(newNotification(formData));
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setAcceptOfferReceivedLocal(null);
+        }
+    }, [acceptOfferReceivedLocal]);
 
     const addMessageNotif = async () => {
 

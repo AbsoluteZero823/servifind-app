@@ -42,7 +42,7 @@ import {
     GET_TRANSACTIONCOURSES_REQUEST,
     GET_TRANSACTIONCOURSES_SUCCESS,
     GET_TRANSACTIONCOURSES_FAIL,
-    
+
     GET_TRANSACTIONMONTH_REQUEST,
     GET_TRANSACTIONMONTH_SUCCESS,
     GET_TRANSACTIONMONTH_FAIL,
@@ -54,7 +54,7 @@ import {
     GET_SERVICELEADERBOARDS_REQUEST,
     GET_SERVICELEADERBOARDS_SUCCESS,
     GET_SERVICELEADERBOARDS_FAIL,
-    
+
     GET_DASHBOARDINFO_REQUEST,
     GET_DASHBOARDINFO_SUCCESS,
     GET_DASHBOARDINFO_FAIL,
@@ -213,7 +213,7 @@ export const TransactionDone = (id, formData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_TRANSACTIONDONE_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {
@@ -308,7 +308,7 @@ export const updateTransaction = (id, transactionData) => async (dispatch) => {
 export const getTransactionPerCourses = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_TRANSACTIONCOURSES_REQUEST })
+        dispatch({ type: GET_TRANSACTIONCOURSES_REQUEST })
 
         const { data } = await axios.get(`/api/v1/transactionpercourses`)
 
@@ -333,7 +333,7 @@ export const getTransactionPerCourses = () => async (dispatch) => {
 export const getTransactionPerMonth = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_TRANSACTIONMONTH_REQUEST })
+        dispatch({ type: GET_TRANSACTIONMONTH_REQUEST })
 
         const { data } = await axios.get(`/api/v1/transactionpermonth`)
 
@@ -355,7 +355,7 @@ export const getTransactionPerMonth = () => async (dispatch) => {
 export const getTopTenServices = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_SERVICECOURSES_REQUEST })
+        dispatch({ type: GET_SERVICECOURSES_REQUEST })
 
         const { data } = await axios.get(`/api/v1/topservicepercourses`)
 
@@ -376,7 +376,7 @@ export const getTopTenServices = () => async (dispatch) => {
 export const getServiceLeaderboards = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_SERVICELEADERBOARDS_REQUEST })
+        dispatch({ type: GET_SERVICELEADERBOARDS_REQUEST })
 
         const { data } = await axios.get(`/api/v1/serviceleaderboards`)
 
@@ -396,7 +396,7 @@ export const getServiceLeaderboards = () => async (dispatch) => {
 export const getDashboardInfo = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_DASHBOARDINFO_REQUEST })
+        dispatch({ type: GET_DASHBOARDINFO_REQUEST })
 
         const { data } = await axios.get(`/api/v1/dashboardinfo`)
 
@@ -413,10 +413,10 @@ export const getDashboardInfo = () => async (dispatch) => {
     }
 }
 
-export const getDashboardCounts= () => async (dispatch) => {
+export const getDashboardCounts = () => async (dispatch) => {
     try {
 
-        dispatch({ type:GET_DASHBOARDCOUNTS_REQUEST })
+        dispatch({ type: GET_DASHBOARDCOUNTS_REQUEST })
 
         const { data } = await axios.get(`/api/v1/dashboard/counts`)
 

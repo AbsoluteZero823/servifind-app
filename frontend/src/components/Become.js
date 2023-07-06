@@ -24,7 +24,9 @@ const Become = () => {
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
- 
+  const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
+
+
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -40,19 +42,21 @@ const Become = () => {
       setNewMessageReceivedLocal(newMessageReceived);
     });
 
-       socket.on('offer received', (newOfferReceived) => {
+    socket.on('offer received', (newOfferReceived) => {
       setNewOfferReceivedLocal(newOfferReceived);
     });
 
-        
+    socket.on('work completed', (workCompletedReceived) => {
+      setWorkCompletedReceivedLocal(workCompletedReceived);
+    });
 
-        return () => {
+    return () => {
       // I-close ang socket connection kapag nag-unmount ang component
       socket.disconnect();
     };
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
       // Execute your code when a new offer is received
       console.log('New offer received:', newOfferReceivedLocal);
@@ -99,7 +103,29 @@ const Become = () => {
     }
   }, [newMessageReceivedLocal]);
 
-  
+  useEffect(() => {
+    if (workCompletedReceivedLocal && workCompletedReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
+
+
+      // addOfferNotif()
+
+      const formData = new FormData();
+      formData.set("type", "work completed");
+      formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
+      formData.set("type_id", workCompletedReceivedLocal._id);
+      formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
+      dispatch(newNotification(formData));
+
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setWorkCompletedReceivedLocal(null);
+    }
+  }, [workCompletedReceivedLocal]);
+
+
 
   const addMessageNotif = async () => {
 

@@ -22,6 +22,7 @@ const Try = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
   const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
+  const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
 
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
 
@@ -38,53 +39,6 @@ const Try = () => {
   const [currentPage, setCurrentPage] = useState(1)
   let { keyword } = useParams();
 
-
-  // useEffect(() => {
-  //     socket.on('inquiry received', (newInquiryReceived) => {
-  //       setNewInquiryReceivedLocal(newInquiryReceived);
-  //     });
-  // }, []);
-
-
-
-  // useEffect(() => {
-  //   socket.on('offer received', (newOfferReceived) => {
-  //     setNewOfferReceivedLocal(newOfferReceived);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //     if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
-  //       // Execute your code when a new message is received
-  //       console.log('New inquiry received:', newInquiryReceivedLocal);
-
-
-  //           addInquiryNotif()
-
-
-  //       // Reset the newMessageReceived state
-  //       setFetchNotificationAgain(!fetchNotificationAgain);
-  //       setNewInquiryReceivedLocal(null);
-  //     }
-  //   }, [newInquiryReceivedLocal]);
-
-
-
-
-  // useEffect(() => {
-  //   if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
-  //     // Execute your code when a new offer is received
-  //     console.log('New offer received:', newOfferReceivedLocal);
-
-
-  //     addOfferNotif()
-
-
-  //     // Reset the newOfferReceived state
-  //     setFetchNotificationAgain(!fetchNotificationAgain);
-  //     setNewOfferReceivedLocal(null);
-  //   }
-  // }, [newOfferReceivedLocal]);
 
   useEffect(() => {
     if (error) {
@@ -109,6 +63,11 @@ const Try = () => {
     socket.on('offer received', (newOfferReceived) => {
       setNewOfferReceivedLocal(newOfferReceived);
     });
+
+    socket.on('accept_offer received', (acceptOfferReceived) => {
+      setAcceptOfferReceivedLocal(acceptOfferReceived);
+    });
+
     return () => {
       // I-close ang socket connection kapag nag-unmount ang component
       socket.disconnect();
@@ -186,6 +145,27 @@ const Try = () => {
       setNewOfferReceivedLocal(null);
     }
   }, [newOfferReceivedLocal]);
+
+  useEffect(() => {
+    if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
+      // Execute your code when a new message is received
+      console.log('accept offer received:', acceptOfferReceivedLocal);
+
+
+      // addAcceptedOfferNotif()
+      const formData = new FormData();
+      formData.set("type", "accept_offer");
+      // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
+      formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
+      formData.set("type_id", acceptOfferReceivedLocal._id);
+      formData.set("user_id", acceptOfferReceivedLocal.offered_by);
+      dispatch(newNotification(formData));
+
+      // Reset the newMessageReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setAcceptOfferReceivedLocal(null);
+    }
+  }, [acceptOfferReceivedLocal]);
 
   const addMessageNotif = async () => {
 

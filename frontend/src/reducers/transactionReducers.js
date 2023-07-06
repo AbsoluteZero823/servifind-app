@@ -191,7 +191,7 @@ export const paymentReducer = (state = {}, action) => {
             return {
 
                 ...state,
-                loadingpayment: true
+                loadingpayment: true,
             }
 
 
@@ -203,7 +203,9 @@ export const paymentReducer = (state = {}, action) => {
             return {
                 ...state,
                 loadingpayment: false,
-                isUpdated: action.payload
+
+                success: action.payload.success,
+                updatedTransaction: action.payload.updatedTransaction
             }
 
         case UPDATE_PSENT_RESET:
@@ -213,7 +215,7 @@ export const paymentReducer = (state = {}, action) => {
         case UPDATE_REPORTDONE_RESET:
             return {
                 ...state,
-                isUpdated: false
+                success: false
             }
 
         case UPDATE_PSENT_FAIL:
@@ -345,96 +347,96 @@ export const getServiceCoursesReducer = (state = { topServicesArr: [] }, action)
             return state;
     }
 }
-export const getTransactionMonthReducer = (state = { completionDate:[] }, action) => {
-    switch(action.type) {
+export const getTransactionMonthReducer = (state = { completionDate: [] }, action) => {
+    switch (action.type) {
         case GET_TRANSACTIONMONTH_REQUEST:
-        return {
-            ...state,
-            loading: true,
-            // borrowedDate: []
-        }
+            return {
+                ...state,
+                loading: true,
+                // borrowedDate: []
+            }
         case GET_TRANSACTIONMONTH_SUCCESS:
-        return {
-            ...state,
-            loading: false,
-            completionDate: action.payload.completionDate,
-            success: action.payload.success,
-        }
+            return {
+                ...state,
+                loading: false,
+                completionDate: action.payload.completionDate,
+                success: action.payload.success,
+            }
         case GET_TRANSACTIONMONTH_FAIL:
-        return {
-            loading:false,
-            error: action.payload
-        }
+            return {
+                loading: false,
+                error: action.payload
+            }
         case CLEAR_ERRORS:
-        return {
-            ...state,
-            error: null
-        }
+            return {
+                ...state,
+                error: null
+            }
         default:
-        return state;
+            return state;
     }
 }
 
-export const getServiceLeaderboardsReducer = (state = { sortedService:[] }, action) => {
-    switch(action.type) {
+export const getServiceLeaderboardsReducer = (state = { sortedService: [] }, action) => {
+    switch (action.type) {
         case GET_SERVICELEADERBOARDS_REQUEST:
-        return {
-            ...state,
-            loading: true,
-            // borrowedDate: []
-        }
+            return {
+                ...state,
+                loading: true,
+                // borrowedDate: []
+            }
         case GET_SERVICELEADERBOARDS_SUCCESS:
-        return {
-            ...state,
-            loading: false,
-            sortedService: action.payload.sortedService,
-            success: action.payload.success,
-        }
+            return {
+                ...state,
+                loading: false,
+                sortedService: action.payload.sortedService,
+                success: action.payload.success,
+            }
         case GET_SERVICELEADERBOARDS_FAIL:
-        return {
-            loading:false,
-            error: action.payload
-        }
+            return {
+                loading: false,
+                error: action.payload
+            }
         case CLEAR_ERRORS:
-        return {
-            ...state,
-            error: null
-        }
+            return {
+                ...state,
+                error: null
+            }
         default:
-        return state;
+            return state;
     }
 }
 
 
-export const getDashboardInfoReducer = (state = { result:[] }, action) => {
-    switch(action.type) {
+export const getDashboardInfoReducer = (state = { result: [] }, action) => {
+    switch (action.type) {
         case GET_DASHBOARDINFO_REQUEST:
-            case GET_DASHBOARDCOUNTS_REQUEST:
-        return {
-            ...state,
-            loading: true,
-            
-        }
+        case GET_DASHBOARDCOUNTS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
         case GET_DASHBOARDINFO_SUCCESS:
-            case GET_DASHBOARDCOUNTS_SUCCESS:
-        return {
-            ...state,
-            loading: false,
-            result: action.payload.result,
-            success: action.payload.success,
-        }
+        case GET_DASHBOARDCOUNTS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                result: action.payload.result,
+                success: action.payload.success,
+            }
         case GET_DASHBOARDINFO_FAIL:
-            case GET_DASHBOARDCOUNTS_FAIL:
-        return {
-            loading:false,
-            error: action.payload
-        }
+        case GET_DASHBOARDCOUNTS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
         case CLEAR_ERRORS:
-        return {
-            ...state,
-            error: null
-        }
+            return {
+                ...state,
+                error: null
+            }
         default:
-        return state;
+            return state;
     }
 }

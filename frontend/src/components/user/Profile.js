@@ -23,7 +23,8 @@ const Profile = () => {
     const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
     const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
     const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
-    
+    const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
+
     const { user, loading } = useSelector(state => state.auth)
     // let navigate = useNavigate();
     const dispatch = useDispatch();
@@ -36,11 +37,16 @@ const Profile = () => {
 
         socket.on('inquiry received', (newInquiryReceived) => {
             setNewInquiryReceivedLocal(newInquiryReceived);
-            });
+        });
 
-            socket.on('offer received', (newOfferReceived) => {
-                setNewOfferReceivedLocal(newOfferReceived);
-              });
+        socket.on('offer received', (newOfferReceived) => {
+            setNewOfferReceivedLocal(newOfferReceived);
+        });
+
+        socket.on('accept_offer received', (acceptOfferReceived) => {
+            setAcceptOfferReceivedLocal(acceptOfferReceived);
+        });
+
     }, []);
 
     useEffect(() => {
@@ -67,51 +73,72 @@ const Profile = () => {
 
     useEffect(() => {
         if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
-          // Execute your code when a new message is received
-          console.log('New inquiry received:', newInquiryReceivedLocal);
-    
-    
-          // addInquiryNotif()
-    
-          const formData = new FormData();
-          formData.set("type", 'inquiry');
-          formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-          formData.set("type_id", newInquiryReceivedLocal._id);
-          formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
-    
-          dispatch(newNotification(formData));
-    
-    
-          // Reset the newMessageReceived state
-          setFetchNotificationAgain(!fetchNotificationAgain);
-          setNewInquiryReceivedLocal(null);
-        }
-      }, [newInquiryReceivedLocal]);
+            // Execute your code when a new message is received
+            console.log('New inquiry received:', newInquiryReceivedLocal);
 
-      useEffect(() => {
-        if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
-          // Execute your code when a new offer is received
-          console.log('New offer received:', newOfferReceivedLocal);
-    
-    
-          // addOfferNotif()
-    
-          const formData = new FormData();
-          formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-          formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-          formData.set("type_id", newOfferReceivedLocal._id);
-          formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-          dispatch(newNotification(formData));
-          // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-          //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-          //     type_id: newOfferReceivedLocal._id,
-          //       user_id: userid
-    
-          // Reset the newOfferReceived state
-          setFetchNotificationAgain(!fetchNotificationAgain);
-          setNewOfferReceivedLocal(null);
+
+            // addInquiryNotif()
+
+            const formData = new FormData();
+            formData.set("type", 'inquiry');
+            formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+            formData.set("type_id", newInquiryReceivedLocal._id);
+            formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+
+            dispatch(newNotification(formData));
+
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewInquiryReceivedLocal(null);
         }
-      }, [newOfferReceivedLocal]);
+    }, [newInquiryReceivedLocal]);
+
+    useEffect(() => {
+        if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
+            // Execute your code when a new offer is received
+            console.log('New offer received:', newOfferReceivedLocal);
+
+
+            // addOfferNotif()
+
+            const formData = new FormData();
+            formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
+            formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
+            formData.set("type_id", newOfferReceivedLocal._id);
+            formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
+            dispatch(newNotification(formData));
+            // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
+            //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
+            //     type_id: newOfferReceivedLocal._id,
+            //       user_id: userid
+
+            // Reset the newOfferReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewOfferReceivedLocal(null);
+        }
+    }, [newOfferReceivedLocal]);
+
+    useEffect(() => {
+        if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
+            // Execute your code when a new message is received
+            console.log('accept offer received:', acceptOfferReceivedLocal);
+
+
+            // addAcceptedOfferNotif()
+            const formData = new FormData();
+            formData.set("type", "accept_offer");
+            // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
+            formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
+            formData.set("type_id", acceptOfferReceivedLocal._id);
+            formData.set("user_id", acceptOfferReceivedLocal.offered_by);
+            dispatch(newNotification(formData));
+
+            // Reset the newMessageReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setAcceptOfferReceivedLocal(null);
+        }
+    }, [acceptOfferReceivedLocal]);
 
     const addMessageNotif = async () => {
 
@@ -156,29 +183,29 @@ const Profile = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'My Profile'} />
-                    <div style={{height:"calc(100vh - 100px)", display:'flex', justifyContent:'center', alignItems:'center'}}>
-                    <div className="profile-card">
-                        <h1 className="profile-header">Profile Information</h1>
-                        <div className="profile-info__container">
-                            <img src={user && user.avatar.url} alt="" />
-                            <div className="profile-info">
-                                <div className="name">{user && user.name}</div>
-                                <div className="emailaddress">{user && user.email}</div>
-                                <div className="gender"><i className="fa-solid fa-user"></i>{user && user.gender}</div>
-                                {/* <div className="address"><i className="fa-solid fa-location-dot"></i> #24 Ilang-ilang Street Purok 6-C Lower
+                    <div style={{ height: "calc(100vh - 100px)", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <div className="profile-card">
+                            <h1 className="profile-header">Profile Information</h1>
+                            <div className="profile-info__container">
+                                <img src={user && user.avatar.url} alt="" />
+                                <div className="profile-info">
+                                    <div className="name">{user && user.name}</div>
+                                    <div className="emailaddress">{user && user.email}</div>
+                                    <div className="gender"><i className="fa-solid fa-user"></i>{user && user.gender}</div>
+                                    {/* <div className="address"><i className="fa-solid fa-location-dot"></i> #24 Ilang-ilang Street Purok 6-C Lower
                                     Bicutan Taguig City</div> */}
-                                <div className="phonenum"><i className="fa-solid fa-phone"></i>{user && user.contact}</div>
-                                <div className="profile-button">
-                                    <Link to="/me/update" id="edit_profile">
-                                        Edit Profile
-                                    </Link>
-                                    <Link to="/password/update">
-                                        Change Password
-                                    </Link>
+                                    <div className="phonenum"><i className="fa-solid fa-phone"></i>{user && user.contact}</div>
+                                    <div className="profile-button">
+                                        <Link to="/me/update" id="edit_profile">
+                                            Edit Profile
+                                        </Link>
+                                        <Link to="/password/update">
+                                            Change Password
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                     {/* <h2 className="mt-5 ml-5">My Profile</h2>
                     <div className="flex-container space-between">

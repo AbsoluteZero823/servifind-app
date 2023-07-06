@@ -217,9 +217,42 @@ exports.transactionDone = async (req, res, next) => {
       runValidators: true,
       // useFindandModify:false
     }
-  );
+
+  ).populate([
+
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "offered_by",
+        model: "user"
+
+      },
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "request_id",
+
+      }
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "inquiry_id",
+
+      }
+    }
+
+  ]);;
+
+  console.log(transaction)
+
   res.status(200).json({
     success: true,
+    updatedTransaction: transaction
   });
 };
 
