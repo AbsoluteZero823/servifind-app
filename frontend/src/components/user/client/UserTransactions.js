@@ -26,7 +26,7 @@ import {
 } from "../../../actions/transactionActions";
 
 
-import { UPDATE_PSENT_RESET } from "../../../constants/transactionConstants";
+import { UPDATE_PSENT_RESET, UPDATE_TRANSACTIONDONE_RESET } from "../../../constants/transactionConstants";
 import { newNotification } from "../../../actions/notificationActions";
 
 import axios from "axios";
@@ -53,7 +53,7 @@ const UserTransactions = () => {
     (state) => state.transactionDetails
   );
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const { success: isUpdated, loadingPayment } = useSelector(
+  const { success: isUpdated, loadingPayment,updatedTransaction } = useSelector(
     (state) => state.updatePayment
   );
   // const [currentPage, setCurrentPage] = useState(1)
@@ -81,6 +81,10 @@ const UserTransactions = () => {
     }
 
     if (isUpdated) {
+      console.log('sa UserTransactions.js')
+      // console.log("sa Transaction.js")
+      socket.emit('work completed', updatedTransaction);
+      dispatch({ type: UPDATE_TRANSACTIONDONE_RESET });
       dispatch({ type: UPDATE_PSENT_RESET });
     }
   }, [dispatch, alert, error, loadingPayment, isUpdated]);

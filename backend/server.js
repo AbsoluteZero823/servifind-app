@@ -31,8 +31,8 @@ const server = app.listen(process.env.PORT, () => {
 const io = require('socket.io')(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "http://localhost:3000", //localhost
-        // origin: "https://servifind-app.onrender.com" //website
+        // origin: "http://localhost:3000", //localhost
+        origin: "https://servifind-app.onrender.com" //website
     },
 });
 
@@ -140,12 +140,13 @@ io.on("connection", (socket) => {
 
     //Notification for work completed
     socket.on('work completed', (workCompletedReceived) => {
+        console.log("boooom parang neneng b")
         socket.broadcast.emit("work_completed received", 'workCompletedReceived');
         var transaction = workCompletedReceived;
-
-        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
-
+        console.log(transaction.offer_id.request_id.requested_by, 'requested_by')
+        console.log(transaction.offer_id.inquiry_id.customer, 'customer')
+        if (!transaction.offer_id) return console.log('transaction.offer_id not defined');
+        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
     });
 
     //Notification for payment sent
