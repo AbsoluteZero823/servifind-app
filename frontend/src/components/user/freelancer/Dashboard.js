@@ -82,10 +82,7 @@ const Dashboard = () => {
       setAcceptOfferReceivedLocal(acceptOfferReceived);
     });
 
-        return () => {
-      // I-close ang socket connection kapag nag-unmount ang component
-      socket.disconnect();
-    };
+      
 
   }, []);
 

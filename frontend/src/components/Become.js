@@ -50,10 +50,7 @@ const Become = () => {
       setWorkCompletedReceivedLocal(workCompletedReceived);
     });
 
-    return () => {
-      // I-close ang socket connection kapag nag-unmount ang component
-      socket.disconnect();
-    };
+ 
   }, []);
 
   useEffect(() => {
