@@ -31,8 +31,8 @@ const server = app.listen(process.env.PORT, () => {
 const io = require('socket.io')(server, {
     pingTimeout: 60000,
     cors: {
-        // origin: "http://localhost:3000", //localhost
-        origin: "https://servifind-app.onrender.com" //website
+        origin: "http://localhost:3000", //localhost
+        // origin: "https://servifind-app.onrender.com" //website
     },
 });
 
@@ -130,7 +130,7 @@ io.on("connection", (socket) => {
 
     //Notification for refuse offer
     socket.on('refuse offer', (refuseOfferReceived) => {
-        socket.broadcast.emit("refuse_offer received", 'refuseOfferReceived');
+        socket.broadcast.emit("refuse_offer received", refuseOfferReceived);
         var offer = refuseOfferReceived;
 
         if (!offer.freelancer) return console.log('offer.freelancer not defined');
@@ -140,41 +140,40 @@ io.on("connection", (socket) => {
 
     //Notification for work completed
     socket.on('work completed', (workCompletedReceived) => {
-        console.log("boooom parang neneng b")
-        socket.broadcast.emit("work_completed received", 'workCompletedReceived');
+        socket.broadcast.emit("work_completed received", workCompletedReceived);
         var transaction = workCompletedReceived;
-        console.log(transaction.offer_id.request_id.requested_by, 'requested_by')
-        console.log(transaction.offer_id.inquiry_id.customer, 'customer')
-        if (!transaction.offer_id) return console.log('transaction.offer_id not defined');
+        // console.log(transaction.offer_id.request_id.requested_by, 'requested_by')
+        // console.log(transaction.offer_id.inquiry_id.customer, 'customer')
+        if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
         socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
     });
 
     //Notification for payment sent
     socket.on('payment sent', (paymentSentReceived) => {
-        socket.broadcast.emit("payment_sent received", 'paymentSentReceived');
+        socket.broadcast.emit("payment_sent received", paymentSentReceived);
         var transaction = paymentSentReceived;
 
-        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("payment_sent received", paymentSentReceived);
+        if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
+        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("payment_sent received", paymentSentReceived);
 
     });
 
     //Notification for payment received
     socket.on('payment received', (paymentReceivedReceived) => {
-        socket.broadcast.emit("payment_received received", 'paymentReceivedReceived');
+        socket.broadcast.emit("payment_received received", paymentReceivedReceived);
         var transaction = paymentReceievedReceived;
 
-        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("payment_received received", paymentReceivedReceived);
+        if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
+        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("payment_receieved received", paymentReceievedReceived);
 
     });
 
     //Notification for rating
     socket.on('new rating', (newRatingReceived) => {
-        socket.broadcast.emit("rating received", 'newRatingReceived');
+        socket.broadcast.emit("rating received", newRatingReceived);
         var transaction = newRatingReceived;
 
-        if (!transaction.freelancer) return console.log('transaction.freelancer not defined');
+        if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
         socket.in(offer.inquiry_id.customer).emit("rating received", newRatingReceived);
 
     });

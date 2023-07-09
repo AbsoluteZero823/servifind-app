@@ -46,8 +46,9 @@ const Become = () => {
       setNewOfferReceivedLocal(newOfferReceived);
     });
 
-    socket.on('work completed', (workCompletedReceived) => {
+    socket.on('work_completed received', (workCompletedReceived) => {
       setWorkCompletedReceivedLocal(workCompletedReceived);
+
     });
 
  

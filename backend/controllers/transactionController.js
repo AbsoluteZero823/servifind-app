@@ -156,9 +156,42 @@ exports.PaymentSent = async (req, res, next) => {
       runValidators: true,
       // useFindandModify:false
     }
-  );
+  ).populate([
+
+    {
+      path: "offer_id",
+      model: "Offer",
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "request_id",
+model: "Request",
+populate:{
+  path:"requested_by",
+  model: "user"
+}
+      }
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "inquiry_id",
+        model: "Inquiry",
+        populate:{
+          path:"customer",
+          model:"user"
+        }
+      }
+    }
+
+  ]);;
+
   res.status(200).json({
     success: true,
+    updatedTransaction : transaction
   });
 };
 exports.PaymentReceived = async (req, res, next) => {

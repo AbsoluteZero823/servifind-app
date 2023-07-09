@@ -39,8 +39,8 @@ import io from 'socket.io-client';
 
 
 import Swal from "sweetalert2";
-// const ENDPOINT = "http://localhost:4002"; //localhost
-const ENDPOINT = "https://servifind-app.onrender.com" //website
+const ENDPOINT = "http://localhost:4002"; //localhost
+// const ENDPOINT = "https://servifind-app.onrender.com" //website
 
 
 var socket, selectedChatCompare;

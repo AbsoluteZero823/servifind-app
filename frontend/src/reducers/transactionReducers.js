@@ -229,7 +229,7 @@ export const paymentReducer = (state = {}, action) => {
             }
     }
 }
-
+//pag hiwalayin para maayos ang notif
 
 export const updateTransactionReducer = (state = {}, action) => {
     switch (action.type) {

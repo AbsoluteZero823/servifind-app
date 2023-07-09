@@ -38,6 +38,7 @@ const Feed = () => {
     const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
     const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
     const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
+    const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
 
     let navigate = useNavigate();
     const alert = useAlert();
@@ -121,6 +122,11 @@ const Feed = () => {
         socket.on('accept_offer received', (acceptOfferReceived) => {
             setAcceptOfferReceivedLocal(acceptOfferReceived);
         });
+
+        socket.on('work_completed received', (workCompletedReceived) => {
+            setWorkCompletedReceivedLocal(workCompletedReceived);
+      
+          });
 
     }, []);
 
@@ -214,6 +220,28 @@ const Feed = () => {
             setAcceptOfferReceivedLocal(null);
         }
     }, [acceptOfferReceivedLocal]);
+
+    useEffect(() => {
+        if (workCompletedReceivedLocal && workCompletedReceivedLocal !== null) {
+          // Execute your code when a new offer is received
+          console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
+    
+    
+          // addOfferNotif()
+    
+          const formData = new FormData();
+          formData.set("type", "work completed");
+          formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
+          formData.set("type_id", workCompletedReceivedLocal._id);
+          formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
+          dispatch(newNotification(formData));
+    
+    
+          // Reset the newOfferReceived state
+          setFetchNotificationAgain(!fetchNotificationAgain);
+          setWorkCompletedReceivedLocal(null);
+        }
+      }, [workCompletedReceivedLocal]);
 
     const addMessageNotif = async () => {
 

@@ -161,7 +161,7 @@ export const PaymentSent = (id, statusData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_PSENT_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {

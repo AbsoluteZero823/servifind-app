@@ -35,6 +35,8 @@ const Dashboard = () => {
   const [newInquiryReceivedLocal, setNewInquiryReceivedLocal] = useState(null);
   const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
   const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
+  const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
+  const [paymentSentReceivedLocal, setPaymentSentReceivedLocal] = useState(null);
 
   const { notification: newNotif } = useSelector((state) => state.addNotification);
   const { user } = useSelector((state) => state.auth);
@@ -82,7 +84,15 @@ const Dashboard = () => {
       setAcceptOfferReceivedLocal(acceptOfferReceived);
     });
 
-      
+    socket.on('work_completed received', (workCompletedReceived) => {
+      setWorkCompletedReceivedLocal(workCompletedReceived);
+
+    });
+
+    socket.on('payment_sent received', (paymentSentReceived) => {
+      setPaymentSentReceivedLocal(paymentSentReceived);
+
+    });
 
   }, []);
 
@@ -176,6 +186,51 @@ const Dashboard = () => {
     }
   }, [acceptOfferReceivedLocal]);
 
+  useEffect(() => {
+    if (workCompletedReceivedLocal && workCompletedReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
+
+
+      // addOfferNotif()
+
+      const formData = new FormData();
+      formData.set("type", "work completed");
+      formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
+      formData.set("type_id", workCompletedReceivedLocal._id);
+      formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
+      dispatch(newNotification(formData));
+
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setWorkCompletedReceivedLocal(null);
+    }
+  }, [workCompletedReceivedLocal]);
+
+  useEffect(() => {
+    if (paymentSentReceivedLocal && paymentSentReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('payment sent notification received:', paymentSentReceivedLocal);
+
+
+      // addOfferNotif()
+
+      const formData = new FormData();
+      formData.set("type", "payment sent");
+      // formData.set("message", `${paymentSentReceivedLocal.offer_id.offered_by.name} send payment`);
+      formData.set("message", `${(paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name } send payment`);
+      formData.set("type_id", paymentSentReceivedLocal._id);
+      formData.set("user_id", paymentSentReceivedLocal.offer_id.offered_by);
+      // formData.set("user_id", (paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by : paymentSentReceivedLocal.offer_id.inquiry_id.customer);
+      dispatch(newNotification(formData));
+
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setWorkCompletedReceivedLocal(null);
+    }
+  }, [workCompletedReceivedLocal]);
   // const addAcceptedOfferNotif = async () => {
 
   //   try {
