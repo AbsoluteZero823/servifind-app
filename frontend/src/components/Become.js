@@ -51,27 +51,13 @@ const Become = () => {
 
     });
 
- 
+
   }, []);
 
   useEffect(() => {
     if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
       // Execute your code when a new offer is received
       console.log('New offer received:', newOfferReceivedLocal);
-
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-      formData.set("type_id", newOfferReceivedLocal._id);
-      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-      dispatch(newNotification(formData));
-      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-      //     type_id: newOfferReceivedLocal._id,
-      //       user_id: userid
 
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
@@ -105,17 +91,6 @@ const Become = () => {
     if (workCompletedReceivedLocal && workCompletedReceivedLocal !== null) {
       // Execute your code when a new offer is received
       console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
-
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", "work completed");
-      formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
-      formData.set("type_id", workCompletedReceivedLocal._id);
-      formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
-      dispatch(newNotification(formData));
-
 
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);

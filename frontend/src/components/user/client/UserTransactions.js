@@ -13,21 +13,11 @@ import $ from "jquery";
 
 import { newRating } from "../../../actions/ratingActions";
 import { newReport } from "../../../actions/reportActions";
-
-import {
-  getTransactions,
-  clearErrors,
-  SingleTransaction,
-  PaymentReceived,
-  PaymentSent,
-  TransactionDone,
-  RateDone,
-  ReportDone,
-} from "../../../actions/transactionActions";
-
-
-import { UPDATE_PSENT_RESET, UPDATE_TRANSACTIONDONE_RESET, UPDATE_PRECEIVED_RESET, UPDATE_RATEDONE_RESET } from "../../../constants/transactionConstants";
 import { newNotification } from "../../../actions/notificationActions";
+
+import { getTransactions, clearErrors, SingleTransaction, PaymentReceived, PaymentSent, TransactionDone, RateDone, ReportDone, } from "../../../actions/transactionActions";
+import { UPDATE_PSENT_RESET, UPDATE_TRANSACTIONDONE_RESET, UPDATE_PRECEIVED_RESET, UPDATE_RATEDONE_RESET } from "../../../constants/transactionConstants";
+import { NEW_NOTIFICATION_RESET } from "../../../constants/notificationConstants";
 
 import axios from "axios";
 
@@ -43,32 +33,22 @@ const UserTransactions = () => {
   const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
   const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
   const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
+  const [paymentSentReceivedLocal, setPaymentSentReceivedLocal] = useState(null);
+  const [paymentReceivedLocal, setPaymentReceivedLocal] = useState(null);
+  const [newRatingReceivedLocal, setNewRatingReceivedLocal] = useState(null);
 
 
   const alert = useAlert();
   const dispatch = useDispatch();
 
-  const { loading, error, transactions } = useSelector(
-    (state) => state.transactions
-  );
-  const { loadings, detailserror, transaction } = useSelector(
-    (state) => state.transactionDetails
-  );
+  const { loading, error, transactions } = useSelector((state) => state.transactions);
+  const { loadings, detailserror, transaction } = useSelector((state) => state.transactionDetails);
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const { success: isPaymentSent, loadingPayment, updatedTransaction: updatedTransactionPSent } = useSelector(
-    (state) => state.updatePayment
-  );
-  const { success: transactionIsDone, loading: loadingTransactionDone, updatedTransaction: updatedTransactionDone } = useSelector(
-    (state) => state.transactionDone
-  );
-
-  const { success: isPaymentReceived, loading: loadingPaymentReceived, updatedTransaction: updatedPaymentReceived } = useSelector(
-    (state) => state.paymentReceived
-  );
-
-  const { success: isRateDone, loading: loadingRateDone, updatedTransaction: updatedRateDone } = useSelector(
-    (state) => state.rateDone
-  );
+  const { success: isPaymentSent, loadingPayment, updatedTransaction: updatedTransactionPSent } = useSelector((state) => state.updatePayment);
+  const { success: transactionIsDone, loading: loadingTransactionDone, updatedTransaction: updatedTransactionDone } = useSelector((state) => state.transactionDone);
+  const { success: isPaymentReceived, loading: loadingPaymentReceived, updatedTransaction: updatedPaymentReceived } = useSelector((state) => state.paymentReceived);
+  const { success: isRateDone, loading: loadingRateDone, updatedTransaction: updatedRateDone } = useSelector((state) => state.rateDone);
+  const { notification: newNotif, success: newNotificationSuccess } = useSelector((state) => state.addNotification);
   // const [currentPage, setCurrentPage] = useState(1)
   // let { keyword } = useParams();
 
@@ -94,29 +74,80 @@ const UserTransactions = () => {
     }
 
     if (transactionIsDone) {
+      if (updatedTransactionDone.transaction_done.client === 'false') {
+        const formData = new FormData();
+        formData.set("type", "work completed");
+        formData.set("message", `${updatedTransactionDone.offer_id.offered_by.name}'s work is done`);
+        formData.set("type_id", updatedTransactionDone._id);
+        formData.set("user_id", (updatedTransactionDone.offer_id.request_id) ? updatedTransactionDone.offer_id.request_id.requested_by : updatedTransactionDone.offer_id.inquiry_id.customer);
+        dispatch(newNotification(formData));
+      }
 
 
-      socket.emit('work completed', updatedTransactionDone);
+
       dispatch({ type: UPDATE_TRANSACTIONDONE_RESET });
       // dispatch({ type: UPDATE_PSENT_RESET });
     }
 
     if (isPaymentSent) {
-      socket.emit('payment sent', updatedTransactionPSent);
+
+      const formData = new FormData();
+      formData.set("type", "payment sent");
+
+      formData.set("message", `${(updatedTransactionPSent.offer_id.request_id) ? updatedTransactionPSent.offer_id.request_id.requested_by.name : updatedTransactionPSent.offer_id.inquiry_id.customer.name} send payment`);
+      formData.set("type_id", updatedTransactionPSent._id);
+      formData.set("user_id", updatedTransactionPSent.offer_id.offered_by);
+
+      dispatch(newNotification(formData));
+
+
       dispatch({ type: UPDATE_PSENT_RESET });
     }
 
     if (isPaymentReceived) {
-      socket.emit('payment received', updatedPaymentReceived);
+
+      const formData = new FormData();
+      formData.set("type", "payment received");
+      formData.set("message", `${updatedPaymentReceived.offer_id.offered_by.name} received your payment`);
+      formData.set("type_id", updatedPaymentReceived._id);
+      formData.set("user_id", (updatedPaymentReceived.offer_id.request_id) ? updatedPaymentReceived.offer_id.request_id.requested_by : updatedPaymentReceived.offer_id.inquiry_id.customer);
+      dispatch(newNotification(formData));
+
+
       dispatch({ type: UPDATE_PRECEIVED_RESET });
     }
 
     if (isRateDone) {
-      socket.emit('new rating', updatedRateDone);
+      const formData = new FormData();
+      formData.set("type", "rating done");
+      formData.set("message", `${(updatedRateDone.offer_id.request_id) ? updatedRateDone.offer_id.request_id.requested_by.name : updatedRateDone.offer_id.inquiry_id.customer.name} rated your transaction`);
+      formData.set("type_id", updatedRateDone._id);
+      formData.set("user_id", updatedRateDone.offer_id.offered_by);
+      dispatch(newNotification(formData));
+
+
       dispatch({ type: UPDATE_RATEDONE_RESET });
     }
 
-  }, [dispatch, alert, error, loadingTransactionDone, transactionIsDone, loadingPayment, isPaymentSent, loadingPaymentReceived, isPaymentReceived, loadingRateDone, isRateDone]);
+    if (newNotificationSuccess) {
+      if (newNotif.type === 'work completed') {
+        socket.emit('work completed', updatedTransactionDone);
+      }
+      if (newNotif.type === "payment sent") {
+        socket.emit('payment sent', updatedTransactionPSent);
+      }
+
+      if (newNotif.type === "payment received") {
+        socket.emit('payment received', updatedPaymentReceived);
+      }
+
+      if (newNotif.type === "rating done") {
+        socket.emit('new rating', updatedRateDone);
+      }
+      dispatch({ type: NEW_NOTIFICATION_RESET })
+    }
+
+  }, [dispatch, alert, error, loadingTransactionDone, transactionIsDone, loadingPayment, isPaymentSent, loadingPaymentReceived, isPaymentReceived, loadingRateDone, isRateDone, newNotificationSuccess]);
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
@@ -135,6 +166,21 @@ const UserTransactions = () => {
     });
     socket.on('work_completed received', (workCompletedReceived) => {
       setWorkCompletedReceivedLocal(workCompletedReceived);
+
+    });
+
+    socket.on('payment_sent received', (paymentSentReceived) => {
+      setPaymentSentReceivedLocal(paymentSentReceived);
+
+    });
+
+    socket.on('payment_received received', (paymentReceived) => {
+      setPaymentReceivedLocal(paymentReceived);
+
+    });
+
+    socket.on('rating received', (newRatingReceived) => {
+      setNewRatingReceivedLocal(newRatingReceived);
 
     });
 
@@ -167,18 +213,6 @@ const UserTransactions = () => {
       // Execute your code when a new message is received
       console.log('New inquiry received:', newInquiryReceivedLocal);
 
-
-      // addInquiryNotif()
-
-      const formData = new FormData();
-      formData.set("type", 'inquiry');
-      formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-      formData.set("type_id", newInquiryReceivedLocal._id);
-      formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
-
-      dispatch(newNotification(formData));
-
-
       // Reset the newMessageReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
       setNewInquiryReceivedLocal(null);
@@ -189,20 +223,6 @@ const UserTransactions = () => {
     if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
       // Execute your code when a new offer is received
       console.log('New offer received:', newOfferReceivedLocal);
-
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-      formData.set("type_id", newOfferReceivedLocal._id);
-      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-      dispatch(newNotification(formData));
-      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-      //     type_id: newOfferReceivedLocal._id,
-      //       user_id: userid
 
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
@@ -215,16 +235,6 @@ const UserTransactions = () => {
       // Execute your code when a new message is received
       console.log('accept offer received:', acceptOfferReceivedLocal);
 
-
-      // addAcceptedOfferNotif()
-      const formData = new FormData();
-      formData.set("type", "accept_offer");
-      // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
-      formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
-      formData.set("type_id", acceptOfferReceivedLocal._id);
-      formData.set("user_id", acceptOfferReceivedLocal.offered_by);
-      dispatch(newNotification(formData));
-
       // Reset the newMessageReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
       setAcceptOfferReceivedLocal(null);
@@ -236,22 +246,45 @@ const UserTransactions = () => {
       // Execute your code when a new offer is received
       console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
 
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", "work completed");
-      formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
-      formData.set("type_id", workCompletedReceivedLocal._id);
-      formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
-      dispatch(newNotification(formData));
-
-
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
       setWorkCompletedReceivedLocal(null);
     }
   }, [workCompletedReceivedLocal]);
+
+  useEffect(() => {
+    if (paymentSentReceivedLocal && paymentSentReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log('payment sent notification received:', paymentSentReceivedLocal);
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setPaymentSentReceivedLocal(null);
+    }
+  }, [paymentSentReceivedLocal]);
+
+  useEffect(() => {
+    if (paymentReceivedLocal && paymentReceivedLocal !== null) {
+      // Execute your code 
+      console.log('payment received notification received:', paymentReceivedLocal);
+
+      // Reset the state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setPaymentReceivedLocal(null);
+    }
+  }, [paymentReceivedLocal]);
+
+  useEffect(() => {
+    if (newRatingReceivedLocal && newRatingReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log(newRatingReceivedLocal.offer_id)
+      console.log('rating notification received:', newRatingReceivedLocal);
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewRatingReceivedLocal(null);
+    }
+  }, [newRatingReceivedLocal]);
 
   const addMessageNotif = async () => {
 

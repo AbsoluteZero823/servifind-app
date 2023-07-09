@@ -23,6 +23,10 @@ const UpdateProfile = () => {
     const [newOfferReceivedLocal, setNewOfferReceivedLocal] = useState(null);
     const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
     const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
+    const [paymentSentReceivedLocal, setPaymentSentReceivedLocal] = useState(null);
+    const [paymentReceivedLocal, setPaymentReceivedLocal] = useState(null);
+    const [newRatingReceivedLocal, setNewRatingReceivedLocal] = useState(null);
+
 
 
     const [name, setName] = useState('')
@@ -84,11 +88,26 @@ const UpdateProfile = () => {
             setAcceptOfferReceivedLocal(acceptOfferReceived);
         });
 
-        
-   socket.on('work_completed received', (workCompletedReceived) => {
-    setWorkCompletedReceivedLocal(workCompletedReceived);
 
-  });
+        socket.on('work_completed received', (workCompletedReceived) => {
+            setWorkCompletedReceivedLocal(workCompletedReceived);
+
+        });
+
+        socket.on('payment_sent received', (paymentSentReceived) => {
+            setPaymentSentReceivedLocal(paymentSentReceived);
+
+        });
+
+        socket.on('payment_received received', (paymentReceived) => {
+            setPaymentReceivedLocal(paymentReceived);
+
+        });
+
+        socket.on('rating received', (newRatingReceived) => {
+            setNewRatingReceivedLocal(newRatingReceived);
+
+        });
 
     }, []);
 
@@ -119,18 +138,6 @@ const UpdateProfile = () => {
             // Execute your code when a new message is received
             console.log('New inquiry received:', newInquiryReceivedLocal);
 
-
-            // addInquiryNotif()
-
-            const formData = new FormData();
-            formData.set("type", 'inquiry');
-            formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-            formData.set("type_id", newInquiryReceivedLocal._id);
-            formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
-
-            dispatch(newNotification(formData));
-
-
             // Reset the newMessageReceived state
             setFetchNotificationAgain(!fetchNotificationAgain);
             setNewInquiryReceivedLocal(null);
@@ -141,20 +148,6 @@ const UpdateProfile = () => {
         if (newOfferReceivedLocal && newOfferReceivedLocal !== null) {
             // Execute your code when a new offer is received
             console.log('New offer received:', newOfferReceivedLocal);
-
-
-            // addOfferNotif()
-
-            const formData = new FormData();
-            formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-            formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-            formData.set("type_id", newOfferReceivedLocal._id);
-            formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-            dispatch(newNotification(formData));
-            // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-            //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-            //     type_id: newOfferReceivedLocal._id,
-            //       user_id: userid
 
             // Reset the newOfferReceived state
             setFetchNotificationAgain(!fetchNotificationAgain);
@@ -168,16 +161,6 @@ const UpdateProfile = () => {
             // Execute your code when a new message is received
             console.log('accept offer received:', acceptOfferReceivedLocal);
 
-
-            // addAcceptedOfferNotif()
-            const formData = new FormData();
-            formData.set("type", "accept_offer");
-            // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
-            formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
-            formData.set("type_id", acceptOfferReceivedLocal._id);
-            formData.set("user_id", acceptOfferReceivedLocal.offered_by);
-            dispatch(newNotification(formData));
-
             // Reset the newMessageReceived state
             setFetchNotificationAgain(!fetchNotificationAgain);
             setAcceptOfferReceivedLocal(null);
@@ -186,25 +169,48 @@ const UpdateProfile = () => {
 
     useEffect(() => {
         if (workCompletedReceivedLocal && workCompletedReceivedLocal !== null) {
-          // Execute your code when a new offer is received
-          console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
-    
-    
-          // addOfferNotif()
-    
-          const formData = new FormData();
-          formData.set("type", "work completed");
-          formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
-          formData.set("type_id", workCompletedReceivedLocal._id);
-          formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
-          dispatch(newNotification(formData));
-    
-    
-          // Reset the newOfferReceived state
-          setFetchNotificationAgain(!fetchNotificationAgain);
-          setWorkCompletedReceivedLocal(null);
+            // Execute your code when a new offer is received
+            console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
+
+            // Reset the newOfferReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setWorkCompletedReceivedLocal(null);
         }
-      }, [workCompletedReceivedLocal]);
+    }, [workCompletedReceivedLocal]);
+
+    useEffect(() => {
+        if (paymentSentReceivedLocal && paymentSentReceivedLocal !== null) {
+            // Execute your code when a new offer is received
+            console.log('payment sent notification received:', paymentSentReceivedLocal);
+
+            // Reset the newOfferReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setPaymentSentReceivedLocal(null);
+        }
+    }, [paymentSentReceivedLocal]);
+
+    useEffect(() => {
+        if (paymentReceivedLocal && paymentReceivedLocal !== null) {
+            // Execute your code 
+            console.log('payment received notification received:', paymentReceivedLocal);
+
+            // Reset the state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setPaymentReceivedLocal(null);
+        }
+    }, [paymentReceivedLocal]);
+
+    useEffect(() => {
+        if (newRatingReceivedLocal && newRatingReceivedLocal !== null) {
+            // Execute your code when a new offer is received
+            console.log(newRatingReceivedLocal.offer_id)
+            console.log('rating notification received:', newRatingReceivedLocal);
+
+            // Reset the newOfferReceived state
+            setFetchNotificationAgain(!fetchNotificationAgain);
+            setNewRatingReceivedLocal(null);
+        }
+    }, [newRatingReceivedLocal]);
 
     const addMessageNotif = async () => {
 

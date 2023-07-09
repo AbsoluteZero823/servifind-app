@@ -24,6 +24,7 @@ import {
   NEW_OFFER_RESET,
   UPDATE_OFFER_RESET,
 } from "../../constants/offerConstants";
+import { NEW_NOTIFICATION_RESET } from "../../constants/notificationConstants";
 import {
   AcceptOffer,
   SingleOffer,
@@ -64,7 +65,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
   const { offer, success, loading: newOfferLoading } = useSelector(
     (state) => state.addOffer
   );
-  const { notification: newNotif } = useSelector((state) => state.addNotification);
+  const { notification: newNotif, success: newNotificationSuccess } = useSelector((state) => state.addNotification);
   // const {updateloading} = useSelector(state=>state.updatePayment)
 
   const { singleoffer, loadings } = useSelector((state) => state.singleOffer);
@@ -149,7 +150,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
     }
     // console.log(expectedDate);
     if (success) {
-      socket.emit("new offer", offer);
+
+      const notifData = new FormData();
+      notifData.set("type", (offer.request_id) ? "offer_request" : "offer_inquiry");
+      notifData.set("message", `New Offer from ${offer.offered_by.name}`);
+      notifData.set("type_id", offer._id);
+      notifData.set("user_id", (offer.request_id) ? offer.request_id.requested_by : offer.inquiry_id.customer);
+      dispatch(newNotification(notifData));
+
       const formData = new FormData();
       formData.set("offer_id", offer._id);
       formData.set("price", price);
@@ -165,7 +173,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
 
     if (isUpdated) {
       console.log(updatedOffer)
-      socket.emit("accept offer", updatedOffer);
+
+      const formData = new FormData();
+      formData.set("type", "accept_offer");
+      // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
+      formData.set("message", updatedOffer.request_id ? `${updatedOffer.request_id.requested_by.name} accepted your offer` : `${updatedOffer.inquiry_id.customer.name} accepted your offer`);
+      formData.set("type_id", updatedOffer._id);
+      formData.set("user_id", updatedOffer.offered_by);
+      dispatch(newNotification(formData));
+
       setFetchOffersAgain(!fetchOffersAgain)
       // setFetchAgain(!fetchAgain);
       dispatch({ type: UPDATE_OFFER_RESET });
@@ -177,6 +193,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
         dispatch({ type: UPDATE_TRANSACTION_RESET });
       }
 
+    }
+
+    if (newNotificationSuccess) {
+      if (newNotif.type === 'offer_inquiry' || newNotif.type === 'offer_request') {
+        socket.emit("new offer", offer);
+
+      }
+      if (newNotif.type === 'accept_offer') {
+        socket.emit("accept offer", updatedOffer);
+      }
+
+
+      dispatch({ type: NEW_NOTIFICATION_RESET })
     }
     // dispatch({type: UPDATE_TRANSACTION_RESET});
     // dispatch({ type: UPDATE_OFFER_RESET });

@@ -138,13 +138,13 @@ const Dashboard = () => {
 
       // addInquiryNotif()
 
-      const formData = new FormData();
-      formData.set("type", 'inquiry');
-      formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
-      formData.set("type_id", newInquiryReceivedLocal._id);
-      formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
+      // const formData = new FormData();
+      // formData.set("type", 'inquiry');
+      // formData.set("message", `New Inquiry from ${newInquiryReceivedLocal.customer.name}`);
+      // formData.set("type_id", newInquiryReceivedLocal._id);
+      // formData.set("user_id", newInquiryReceivedLocal.freelancer.user_id);
 
-      dispatch(newNotification(formData));
+      // dispatch(newNotification(formData));
 
 
       // Reset the newMessageReceived state
@@ -157,20 +157,6 @@ const Dashboard = () => {
       // Execute your code when a new offer is received
       console.log('New offer received:', newOfferReceivedLocal);
 
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry");
-      formData.set("message", `New Offer from ${newOfferReceivedLocal.offered_by.name}`);
-      formData.set("type_id", newOfferReceivedLocal._id);
-      formData.set("user_id", (newOfferReceivedLocal.request_id) ? newOfferReceivedLocal.request_id.requested_by : newOfferReceivedLocal.inquiry_id.customer);
-      dispatch(newNotification(formData));
-      // type: (newOfferReceivedLocal.request_id) ? "offer_request" : "offer_inquiry",
-      //   message: `New Offer from ${newOfferReceivedLocal.offered_by.name}`,
-      //     type_id: newOfferReceivedLocal._id,
-      //       user_id: userid
-
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
       setNewOfferReceivedLocal(null);
@@ -181,16 +167,6 @@ const Dashboard = () => {
     if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
       // Execute your code when a new message is received
       console.log('accept offer received:', acceptOfferReceivedLocal);
-
-
-      // addAcceptedOfferNotif()
-      const formData = new FormData();
-      formData.set("type", "accept_offer");
-      // formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`),
-      formData.set("message", acceptOfferReceivedLocal.request_id ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer` : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`);
-      formData.set("type_id", acceptOfferReceivedLocal._id);
-      formData.set("user_id", acceptOfferReceivedLocal.offered_by);
-      dispatch(newNotification(formData));
 
       // Reset the newMessageReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
@@ -203,15 +179,6 @@ const Dashboard = () => {
       // Execute your code when a new offer is received
       console.log('Freelancer Done working notification received:', workCompletedReceivedLocal);
 
-
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", "work completed");
-      formData.set("message", `${workCompletedReceivedLocal.offer_id.offered_by.name}'s work is done`);
-      formData.set("type_id", workCompletedReceivedLocal._id);
-      formData.set("user_id", (workCompletedReceivedLocal.offer_id.request_id) ? workCompletedReceivedLocal.offer_id.request_id.requested_by : workCompletedReceivedLocal.offer_id.inquiry_id.customer);
-      dispatch(newNotification(formData));
 
 
       // Reset the newOfferReceived state
@@ -226,16 +193,6 @@ const Dashboard = () => {
       console.log('payment sent notification received:', paymentSentReceivedLocal);
 
 
-      // addOfferNotif()
-
-      const formData = new FormData();
-      formData.set("type", "payment sent");
-      // formData.set("message", `${paymentSentReceivedLocal.offer_id.offered_by.name} send payment`);
-      formData.set("message", `${(paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name} send payment`);
-      formData.set("type_id", paymentSentReceivedLocal._id);
-      formData.set("user_id", paymentSentReceivedLocal.offer_id.offered_by);
-      // formData.set("user_id", (paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by : paymentSentReceivedLocal.offer_id.inquiry_id.customer);
-      dispatch(newNotification(formData));
 
 
       // Reset the newOfferReceived state
@@ -249,14 +206,7 @@ const Dashboard = () => {
       // Execute your code 
       console.log('payment received notification received:', paymentReceivedLocal);
 
-      const formData = new FormData();
-      formData.set("type", "payment received");
-      formData.set("message", `${paymentReceivedLocal.offer_id.offered_by.name} received your payment`);
-      // formData.set("message", `${(paymentReceivedLocal.offer_id.request_id) ? paymentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name} send payment`);
-      formData.set("type_id", paymentReceivedLocal._id);
-      // formData.set("user_id", paymentReceivedLocal.offer_id.offered_by);
-      formData.set("user_id", (paymentReceivedLocal.offer_id.request_id) ? paymentReceivedLocal.offer_id.request_id.requested_by : paymentReceivedLocal.offer_id.inquiry_id.customer);
-      dispatch(newNotification(formData));
+
 
 
       // Reset the state
@@ -271,14 +221,7 @@ const Dashboard = () => {
       console.log(newRatingReceivedLocal.offer_id)
       console.log('rating notification received:', newRatingReceivedLocal);
 
-      const formData = new FormData();
-      formData.set("type", "rating done");
 
-      formData.set("message", `${(newRatingReceivedLocal.offer_id.request_id) ? newRatingReceivedLocal.offer_id.request_id.requested_by.name : newRatingReceivedLocal.offer_id.inquiry_id.customer.name} rated your transaction`);
-      formData.set("type_id", newRatingReceivedLocal._id);
-      formData.set("user_id", newRatingReceivedLocal.offer_id.offered_by);
-
-      dispatch(newNotification(formData));
 
 
       // Reset the newOfferReceived state
