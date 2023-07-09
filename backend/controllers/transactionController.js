@@ -167,11 +167,11 @@ exports.PaymentSent = async (req, res, next) => {
       model: "Offer",
       populate: {
         path: "request_id",
-model: "Request",
-populate:{
-  path:"requested_by",
-  model: "user"
-}
+        model: "Request",
+        populate: {
+          path: "requested_by",
+          model: "user"
+        }
       }
     },
     {
@@ -180,18 +180,18 @@ populate:{
       populate: {
         path: "inquiry_id",
         model: "Inquiry",
-        populate:{
-          path:"customer",
-          model:"user"
+        populate: {
+          path: "customer",
+          model: "user"
         }
       }
     }
 
-  ]);;
+  ]);
 
   res.status(200).json({
     success: true,
-    updatedTransaction : transaction
+    updatedTransaction: transaction
   });
 };
 exports.PaymentReceived = async (req, res, next) => {
@@ -208,9 +208,38 @@ exports.PaymentReceived = async (req, res, next) => {
       runValidators: true,
       // useFindandModify:false
     }
-  );
+  ).populate([
+
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "offered_by",
+        model: "user"
+
+      },
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "request_id",
+
+      }
+    },
+    {
+      path: "offer_id",
+      model: "Offer",
+      populate: {
+        path: "inquiry_id",
+
+      }
+    }
+
+  ]);
   res.status(200).json({
     success: true,
+    updatedTransaction: transaction
   });
 };
 
@@ -294,19 +323,56 @@ exports.rateDone = async (req, res, next) => {
   const isRatedData = {
     isRated: "true",
   };
+  try {
+    const transaction = await Transaction.findByIdAndUpdate(
+      req.params.id,
+      isRatedData,
+      {
+        new: true,
+        runValidators: true,
+        // useFindandModify:false
+      }
+    ).populate([
 
-  const transaction = await Transaction.findByIdAndUpdate(
-    req.params.id,
-    isRatedData,
-    {
-      new: true,
-      runValidators: true,
-      // useFindandModify:false
-    }
-  );
-  res.status(200).json({
-    success: true,
-  });
+      {
+        path: "offer_id",
+        model: "Offer",
+      },
+      {
+        path: "offer_id",
+        model: "Offer",
+        populate: {
+          path: "request_id",
+          model: "Request",
+          populate: {
+            path: "requested_by",
+            model: "user"
+          }
+        }
+      },
+      {
+        path: "offer_id",
+        model: "Offer",
+        populate: {
+          path: "inquiry_id",
+          model: "Inquiry",
+          populate: {
+            path: "customer",
+            model: "user"
+          }
+        }
+      }
+
+    ]);
+    console.log(transaction, 'for rate')
+    res.status(200).json({
+      success: true,
+      updatedTransaction: transaction
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+
 };
 
 exports.reportDone = async (req, res, next) => {
@@ -329,6 +395,7 @@ exports.reportDone = async (req, res, next) => {
   );
   res.status(200).json({
     success: true,
+    updatedTransaction: transaction
   });
 };
 

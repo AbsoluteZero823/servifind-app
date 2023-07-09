@@ -145,7 +145,7 @@ io.on("connection", (socket) => {
         // console.log(transaction.offer_id.request_id.requested_by, 'requested_by')
         // console.log(transaction.offer_id.inquiry_id.customer, 'customer')
         if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
-        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
+        socket.in((transaction.offer_id.request_id) ? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("work_completed received", workCompletedReceived);
     });
 
     //Notification for payment sent
@@ -154,27 +154,31 @@ io.on("connection", (socket) => {
         var transaction = paymentSentReceived;
 
         if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
-        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("payment_sent received", paymentSentReceived);
+
+        socket.in(transaction.offer_id.offered_by).emit("payment_sent received", paymentSentReceived);
 
     });
 
     //Notification for payment received
-    socket.on('payment received', (paymentReceivedReceived) => {
-        socket.broadcast.emit("payment_received received", paymentReceivedReceived);
-        var transaction = paymentReceievedReceived;
+    socket.on('payment received', (paymentReceived) => {
+
+        socket.broadcast.emit("payment_received received", paymentReceived);
+        var transaction = paymentReceived;
 
         if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
-        socket.in((transaction.offer_id.request_id)? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("payment_receieved received", paymentReceievedReceived);
+        socket.in((transaction.offer_id.request_id) ? transaction.offer_id.request_id.requested_by : transaction.offer_id.inquiry_id.customer).emit("payment_receieved received", paymentReceived);
 
     });
 
     //Notification for rating
     socket.on('new rating', (newRatingReceived) => {
+        console.log("sa side ng nag pindot")
         socket.broadcast.emit("rating received", newRatingReceived);
         var transaction = newRatingReceived;
 
         if (!transaction.offer_id) return console.log('transaction.freelancer not defined');
-        socket.in(offer.inquiry_id.customer).emit("rating received", newRatingReceived);
+        // socket.in(offer.inquiry_id.customer).emit("rating received", newRatingReceived);
+        socket.in(transaction.offer_id.offered_by).emit("rating received", newRatingReceived);
 
     });
 

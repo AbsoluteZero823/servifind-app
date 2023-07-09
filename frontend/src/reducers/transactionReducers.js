@@ -183,10 +183,7 @@ export const paymentReducer = (state = {}, action) => {
 
 
         case UPDATE_PSENT_REQUEST:
-        case UPDATE_PRECEIVED_REQUEST:
-        case UPDATE_TRANSACTIONDONE_REQUEST:
-        case UPDATE_RATEDONE_REQUEST:
-        case UPDATE_REPORTDONE_REQUEST:
+
         default:
             return {
 
@@ -196,10 +193,7 @@ export const paymentReducer = (state = {}, action) => {
 
 
         case UPDATE_PSENT_SUCCESS:
-        case UPDATE_PRECEIVED_SUCCESS:
-        case UPDATE_TRANSACTIONDONE_SUCCESS:
-        case UPDATE_RATEDONE_SUCCESS:
-        case UPDATE_REPORTDONE_SUCCESS:
+
             return {
                 ...state,
                 loadingpayment: false,
@@ -209,19 +203,49 @@ export const paymentReducer = (state = {}, action) => {
             }
 
         case UPDATE_PSENT_RESET:
-        case UPDATE_PRECEIVED_RESET:
-        case UPDATE_TRANSACTIONDONE_RESET:
-        case UPDATE_RATEDONE_RESET:
-        case UPDATE_REPORTDONE_RESET:
+
             return {
                 ...state,
                 success: false
             }
 
         case UPDATE_PSENT_FAIL:
-        case UPDATE_PRECEIVED_FAIL:
-        case UPDATE_TRANSACTIONDONE_FAIL:
-        case UPDATE_RATEDONE_FAIL:
+
+            return {
+                ...state,
+                error: action.payload
+            }
+    }
+}
+
+export const reportDoneReducer = (state = {}, action) => {
+    switch (action.type) {
+
+        case UPDATE_REPORTDONE_REQUEST:
+        default:
+            return {
+
+                ...state,
+                loading: true,
+            }
+
+
+        case UPDATE_REPORTDONE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+
+                success: action.payload.success,
+                updatedTransaction: action.payload.updatedTransaction
+            }
+
+        case UPDATE_REPORTDONE_RESET:
+            return {
+                ...state,
+                success: false
+            }
+
+
         case UPDATE_REPORTDONE_FAIL:
             return {
                 ...state,
@@ -229,6 +253,143 @@ export const paymentReducer = (state = {}, action) => {
             }
     }
 }
+export const rateDoneReducer = (state = {}, action) => {
+    switch (action.type) {
+
+
+
+
+        case UPDATE_RATEDONE_REQUEST:
+
+        default:
+            return {
+
+                ...state,
+                loading: true,
+            }
+
+
+
+
+        case UPDATE_RATEDONE_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+
+                success: action.payload.success,
+                updatedTransaction: action.payload.updatedTransaction
+            }
+
+
+
+        case UPDATE_RATEDONE_RESET:
+
+            return {
+                ...state,
+                success: false
+            }
+
+        case UPDATE_RATEDONE_FAIL:
+
+            return {
+                ...state,
+                error: action.payload
+            }
+    }
+}
+
+//not done
+export const paymentReceivedReducer = (state = {}, action) => {
+    switch (action.type) {
+
+
+
+        case UPDATE_PRECEIVED_REQUEST:
+
+        default:
+            return {
+
+                ...state,
+                loading: true,
+            }
+
+
+
+        case UPDATE_PRECEIVED_SUCCESS:
+
+
+            return {
+                ...state,
+                loading: false,
+
+                success: action.payload.success,
+                updatedTransaction: action.payload.updatedTransaction
+            }
+
+
+        case UPDATE_PRECEIVED_RESET:
+
+
+
+            return {
+                ...state,
+                success: false
+            }
+
+
+        case UPDATE_PRECEIVED_FAIL:
+
+
+            return {
+                ...state,
+                error: action.payload
+            }
+    }
+}
+export const transactionDoneReducer = (state = {}, action) => {
+    switch (action.type) {
+
+
+
+        case UPDATE_TRANSACTIONDONE_REQUEST:
+
+
+        default:
+            return {
+
+                ...state,
+                loading: true,
+            }
+
+
+        case UPDATE_TRANSACTIONDONE_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+
+                success: action.payload.success,
+                updatedTransaction: action.payload.updatedTransaction
+            }
+
+        case UPDATE_TRANSACTIONDONE_RESET:
+
+            return {
+                ...state,
+                success: false
+            }
+
+
+        case UPDATE_TRANSACTIONDONE_FAIL:
+
+            return {
+                ...state,
+                error: action.payload
+            }
+    }
+}
+//pag hiwalayin para maayos ang notif
 //pag hiwalayin para maayos ang notif
 
 export const updateTransactionReducer = (state = {}, action) => {

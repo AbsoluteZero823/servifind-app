@@ -5,14 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserReducer, userDetailsReducer } from './reducers/userReducers'
 import { servicesReducer, freelancerServicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
-import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, updateTransactionReducer,getTransactionCoursesReducer,getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer,getDashboardInfoReducer } from './reducers/transactionReducers';
+import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, transactionDoneReducer, paymentReceivedReducer, reportDoneReducer, rateDoneReducer, updateTransactionReducer, getTransactionCoursesReducer, getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer, getDashboardInfoReducer } from './reducers/transactionReducers';
 import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer } from './reducers/freelancerReducers';
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
 import { getOffersReducer, newOfferReducer, offerDetailsReducer, getRequestOffersReducer, updateReducer } from './reducers/offerReducers';
 import { chatsReducer, newChatReducer } from './reducers/chatReducers';
 import { messagesReducer, newMessageReducer } from './reducers/messageReducers';
-import {getReportsReducer,getUserReportsReducer} from './reducers/reportReducers';
+import { getReportsReducer, getUserReportsReducer } from './reducers/reportReducers';
 import { getNotificationsReducer, newNotificationReducer, notificationReducer } from './reducers/notificationReducers';
 
 // import { getTransactions } from '../../backend/controllers/transactionController';
@@ -20,7 +20,7 @@ const reducer = combineReducers({
 
     addUser: newUserReducer,
 
-    freelancerServices:freelancerServicesReducer,
+    freelancerServices: freelancerServicesReducer,
     services: servicesReducer,
     serviceDetails: serviceDetailsReducer,
     userDetails: userDetailsReducer,
@@ -40,11 +40,16 @@ const reducer = combineReducers({
     transactions: getTransactionsReducer,
     transactionDetails: transactionDetailsReducer,
     updatePayment: paymentReducer,
+    transactionDone: transactionDoneReducer,
+    paymentReceived: paymentReceivedReducer,
+    reportDone: reportDoneReducer,
+    rateDone: rateDoneReducer,
+
     updatetransaction: updateTransactionReducer,
-    sectionArray:getTransactionCoursesReducer,
-    completionDateTo:getTransactionMonthReducer,
-    topServicesArray:getServiceCoursesReducer,
-    serviLeaderboards:getServiceLeaderboardsReducer,
+    sectionArray: getTransactionCoursesReducer,
+    completionDateTo: getTransactionMonthReducer,
+    topServicesArray: getServiceCoursesReducer,
+    serviLeaderboards: getServiceLeaderboardsReducer,
     dashboardInfo: getDashboardInfoReducer,
 
     freelancerDetails: freelancerDetailsReducer,
@@ -73,8 +78,8 @@ const reducer = combineReducers({
     messages: messagesReducer,
     addMessage: newMessageReducer,
 
-    reports:getReportsReducer,
-    userreports:getUserReportsReducer,
+    reports: getReportsReducer,
+    userreports: getUserReportsReducer,
 
     notifications: getNotificationsReducer,
     addNotification: newNotificationReducer,

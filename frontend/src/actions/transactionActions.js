@@ -187,7 +187,7 @@ export const PaymentReceived = (id, statusData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_PRECEIVED_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {
@@ -240,7 +240,7 @@ export const RateDone = (id, rateData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_RATEDONE_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {
@@ -266,7 +266,7 @@ export const ReportDone = (id, formData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_REPORTDONE_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {

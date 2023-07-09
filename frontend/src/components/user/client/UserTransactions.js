@@ -26,7 +26,7 @@ import {
 } from "../../../actions/transactionActions";
 
 
-import { UPDATE_PSENT_RESET, UPDATE_TRANSACTIONDONE_RESET } from "../../../constants/transactionConstants";
+import { UPDATE_PSENT_RESET, UPDATE_TRANSACTIONDONE_RESET, UPDATE_PRECEIVED_RESET, UPDATE_RATEDONE_RESET } from "../../../constants/transactionConstants";
 import { newNotification } from "../../../actions/notificationActions";
 
 import axios from "axios";
@@ -44,6 +44,7 @@ const UserTransactions = () => {
   const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
   const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
 
+
   const alert = useAlert();
   const dispatch = useDispatch();
 
@@ -54,8 +55,19 @@ const UserTransactions = () => {
     (state) => state.transactionDetails
   );
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  const { success: isUpdated, loadingPayment,updatedTransaction } = useSelector(
+  const { success: isPaymentSent, loadingPayment, updatedTransaction: updatedTransactionPSent } = useSelector(
     (state) => state.updatePayment
+  );
+  const { success: transactionIsDone, loading: loadingTransactionDone, updatedTransaction: updatedTransactionDone } = useSelector(
+    (state) => state.transactionDone
+  );
+
+  const { success: isPaymentReceived, loading: loadingPaymentReceived, updatedTransaction: updatedPaymentReceived } = useSelector(
+    (state) => state.paymentReceived
+  );
+
+  const { success: isRateDone, loading: loadingRateDone, updatedTransaction: updatedRateDone } = useSelector(
+    (state) => state.rateDone
   );
   // const [currentPage, setCurrentPage] = useState(1)
   // let { keyword } = useParams();
@@ -81,14 +93,30 @@ const UserTransactions = () => {
       console.log(user._id);
     }
 
-    if (isUpdated) {
-      console.log('sa UserTransactions.js')
-      // console.log("sa Transaction.js")
-      socket.emit('work completed', updatedTransaction);
+    if (transactionIsDone) {
+
+
+      socket.emit('work completed', updatedTransactionDone);
       dispatch({ type: UPDATE_TRANSACTIONDONE_RESET });
+      // dispatch({ type: UPDATE_PSENT_RESET });
+    }
+
+    if (isPaymentSent) {
+      socket.emit('payment sent', updatedTransactionPSent);
       dispatch({ type: UPDATE_PSENT_RESET });
     }
-  }, [dispatch, alert, error, loadingPayment, isUpdated]);
+
+    if (isPaymentReceived) {
+      socket.emit('payment received', updatedPaymentReceived);
+      dispatch({ type: UPDATE_PRECEIVED_RESET });
+    }
+
+    if (isRateDone) {
+      socket.emit('new rating', updatedRateDone);
+      dispatch({ type: UPDATE_RATEDONE_RESET });
+    }
+
+  }, [dispatch, alert, error, loadingTransactionDone, transactionIsDone, loadingPayment, isPaymentSent, loadingPaymentReceived, isPaymentReceived, loadingRateDone, isRateDone]);
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
@@ -407,7 +435,7 @@ const UserTransactions = () => {
   });
 
   const clickedButtonHandler = (e) => {
-    console.log(e.target);
+    // console.log(e.target);
     const { name } = e.target;
     setActiveButton(name);
     console.log(activeButton);
@@ -665,7 +693,7 @@ const UserTransactions = () => {
 
   return (
     <Fragment>
-      {loading || loadingPayment ? (
+      {loading ? (
         <Loader />
       ) : (
         <Fragment>

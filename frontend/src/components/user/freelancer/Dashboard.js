@@ -21,7 +21,7 @@ import { getTransactions } from "../../../actions/transactionActions";
 import { getFreelancerServices } from "../../../actions/serviceActions";
 import { getDashboardCounts } from "../../../actions/transactionActions";
 import { loadUser } from "../../../actions/userActions";
-import {  getMyUnreadNotifications, readMyNotification,newNotification } from "../../../actions/notificationActions";
+import { getMyUnreadNotifications, readMyNotification, newNotification } from "../../../actions/notificationActions";
 import {
   AVAILABILITY_UPDATE_RESET,
   FREELANCER_SETUP_RESET,
@@ -37,6 +37,8 @@ const Dashboard = () => {
   const [acceptOfferReceivedLocal, setAcceptOfferReceivedLocal] = useState(null);
   const [workCompletedReceivedLocal, setWorkCompletedReceivedLocal] = useState(null);
   const [paymentSentReceivedLocal, setPaymentSentReceivedLocal] = useState(null);
+  const [paymentReceivedLocal, setPaymentReceivedLocal] = useState(null);
+  const [newRatingReceivedLocal, setNewRatingReceivedLocal] = useState(null);
 
   const { notification: newNotif } = useSelector((state) => state.addNotification);
   const { user } = useSelector((state) => state.auth);
@@ -74,7 +76,7 @@ const Dashboard = () => {
     });
 
     socket.on('inquiry received', (newInquiryReceived) => {
-    setNewInquiryReceivedLocal(newInquiryReceived);
+      setNewInquiryReceivedLocal(newInquiryReceived);
     });
     socket.on('offer received', (newOfferReceived) => {
       setNewOfferReceivedLocal(newOfferReceived);
@@ -91,6 +93,16 @@ const Dashboard = () => {
 
     socket.on('payment_sent received', (paymentSentReceived) => {
       setPaymentSentReceivedLocal(paymentSentReceived);
+
+    });
+
+    socket.on('payment_received received', (paymentReceived) => {
+      setPaymentReceivedLocal(paymentReceived);
+
+    });
+
+    socket.on('rating received', (newRatingReceived) => {
+      setNewRatingReceivedLocal(newRatingReceived);
 
     });
 
@@ -118,7 +130,7 @@ const Dashboard = () => {
     }
   }, [newMessageReceivedLocal]);
 
- useEffect(() => {
+  useEffect(() => {
     if (newInquiryReceivedLocal && newInquiryReceivedLocal !== null) {
       // Execute your code when a new message is received
       console.log('New inquiry received:', newInquiryReceivedLocal);
@@ -165,7 +177,7 @@ const Dashboard = () => {
     }
   }, [newOfferReceivedLocal]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (acceptOfferReceivedLocal && acceptOfferReceivedLocal !== null) {
       // Execute your code when a new message is received
       console.log('accept offer received:', acceptOfferReceivedLocal);
@@ -219,7 +231,7 @@ const Dashboard = () => {
       const formData = new FormData();
       formData.set("type", "payment sent");
       // formData.set("message", `${paymentSentReceivedLocal.offer_id.offered_by.name} send payment`);
-      formData.set("message", `${(paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name } send payment`);
+      formData.set("message", `${(paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name} send payment`);
       formData.set("type_id", paymentSentReceivedLocal._id);
       formData.set("user_id", paymentSentReceivedLocal.offer_id.offered_by);
       // formData.set("user_id", (paymentSentReceivedLocal.offer_id.request_id) ? paymentSentReceivedLocal.offer_id.request_id.requested_by : paymentSentReceivedLocal.offer_id.inquiry_id.customer);
@@ -228,43 +240,52 @@ const Dashboard = () => {
 
       // Reset the newOfferReceived state
       setFetchNotificationAgain(!fetchNotificationAgain);
-      setWorkCompletedReceivedLocal(null);
+      setPaymentSentReceivedLocal(null);
     }
-  }, [workCompletedReceivedLocal]);
-  // const addAcceptedOfferNotif = async () => {
+  }, [paymentSentReceivedLocal]);
 
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         "Content-type": "application/json",
-  //         // Authorization: `Bearer ${user.token}`,
-  //       },
-  //     };
+  useEffect(() => {
+    if (paymentReceivedLocal && paymentReceivedLocal !== null) {
+      // Execute your code 
+      console.log('payment received notification received:', paymentReceivedLocal);
 
-  //     const { data } = await axios.post(
-  //       "/api/v1/notification/new",
-  //       {
-  //         type: "accept_offer",
-  //         message: (acceptOfferReceivedLocal.request_id)
-  //           ? `${acceptOfferReceivedLocal.request_id.requested_by.name} accepted your offer`
-  //           : `${acceptOfferReceivedLocal.inquiry_id.customer.name} accepted your offer`,
-  //         type_id: acceptOfferReceivedLocal._id,
-  //         user_id: acceptOfferReceivedLocal.offered_by
-  //       },
-  //       config
-  //     );
-  //     console.log(data, "ito yon kens");
-  //     // socket.emit("new message", data.message);
-  //     // setMessages([...messages, data.message]);
-
-  //     // setFetchAgain(!fetchAgain);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  // };
+      const formData = new FormData();
+      formData.set("type", "payment received");
+      formData.set("message", `${paymentReceivedLocal.offer_id.offered_by.name} received your payment`);
+      // formData.set("message", `${(paymentReceivedLocal.offer_id.request_id) ? paymentReceivedLocal.offer_id.request_id.requested_by.name : paymentSentReceivedLocal.offer_id.inquiry_id.customer.name} send payment`);
+      formData.set("type_id", paymentReceivedLocal._id);
+      // formData.set("user_id", paymentReceivedLocal.offer_id.offered_by);
+      formData.set("user_id", (paymentReceivedLocal.offer_id.request_id) ? paymentReceivedLocal.offer_id.request_id.requested_by : paymentReceivedLocal.offer_id.inquiry_id.customer);
+      dispatch(newNotification(formData));
 
 
+      // Reset the state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setPaymentReceivedLocal(null);
+    }
+  }, [paymentReceivedLocal]);
+
+  useEffect(() => {
+    if (newRatingReceivedLocal && newRatingReceivedLocal !== null) {
+      // Execute your code when a new offer is received
+      console.log(newRatingReceivedLocal.offer_id)
+      console.log('rating notification received:', newRatingReceivedLocal);
+
+      const formData = new FormData();
+      formData.set("type", "rating done");
+
+      formData.set("message", `${(newRatingReceivedLocal.offer_id.request_id) ? newRatingReceivedLocal.offer_id.request_id.requested_by.name : newRatingReceivedLocal.offer_id.inquiry_id.customer.name} rated your transaction`);
+      formData.set("type_id", newRatingReceivedLocal._id);
+      formData.set("user_id", newRatingReceivedLocal.offer_id.offered_by);
+
+      dispatch(newNotification(formData));
+
+
+      // Reset the newOfferReceived state
+      setFetchNotificationAgain(!fetchNotificationAgain);
+      setNewRatingReceivedLocal(null);
+    }
+  }, [newRatingReceivedLocal]);
 
   const addMessageNotif = async () => {
     console.log("awot")
