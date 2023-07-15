@@ -261,7 +261,7 @@ exports.approveApplicationPremium = async (req, res, next) => {
 
     const freelancerData = {
         isPremium: true,
-
+        premium_date: Date.now()
     }
 
     freelancerData.premiumReceipt = {
@@ -360,25 +360,25 @@ exports.completeFreelancerSetup = async (req, res, next) => {
         const freelancerData = {
             gcash_name: req.body.gcash_name,
             gcash_num: req.body.gcash_num,
-         
+
         }
 
 
-        if(req.body.qrCode !== ''){
-              const result = await cloudinary.v2.uploader.upload(req.body.qrCode, {
-            folder: 'servifind/freelancer/qrcode',
-            // width: 150,
-            // crop: "scale"
-        })
-        
-   
-           freelancerData.qrCode = {
+        if (req.body.qrCode !== '') {
+            const result = await cloudinary.v2.uploader.upload(req.body.qrCode, {
+                folder: 'servifind/freelancer/qrcode',
+                // width: 150,
+                // crop: "scale"
+            })
+
+
+            freelancerData.qrCode = {
                 public_id: result.public_id,
                 url: result.secure_url
 
             }
         }
-       
+
         if (!freelancer) {
             return next(new ErrorHandler('User  not found', 404));
         }
@@ -398,7 +398,7 @@ exports.completeFreelancerSetup = async (req, res, next) => {
 }
 
 // CODES SA MOBILE
-exports.initialasaFreelancer = async (req,res,next) => {
+exports.initialasaFreelancer = async (req, res, next) => {
     try {
         const existingFreelancer = await Freelancer.findOne({ user_id: req.body.user_id });
         if (existingFreelancer) {

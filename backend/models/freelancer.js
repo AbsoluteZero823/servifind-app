@@ -11,6 +11,10 @@ const freelancerSchema = new mongoose.Schema({
         type: Date,
         required: false
     },
+    premium_date: {
+        type: Date,
+        required: false
+    },
     course: {
         type: String,
         required: true,
