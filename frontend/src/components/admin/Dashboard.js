@@ -7,11 +7,15 @@ import MetaData from '../layout/MetaData'
 import Loader from '../layout/Loader'
 import Sidebar from './Sidebar'
 import BarChart from './charts/BarChart';
+import IncomeChart from './charts/IncomeChart';
 import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo } from '../../actions/transactionActions';
+import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
 import socket from '../../Context/socket';
+
+
 
 import axios from "axios";
 
@@ -28,6 +32,7 @@ var selectedChatCompare;
 
 const Dashboard = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
+  const { loading, error, sortedService } = useSelector(state => state.serviLeaderboards);
   const dispatch = useDispatch();
 
   // const { products } = useSelector(state => state.products)
@@ -42,15 +47,71 @@ const Dashboard = () => {
   //         outOfStock += 1;
   //     }
   // })
+  const [paramValue, setParamValue] = useState([
+    { service: 'value1', count: 'value2' },
+    { service: 'value3', count: 'value4' },
+    // Add more objects to the array as needed
+  ]);
 
+  const [pdfLoading, setPdfLoading] = useState(false);
+
+  // const handleGeneratePdf = async () => {
+  //   setPdfLoading(true);
+  //   try {
+  //     // Make a request to the server's generatePdf endpoint
+  //     const response = await fetch('http://localhost:3000/api/v1/pdf-generate');
+  //     const blob = await response.blob();
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.download = 'generated-pdf.pdf';
+  //     link.click();
+  //     setPdfLoading(false);
+  //   } catch (error) {
+  //     console.error('Error generating PDF:', error);
+  //     setPdfLoading(false);
+  //   }
+  // };
   useEffect(() => {
     dispatch(getDashboardInfo())
+    dispatch(getServiceLeaderboards());
     if (success) {
       console.log(result)
 
     }
 
   }, [dispatch, success])
+  const handleGeneratePdf = async () => {
+    setPdfLoading(true);
+    console.log(sortedService, 'keeeeeeen')
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/pdf-generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sortedService }) // Serialize the array of objects to JSON string
+      });
+      // const response = await axios.post('http://localhost:3000/api/v1/pdf-generate', sortedService, {
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }
+      // });
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'generated-pdf.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+
+
+
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
@@ -129,16 +190,8 @@ const Dashboard = () => {
 
   };
 
-  const [userData, setUserData] = useState({
-    labels: UserData.map((data) => data.year),
-    datasets: [{
-      label: "Users Gained",
-      data: UserData.map((data) => data.userGain),
-      backgroundColor: ["green", 'blue'],
-      borderColor: "black",
-      borderWidth: 1.5
-    }]
-  })
+
+
 
   return (
     <Fragment>
@@ -147,9 +200,30 @@ const Dashboard = () => {
 
 
 
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '0px 30px'
+        }}>
 
-      <h1 className="my-4">Dashboard</h1>
-
+        <h1 className="my-4">Dashboard</h1>
+        <div class="btn-group">
+          <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ padding: '15px 10px' }}>
+            Generate Reports
+          </button>
+          <div class="dropdown-menu dropdown-menu-right">
+            {/* <button class="dropdown-item" type="button" >Transaction/Course</button> */}
+            <button class="dropdown-item" type="button" onClick={handleGeneratePdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Top Services...' : 'Top Services'}
+            </button>
+            <button class="dropdown-item" type="button">Completed Transction/Month</button>
+            <button class="dropdown-item" type="button">Monthly Income</button>
+            <button class="dropdown-item" type="button">Try</button>
+          </div>
+        </div>
+      </div>
       {false ? <Loader /> : (
         <Fragment>
           <MetaData title={'Admin Dashboard'} />
@@ -260,7 +334,8 @@ const Dashboard = () => {
             {/* <LineChart chartData={userData}/> */}
             <PieChart />
             <BarChart />
-            <ServiceLeaderboards />
+            <IncomeChart />
+            <ServiceLeaderboards loading={loading} error={error} sortedService={sortedService} />
           </div>
         </Fragment>
       )}

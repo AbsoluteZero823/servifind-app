@@ -13,6 +13,7 @@ const { getFreelancers,
     rejectApplicationPremium,
     availabiltyUpdate,
     completeFreelancerSetup,
+    getPremiumFreelancers,
     //CODE SA MOBILE
     makemeaFreelancer,
     getmyFreelancers,
@@ -37,7 +38,7 @@ router.route('/approve-premium/:id').put(approveApplicationPremium);
 router.route('/reject-premium/:id').put(rejectApplicationPremium);
 router.route('/availability-update').put(isAuthenticatedUser, availabiltyUpdate);
 router.route('/complete-setup').put(isAuthenticatedUser, completeFreelancerSetup);
-
+router.route('/income').get(getPremiumFreelancers);
 //CODE SA MOBILE
 router.route('/freelancers/register').post(isAuthenticatedUser, makemeaFreelancer);
 router.route('/freelancers/initial/register').post(initialasaFreelancer);

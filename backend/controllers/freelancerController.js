@@ -397,6 +397,61 @@ exports.completeFreelancerSetup = async (req, res, next) => {
 
 }
 
+// exports.getPremiumFreelancers = async (req, res, next) => {
+
+//     const premiumFreelancers = await Freelancer.find({ 'premium_date': { $exists: true }, isPremium: 'true' }).select(['premium_date']);
+
+//     res.status(200).json({
+//         success: true,
+//         premiumFreelancers
+//     })
+
+// }
+exports.getPremiumFreelancers = async (req, res, next) => {
+
+    try {
+        // Get the current year
+        const currentYear = new Date().getFullYear();
+
+        // Set the date range for the current year
+        const startDate = new Date(`${currentYear}-01-01`);
+        const endDate = new Date(`${currentYear + 1}-01-01`);
+
+        // Fetch premium freelancers with 'premium_date' and 'isPremium' fields
+
+        const premiumFreelancers = await Freelancer.find({ 'premium_date': { $exists: true, $gte: startDate, $lt: endDate }, isPremium: 'true' }).select(['premium_date']);
+
+        // Count the occurrences of each month
+        const monthlyCounts = premiumFreelancers.reduce((counts, freelancer) => {
+            const premiumDate = new Date(freelancer.premium_date);
+            const month = premiumDate.getMonth() + 1; // Adding 1 since getMonth() returns 0-indexed month (0 for January)
+            const year = premiumDate.getFullYear();
+            const key = `${year}-${month}`;
+
+            counts[key] = (counts[key] || 0) + 1;
+
+            return counts;
+        }, {});
+
+        // Convert the monthlyCounts object into an array of objects
+        const monthlyCountsArray = Object.keys(monthlyCounts).map(key => ({
+            month: key,
+            count: monthlyCounts[key] * 50
+        }));
+
+        res.status(200).json({
+            success: true,
+            monthlyPremiumCounts: monthlyCountsArray
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        });
+    }
+}
+
+
 // CODES SA MOBILE
 exports.initialasaFreelancer = async (req, res, next) => {
     try {

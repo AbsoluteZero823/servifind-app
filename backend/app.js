@@ -1,23 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const errorMiddleware = require('./middlewares/errors');
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
+const XLSX = require('xlsx');
 const path = require('path')
 const fs = require('fs');
 const app = express();
 // REQUIRED FOR UPLOADING LARGE IMAGE
-// app.use(express.json({ limit: '10mb' }));
-// app.use(express.urlencoded({ limit: '10mb' }));
-// app.use(express.json({ extended: true }));
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use(express.urlencoded());
+
 app.use(express.json({ limit: '50mb', extended: true }));
 app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
-
+app.use(bodyParser.json());
 
 app.use(cookieParser());
+
 
 // app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
@@ -49,6 +47,7 @@ const offer = require('./routes/offer');
 const chat = require('./routes/chat');
 const message = require('./routes/message');
 const notification = require('./routes/notification');
+const pdfroute = require('./routes/pdfroute');
 
 app.use('/api/v1', service);
 app.use('/api/v1', auth);
@@ -63,6 +62,7 @@ app.use('/api/v1', offer);
 app.use('/api/v1', chat);
 app.use('/api/v1', message);
 app.use('/api/v1', notification);
+app.use('/api/v1', pdfroute);
 
 app.use(errorMiddleware);
 

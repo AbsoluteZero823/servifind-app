@@ -57,6 +57,10 @@ import {
     FREELANCER_SETUP_FAIL,
     FREELANCER_SETUP_RESET,
 
+    GET_PREMIUM_REQUEST,
+    GET_PREMIUM_SUCCESS,
+    GET_PREMIUM_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/freelancerConstants'
 
@@ -212,6 +216,8 @@ export const applicationFreelancerReducer = (state = { applyingfreelancers: [] }
 }
 
 
+
+
 export const updateFreelancerReducer = (state = {}, action) => {
     switch (action.type) {
 
@@ -221,8 +227,8 @@ export const updateFreelancerReducer = (state = {}, action) => {
         case AVAIL_PREMIUM_REQUEST:
         case APPROVE_APPLICATIONPREMIUM_REQUEST:
         case REJECT_APPLICATIONPREMIUM_REQUEST:
-            case AVAILABILITY_UPDATE_REQUEST:
-                case FREELANCER_SETUP_REQUEST:
+        case AVAILABILITY_UPDATE_REQUEST:
+        case FREELANCER_SETUP_REQUEST:
             return {
                 ...state,
                 loading: true
@@ -234,8 +240,8 @@ export const updateFreelancerReducer = (state = {}, action) => {
         case AVAIL_PREMIUM_SUCCESS:
         case APPROVE_APPLICATIONPREMIUM_SUCCESS:
         case REJECT_APPLICATIONPREMIUM_SUCCESS:
-            case AVAILABILITY_UPDATE_SUCCESS:
-                case FREELANCER_SETUP_SUCCESS:
+        case AVAILABILITY_UPDATE_SUCCESS:
+        case FREELANCER_SETUP_SUCCESS:
             return {
                 ...state,
                 loading: false,
@@ -254,8 +260,8 @@ export const updateFreelancerReducer = (state = {}, action) => {
         case AVAIL_PREMIUM_RESET:
         case APPROVE_APPLICATIONPREMIUM_RESET:
         case REJECT_APPLICATIONPREMIUM_RESET:
-            case AVAILABILITY_UPDATE_RESET:
-                case FREELANCER_SETUP_RESET:
+        case AVAILABILITY_UPDATE_RESET:
+        case FREELANCER_SETUP_RESET:
             return {
                 ...state,
                 isUpdated: false
@@ -272,8 +278,44 @@ export const updateFreelancerReducer = (state = {}, action) => {
         case AVAIL_PREMIUM_FAIL:
         case APPROVE_APPLICATIONPREMIUM_FAIL:
         case REJECT_APPLICATIONPREMIUM_FAIL:
-            case AVAILABILITY_UPDATE_FAIL:
-                case FREELANCER_SETUP_FAIL:
+        case AVAILABILITY_UPDATE_FAIL:
+        case FREELANCER_SETUP_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+
+        default:
+            return state;
+    }
+}
+
+
+export const premiumFreelancersReducer = (state = { monthlyPremiumCounts: [] }, action) => {
+    switch (action.type) {
+
+        case GET_PREMIUM_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+
+        case GET_PREMIUM_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: action.payload.success,
+                monthlyPremiumCounts: action.payload.monthlyPremiumCounts,
+            }
+
+        case GET_PREMIUM_FAIL:
             return {
                 ...state,
                 loading: false,

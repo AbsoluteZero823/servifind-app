@@ -1,32 +1,51 @@
 export const UserData = [
-    {
-      id: 1,
-      year: 2016,
-      userGain: 80000,
-      userLost: 823,
-    },
-    {
-      id: 2,
-      year: 2017,
-      userGain: 45677,
-      userLost: 345,
-    },
-    {
-      id: 3,
-      year: 2018,
-      userGain: 78888,
-      userLost: 555,
-    },
-    {
-      id: 4,
-      year: 2019,
-      userGain: 90000,
-      userLost: 4555,
-    },
-    {
-      id: 5,
-      year: 2020,
-      userGain: 4300,
-      userLost: 234,
-    },
-  ];
+  {
+    "month": "2023-1",
+    "count": 5000
+  },
+  {
+    "month": "2023-2",
+    "count": 50
+  }
+  , {
+    "month": "2023-3",
+    "count": 5000
+  },
+  {
+    "month": "2023-4",
+    "count": 50
+  },
+  {
+    "month": "2023-5",
+    "count": 5000
+  },
+  {
+    "month": "2023-6",
+    "count": 5000
+  },
+  {
+    "month": "2023-7",
+    "count": 5000
+  },
+  {
+    "month": "2023-8",
+    "count": 5000
+  },
+  {
+    "month": "2023-9",
+    "count": 5000
+  },
+  {
+    "month": "2023-10",
+    "count": 5000
+  },
+  {
+    "month": "2023-11",
+    "count": 5000
+  },
+  {
+    "month": "2023-12",
+    "count": 5000
+  },
+
+]

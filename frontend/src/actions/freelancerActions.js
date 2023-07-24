@@ -50,6 +50,11 @@ import {
     FREELANCER_SETUP_SUCCESS,
     FREELANCER_SETUP_FAIL,
 
+    GET_PREMIUM_REQUEST,
+    GET_PREMIUM_SUCCESS,
+    GET_PREMIUM_FAIL,
+
+
     CLEAR_ERRORS
 } from '../constants/freelancerConstants';
 
@@ -235,18 +240,18 @@ export const availPremium = (freelancerData) => async (dispatch) => {
 export const getApplicationPremium = () => async (dispatch) => {
     try {
 
-        dispatch({ type: GET_APPLICATIONPREMIUM_REQUEST })
+        dispatch({ type: GET_PREMIUM_REQUEST })
 
-        const { data } = await axios.get(`/api/v1/application-premium`)
+        const { data } = await axios.get(`/api/v1/income`)
 
         dispatch({
-            type: GET_APPLICATIONPREMIUM_SUCCESS,
+            type: GET_PREMIUM_SUCCESS,
             payload: data
         })
 
     } catch (error) {
         dispatch({
-            type: GET_APPLICATIONPREMIUM_FAIL,
+            type: GET_PREMIUM_FAIL,
             payload: error.response.data.message
         })
     }
@@ -354,6 +359,26 @@ export const completeFreelancerSetup = (freelancerData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: FREELANCER_SETUP_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getPremiumFreelancersPerMonth = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_PREMIUM_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/income`)
+
+        dispatch({
+            type: GET_PREMIUM_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_PREMIUM_FAIL,
             payload: error.response.data.message
         })
     }

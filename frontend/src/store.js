@@ -6,7 +6,7 @@ import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserRed
 import { servicesReducer, freelancerServicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
 import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, transactionDoneReducer, paymentReceivedReducer, reportDoneReducer, rateDoneReducer, updateTransactionReducer, getTransactionCoursesReducer, getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer, getDashboardInfoReducer } from './reducers/transactionReducers';
-import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer } from './reducers/freelancerReducers';
+import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer, premiumFreelancersReducer } from './reducers/freelancerReducers';
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
 import { getOffersReducer, newOfferReducer, offerDetailsReducer, getRequestOffersReducer, updateReducer } from './reducers/offerReducers';
@@ -57,6 +57,7 @@ const reducer = combineReducers({
     freelancers: freelancersReducer,
     applying: applicationFreelancerReducer,
     updateFreelancer: updateFreelancerReducer,
+    premiumFreelancers: premiumFreelancersReducer,
 
     requests: getRequestsReducer,
     addRequest: newRequestReducer,
