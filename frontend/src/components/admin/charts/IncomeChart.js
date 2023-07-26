@@ -4,7 +4,7 @@ import { Line } from 'react-chartjs-2'
 
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPremiumFreelancersPerMonth } from '../../../actions/freelancerActions';
+// import { getPremiumFreelancersPerMonth } from '../../../actions/freelancerActions';
 // import { getTransactionPerMonth } from '../../../actions/transactionActions';
 import MetaData from '../../layout/MetaData';
 import Loader from '../../layout/Loader';
@@ -19,24 +19,14 @@ ChartJS.register(
     ChartDataLabels,
     ...registerables
 )
-const IncomeChart = () => {
+const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearErrors }) => {
     const dispatch = useDispatch();
-    const { monthlyPremiumCounts, clearErrors, success, error, loading } = useSelector(state => state.premiumFreelancers);
-
-    useEffect(() => {
-        dispatch(getPremiumFreelancersPerMonth());
-        if (success) {
-            console.log(monthlyPremiumCounts)
-        }
-        if (error) {
-            alert.error(error);
-            dispatch(clearErrors())
-        }
 
 
 
 
-    }, [dispatch, alert, error, success])
+
+
     const state = {
         labels: monthlyPremiumCounts.map((data) => data.month),
         title: {

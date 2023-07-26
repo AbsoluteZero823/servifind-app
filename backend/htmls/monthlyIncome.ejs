@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PDF Template</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p id="datetime"></p>
+
+        <script>
+            // Function to update the date and time
+            function updateDateTime() {
+                var currentDateTime = new Date();
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+                var formattedDateTime = currentDateTime.toLocaleString('en-US', options);
+                document.getElementById("datetime").textContent = formattedDateTime;
+            }
+
+            // Update the date and time immediately
+            updateDateTime();
+
+            // Update the date and time every second (1000 milliseconds)
+            setInterval(updateDateTime, 1000);
+        </script>
+    </div>
+
+    
+
+
+
+
+    <div>
+        <img src="https://res.cloudinary.com/dawhmjhu1/image/upload/v1681209974/servifind/ServiFind-black_szgd1e.png"
+            style="height: 50px;" />
+    </div>
+    <div style="display: flex; justify-content: center; text-align: center;">
+        <h1 id="current_year">Monthly Income Year <%= new Date().getFullYear() %>
+        </h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Income (₱)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% monthlyPremiumCounts.forEach((item)=> { %>
+                <tr>
+
+                  
+     
+
+   
+                    <td>
+                           <% 
+        // JavaScript code in EJS 
+        const data= item.month ; // Replace this with your actual data 
+        const [year, monthNumber]=data.split('-');
+        const months=['January', 'February' , 'March' , 'April' , 'May' , 'June', 'July' , 'August' , 'September' , 'October' , 'November' , 'December' ];
+        const monthName=months[parseInt(monthNumber) - 1]; %>
+
+          
+
+
+                         <%= monthName %>
+                        
+                    </td>
+
+                      
+
+                    <td>
+                        <%= item.count %>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+    <!-- Add more dynamic content if needed -->
+</body>
+
+</html>

@@ -29,8 +29,8 @@ const PieChart = () => {
     const refEnd = useRef();
     useEffect(() => {
         dispatch(getTransactionPerCourses());
-console.log(sectionDataPoints);
-console.log(courseCountLength);
+        console.log(sectionDataPoints);
+        console.log(courseCountLength);
         if (error) {
             alert.error(error);
             dispatch(clearErrors())
@@ -38,14 +38,14 @@ console.log(courseCountLength);
 
     }, [dispatch, alert, error,])
     useEffect(() => {
-        
-console.log(sectionDataPoints);
-console.log(courseCountLength);
-if(courseCountLength[0]){
-    filterData1();
-    filterData2();
-}
-     
+
+        console.log(sectionDataPoints);
+        console.log(courseCountLength);
+        if (courseCountLength[0]) {
+            filterData1();
+            filterData2();
+        }
+
 
     }, [dispatch, alert, error, loading])
 
@@ -54,8 +54,8 @@ if(courseCountLength[0]){
     //         filterData1();
     //         filterData2();
     //       }
-      
-        
+
+
     //         }, [refStart])
 
     // initial value for charts
@@ -85,7 +85,7 @@ if(courseCountLength[0]){
 
     const Dategroups = sectionArr.reduce(
         (Dategroups, borrow_date) => {
-            const borrowedDate = borrow_date.returnedDate;
+            const borrowedDate = borrow_date.createdDate;
             if (!Dategroups[borrowedDate]) {
                 Dategroups[borrowedDate] = []
             }
@@ -101,16 +101,16 @@ if(courseCountLength[0]){
     function filterData1() {
         console.log('i am called')
         console.log(refStart)
-var valueStart = ''
-        if(refStart.current === null){
+        var valueStart = ''
+        if (refStart.current === null) {
             console.log('this is null')
             valueStart = startDate
-        }else{
+        } else {
             valueStart = refStart.current.value;
         }
-        
-        
-    
+
+
+
         setStartDate(valueStart);
         let valueEnd = endDate;
         //filtering of data from the array of dates with attached array of Section data
@@ -146,16 +146,16 @@ var valueStart = ''
     function filterData2() {
         // let valueEnd = refEnd.current.value;
         var valueEnd = ''
-        if(refEnd.current === null){
+        if (refEnd.current === null) {
             valueEnd = endDate
-        }else{
+        } else {
             valueEnd = refEnd.current.value;
         }
 
 
         setEndDate(valueEnd);
         let valueStart = startDate;
-        
+
         //filtering of data from the array of dates with attached array of Section data
         const filtered_arr = arrGroups.filter(
             (obj) => {
@@ -267,28 +267,28 @@ var valueStart = ''
     return (<Fragment >
         <MetaData title={'Dashboard'} />
         {(loading || loading === undefined) ? < Loader /> : (
-            <div className="col-md-6" 
-            style={{
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
-                flex: '0 0 48%'
+            <div className="col-md-6"
+                style={{
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
+                    flex: '0 0 48%'
                 }} >
                 <Pie
                     // labels={sectionData}
                     data={state}
                     options={options}
                 />
-                <div style={{ display:'flex', justifyContent:'center'}}>
-                <div className="form-group" >
-                    <label > From: </label> {
-                        <div>
-                            <input type="date" ref={refStart} onChange={filterData1} value={startDate} />
-                            <label> To: </label>
-                            <input type="date" ref={refEnd} onChange={filterData2} value={endDate} />
-                        </div>
-                    } </div>
-</div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div className="form-group" >
+                        <label > From: </label> {
+                            <div>
+                                <input type="date" ref={refStart} onChange={filterData1} value={startDate} />
+                                <label> To: </label>
+                                <input type="date" ref={refEnd} onChange={filterData2} value={endDate} />
+                            </div>
+                        } </div>
+                </div>
             </div>
         )
         }

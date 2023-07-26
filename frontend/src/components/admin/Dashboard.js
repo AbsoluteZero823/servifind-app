@@ -13,6 +13,7 @@ import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo } from '../../actions/transactionActions';
 import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
+import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
 
 
@@ -24,15 +25,13 @@ import { useDispatch, useSelector } from 'react-redux'
 
 var selectedChatCompare;
 
-// import { getAdminProducts } from '../../actions/productActions'
-// import { allOrders } from '../../actions/orderActions'
-// import { allUsers } from '../../actions/userActions'
-var selectedChatCompare;
+
 
 
 const Dashboard = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const { loading, error, sortedService } = useSelector(state => state.serviLeaderboards);
+  const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const dispatch = useDispatch();
 
   // const { products } = useSelector(state => state.products)
@@ -41,67 +40,49 @@ const Dashboard = () => {
 
   const { success, result } = useSelector(state => state.dashboardInfo);
   const { selectedChat, setSelectedChat, notification, setNotification, fetchNotificationAgain, setFetchNotificationAgain } = ChatState();
-  // let outOfStock = 0;
-  // products.forEach(product => {
-  //     if (product.stock === 0) {
-  //         outOfStock += 1;
-  //     }
-  // })
-  const [paramValue, setParamValue] = useState([
-    { service: 'value1', count: 'value2' },
-    { service: 'value3', count: 'value4' },
-    // Add more objects to the array as needed
-  ]);
+
+
+
 
   const [pdfLoading, setPdfLoading] = useState(false);
 
-  // const handleGeneratePdf = async () => {
-  //   setPdfLoading(true);
-  //   try {
-  //     // Make a request to the server's generatePdf endpoint
-  //     const response = await fetch('http://localhost:3000/api/v1/pdf-generate');
-  //     const blob = await response.blob();
-  //     const url = URL.createObjectURL(blob);
-  //     const link = document.createElement('a');
-  //     link.href = url;
-  //     link.download = 'generated-pdf.pdf';
-  //     link.click();
-  //     setPdfLoading(false);
-  //   } catch (error) {
-  //     console.error('Error generating PDF:', error);
-  //     setPdfLoading(false);
-  //   }
-  // };
+
   useEffect(() => {
     dispatch(getDashboardInfo())
     dispatch(getServiceLeaderboards());
+    dispatch(getPremiumFreelancersPerMonth());
     if (success) {
       console.log(result)
 
     }
 
-  }, [dispatch, success])
-  const handleGeneratePdf = async () => {
+    if (incomeSuccess) {
+      console.log(monthlyPremiumCounts)
+    }
+    if (incomeError) {
+      alert.error(incomeError);
+      dispatch(clearErrors())
+    }
+  }, [dispatch, success, incomeSuccess, incomeError])
+
+
+  const handleTopServicesPdf = async () => {
     setPdfLoading(true);
-    console.log(sortedService, 'keeeeeeen')
+
     try {
-      const response = await fetch('http://localhost:3000/api/v1/pdf-generate', {
+      const response = await fetch('http://localhost:3000/api/v1/top-services-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ sortedService }) // Serialize the array of objects to JSON string
       });
-      // const response = await axios.post('http://localhost:3000/api/v1/pdf-generate', sortedService, {
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
+
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'generated-pdf.pdf';
+      link.download = 'topServices.pdf';
       link.click();
       setPdfLoading(false);
     } catch (error) {
@@ -110,7 +91,30 @@ const Dashboard = () => {
     }
   };
 
+  const handleMonthlyIncomePdf = async () => {
+    setPdfLoading(true);
 
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/monthly-income-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ monthlyPremiumCounts }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'monthlyIncome.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
 
 
   useEffect(() => {
@@ -214,13 +218,16 @@ const Dashboard = () => {
             Generate Reports
           </button>
           <div class="dropdown-menu dropdown-menu-right">
-            {/* <button class="dropdown-item" type="button" >Transaction/Course</button> */}
-            <button class="dropdown-item" type="button" onClick={handleGeneratePdf} disabled={pdfLoading}>
+
+
+            <button class="dropdown-item" type="button">Transactions</button>
+            <button class="dropdown-item" type="button" onClick={handleMonthlyIncomePdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Monthly Income...' : 'Monthly Income'}
+            </button>
+
+            <button class="dropdown-item" type="button" onClick={handleTopServicesPdf} disabled={pdfLoading}>
               {pdfLoading ? 'Top Services...' : 'Top Services'}
             </button>
-            <button class="dropdown-item" type="button">Completed Transction/Month</button>
-            <button class="dropdown-item" type="button">Monthly Income</button>
-            <button class="dropdown-item" type="button">Try</button>
           </div>
         </div>
       </div>
@@ -334,7 +341,7 @@ const Dashboard = () => {
             {/* <LineChart chartData={userData}/> */}
             <PieChart />
             <BarChart />
-            <IncomeChart />
+            <IncomeChart loading={incomeLoading} error={incomeError} success={incomeSuccess} clearErrors={clearErrors} monthlyPremiumCounts={monthlyPremiumCounts} />
             <ServiceLeaderboards loading={loading} error={error} sortedService={sortedService} />
           </div>
         </Fragment>

@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const { generatePdf,
+const { topServicesPdf,
 
+    monthlyIncomePdf
 
 } = require('../controllers/pdfController');
 const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth');
 
-router.route('/pdf-generate').post(generatePdf);
+router.route('/top-services-pdf').post(topServicesPdf);
+router.route('/monthly-income-pdf').post(monthlyIncomePdf);
 
 module.exports = router;

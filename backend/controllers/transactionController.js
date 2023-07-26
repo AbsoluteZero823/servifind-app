@@ -500,7 +500,7 @@ exports.TransactionPerCourses = async (req, res, next) => {
     // console.log(NumberOfSection.length)
     sectionArr.push({
       section: NumberOfSection[i].offer_id.offered_by.freelancer_id.course,
-      returnedDate: NumberOfSection[i].created_At,
+      createdDate: NumberOfSection[i].created_At,
     });
   }
   // console.log(sectionArr);
@@ -513,7 +513,7 @@ exports.TransactionPerMonth = async (req, res, next) => {
   const completionDate = await Transaction.find({
     "transaction_done.client": true,
     "transaction_done.freelancer": true,
-  }).select(["created_At"]);
+  });
   // console.log(borrowedDate);
   res.status(200).json({
     success: true,
