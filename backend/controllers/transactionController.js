@@ -29,64 +29,80 @@ exports.newTransaction = async (req, res, next) => {
 //all Transactions
 exports.getTransactions = async (req, res, next) => {
   const sort = { _id: -1 };
-  const transactions = await Transaction.find()
-    .sort(sort)
-    .populate([
-      {
-        path: "inquiry_id",
+  if (req.body.fromDate) {
+    const transactions = await Transaction.find({
+      created_At: {
+        $gte: req.body.fromDate, // $gte means "greater than or equal to"
+        $lt: req.body.toDate,    // $lt means "less than"
+      }
+    })
+    res.status(200).json({
+      success: true,
+      transactions,
+    });
+  }
+  else {
+    const transactions = await Transaction.find()
+      .sort(sort)
+      .populate([
+        {
+          path: "inquiry_id",
 
-        populate: { path: "customer" },
-      },
-      {
-        path: "inquiry_id",
-        model: "Inquiry",
-        populate: {
-          path: "freelancer",
-          model: "Freelancer",
+          populate: { path: "customer" },
+        },
+        {
+          path: "inquiry_id",
+          model: "Inquiry",
           populate: {
-            path: "user_id",
-            model: "user",
+            path: "freelancer",
+            model: "Freelancer",
+            populate: {
+              path: "user_id",
+              model: "user",
+            },
           },
         },
-      },
-      {
-        path: "inquiry_id",
-        model: "Inquiry",
-        populate: {
-          path: "service_id",
-        },
-      },
-      {
-        path: "offer_id",
-        model: "Offer",
-        populate: {
-          path: "request_id",
-          model: "Request",
+        {
+          path: "inquiry_id",
+          model: "Inquiry",
           populate: {
-            path: "requested_by",
-            model: "user",
+            path: "service_id",
           },
         },
-      },
-      {
-        path: "offer_id",
-        model: "Offer",
-        populate: {
-          path: "offered_by",
+        {
+          path: "offer_id",
+          model: "Offer",
+          populate: {
+            path: "request_id",
+            model: "Request",
+            populate: {
+              path: "requested_by",
+              model: "user",
+            },
+          },
         },
-      },
-      {
-        path: "offer_id",
-        model: "Offer",
-        populate: {
-          path: "service_id",
+        {
+          path: "offer_id",
+          model: "Offer",
+          populate: {
+            path: "offered_by",
+          },
         },
-      },
-    ]);
-  res.status(200).json({
-    success: true,
-    transactions,
-  });
+        {
+          path: "offer_id",
+          model: "Offer",
+          populate: {
+            path: "service_id",
+          },
+        },
+      ]);
+    res.status(200).json({
+      success: true,
+      transactions,
+    });
+  }
+
+
 };
 
 exports.getSingleTransaction = async (req, res, next) => {

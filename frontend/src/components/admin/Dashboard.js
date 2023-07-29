@@ -34,6 +34,8 @@ const Dashboard = () => {
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const dispatch = useDispatch();
 
+
+
   // const { products } = useSelector(state => state.products)
   // const { users } = useSelector(state => state.allUsers)
   // const { orders, totalAmount, loading } = useSelector(state => state.allOrders)
@@ -45,7 +47,8 @@ const Dashboard = () => {
 
 
   const [pdfLoading, setPdfLoading] = useState(false);
-
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   useEffect(() => {
     dispatch(getDashboardInfo())
@@ -220,7 +223,12 @@ const Dashboard = () => {
           <div class="dropdown-menu dropdown-menu-right">
 
 
-            <button class="dropdown-item" type="button">Transactions</button>
+            <button type="button"
+              // className="profileBtn"
+              class="dropdown-item"
+              data-toggle="modal"
+              data-target="#setupModal"
+            >Transactions</button>
             <button class="dropdown-item" type="button" onClick={handleMonthlyIncomePdf} disabled={pdfLoading}>
               {pdfLoading ? 'Monthly Income...' : 'Monthly Income'}
             </button>
@@ -348,7 +356,74 @@ const Dashboard = () => {
       )}
 
 
+      {/* SETUP INFORMATION MODAL */}
+      <div
+        className="modal fade"
+        id="setupModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalCenterTitle">
+                Generate Transaction Reports
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form
+              className="a"
+              // onSubmit={submitHandler}
+              encType="multipart/form-data"
+            >
+              <div className="modal-body">
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 10 }}>
+                  <div className="form-group">
+                    <label >From: </label>
 
+                    <input type="date" className="form-control"
+                      value={fromDate}
+                      onChange={(e) => setFromDate(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label > To: </label>
+
+                    <input type="date" className="form-control"
+                      value={toDate}
+                      onChange={(e) => setToDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Generate
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
     </Fragment >
   )
