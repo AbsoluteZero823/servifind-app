@@ -224,8 +224,8 @@ exports.loginUser = async (req, res, next) => {
     if (!user) {
         return next(new ErrorHandler('Invalid Email or Password', 401));
     }
-    
-    if(user.status === 'deactivated'){
+
+    if (user.status === 'deactivated') {
         return next(new ErrorHandler('Your account is deactivated by the admin', 401));
     }
 

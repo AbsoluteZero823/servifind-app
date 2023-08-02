@@ -106,12 +106,21 @@ export const newTransaction = (transactionData) => async (dispatch) => {
 
 
 
-export const getTransactions = () => async (dispatch) => {
+export const getTransactions = (formData) => async (dispatch) => {
+
+    console.log(formData, 'sana')
     try {
 
         dispatch({ type: GET_TRANSACTIONS_REQUEST })
-
-        const { data } = await axios.get(`/api/v1/transactions`)
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        // const { data } = await axios.get(`/api/v1/transactions`)
+        const { data } = await axios.get('/api/v1/transactions', {
+            params: formData // formData will be sent as query parameters
+        }, config)
 
         dispatch({
             type: GET_TRANSACTIONS_SUCCESS,

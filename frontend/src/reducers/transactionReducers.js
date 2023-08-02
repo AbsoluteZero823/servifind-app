@@ -126,6 +126,7 @@ export const getTransactionsReducer = (state = { transactions: [] }, action) => 
                 ...state,
                 loading: false,
                 transactions: action.payload.transactions,
+                success: action.payload.success
             }
 
         case GET_TRANSACTIONS_FAIL:

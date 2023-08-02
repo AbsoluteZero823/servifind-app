@@ -11,10 +11,11 @@ import IncomeChart from './charts/IncomeChart';
 import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
-import { getDashboardInfo } from '../../actions/transactionActions';
+import { getDashboardInfo, getTransactions } from '../../actions/transactionActions';
 import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
 import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
+import $ from 'jquery';
 
 
 
@@ -32,6 +33,7 @@ const Dashboard = () => {
   const [newMessageReceivedLocal, setNewMessageReceivedLocal] = useState(null);
   const { loading, error, sortedService } = useSelector(state => state.serviLeaderboards);
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
+  const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
   const dispatch = useDispatch();
 
 
@@ -50,6 +52,7 @@ const Dashboard = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
+
   useEffect(() => {
     dispatch(getDashboardInfo())
     dispatch(getServiceLeaderboards());
@@ -66,7 +69,17 @@ const Dashboard = () => {
       alert.error(incomeError);
       dispatch(clearErrors())
     }
-  }, [dispatch, success, incomeSuccess, incomeError])
+
+    if (successTransaction) {
+      if (fromDate) {
+        // $("#setupModal").modal('hide');
+        handleTransactionsPdf();
+        setToDate("");
+        setFromDate("");
+      }
+
+    }
+  }, [dispatch, success, incomeSuccess, incomeError, successTransaction])
 
 
   const handleTopServicesPdf = async () => {
@@ -118,7 +131,30 @@ const Dashboard = () => {
       setPdfLoading(false);
     }
   };
+  const handleTransactionsPdf = async () => {
+    setPdfLoading(true);
 
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/transactions-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ transactions }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${fromDate}-${toDate}.pdf`;
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
@@ -197,9 +233,21 @@ const Dashboard = () => {
 
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.set("toDate", toDate);
+    formData.set("fromDate", fromDate);
+    console.log(fromDate, toDate)
+    dispatch(getTransactions({ fromDate, toDate }));
+    $('.modal-backdrop').hide();
 
+    closeModal()
+  };
 
-
+  const closeModal = () => {
+    $("#setupModal").hide();
+  }
   return (
     <Fragment>
 
@@ -216,24 +264,26 @@ const Dashboard = () => {
         }}>
 
         <h1 className="my-4">Dashboard</h1>
-        <div class="btn-group">
-          <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ padding: '15px 10px' }}>
+        <div className="btn-group">
+          <button type="button" className="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ padding: '15px 10px' }}>
             Generate Reports
           </button>
-          <div class="dropdown-menu dropdown-menu-right">
+          <div className="dropdown-menu dropdown-menu-right">
 
 
             <button type="button"
               // className="profileBtn"
-              class="dropdown-item"
+              className="dropdown-item"
               data-toggle="modal"
               data-target="#setupModal"
             >Transactions</button>
-            <button class="dropdown-item" type="button" onClick={handleMonthlyIncomePdf} disabled={pdfLoading}>
+
+
+            <button className="dropdown-item" type="button" onClick={handleMonthlyIncomePdf} disabled={pdfLoading}>
               {pdfLoading ? 'Monthly Income...' : 'Monthly Income'}
             </button>
 
-            <button class="dropdown-item" type="button" onClick={handleTopServicesPdf} disabled={pdfLoading}>
+            <button className="dropdown-item" type="button" onClick={handleTopServicesPdf} disabled={pdfLoading}>
               {pdfLoading ? 'Top Services...' : 'Top Services'}
             </button>
           </div>
@@ -351,12 +401,73 @@ const Dashboard = () => {
             <BarChart />
             <IncomeChart loading={incomeLoading} error={incomeError} success={incomeSuccess} clearErrors={clearErrors} monthlyPremiumCounts={monthlyPremiumCounts} />
             <ServiceLeaderboards loading={loading} error={error} sortedService={sortedService} />
+            <div className="col-md-6"
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
+                flex: '0 0 48%',
+                margin: '25px 0px',
+
+                minHeight: '500px'
+              }} >
+              <h1 style={{ textAlign: 'center' }}>
+                Top Freelancers
+              </h1>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}>
+                <img src='../../images/gold_silver_bronzeMedal.png' style={{ height: '25vh', paddingTop: 40 }}></img>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <h4>
+                  Person 1
+                </h4>
+                <h4>
+                  Person 2
+                </h4>
+                <h4>
+                  Person 3
+                </h4>
+              </div>
+              {/* <img src='../images/students-college.png' ></img> */}
+            </div>
+
+            <IncomeChart loading={incomeLoading} error={incomeError} success={incomeSuccess} clearErrors={clearErrors} monthlyPremiumCounts={monthlyPremiumCounts} />
+
+
+
+
+          </div>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}>
+            <div className="col-md-12"
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
+                flex: '0 0 48%',
+                margin: '25px 0px',
+                minWidth: '60vw',
+                minHeight: '500px'
+              }} >
+              <h1 style={{ textAlign: 'center' }}>
+                Top Freelancers
+              </h1>
+
+
+              {/* <img src='../images/students-college.png' ></img> */}
+            </div>
           </div>
         </Fragment>
       )}
 
 
-      {/* SETUP INFORMATION MODAL */}
+      {/* GENERATE TRANSACTION PDF MODAL */}
+
       <div
         className="modal fade"
         id="setupModal"
@@ -378,11 +489,12 @@ const Dashboard = () => {
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
+
               </button>
             </div>
             <form
               className="a"
-              // onSubmit={submitHandler}
+              onSubmit={submitHandler}
               encType="multipart/form-data"
             >
               <div className="modal-body">

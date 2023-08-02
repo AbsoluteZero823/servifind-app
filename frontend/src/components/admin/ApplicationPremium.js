@@ -67,8 +67,8 @@ const ApplicationPremium = () => {
                 // $('.close').trigger("click");
                 // $('.modal')
                 $('.modal-backdrop').hide();
-               
-                clodeModal()
+
+                closeModal()
                 // $('body').removeClass('modal-open');
 
             }
@@ -77,7 +77,7 @@ const ApplicationPremium = () => {
 
     }
 
-    const clodeModal = () => {
+    const closeModal = () => {
         $("#rejectModal").hide();
     }
     const approveApplicationHandler = (id) => {

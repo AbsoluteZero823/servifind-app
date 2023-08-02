@@ -16,7 +16,7 @@ const { now } = require("mongoose");
 // const  Category  = require('../models/category');
 
 exports.newTransaction = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   // req.body.user = req.user.id;
   const transaction = await Transaction.create(req.body);
 
@@ -29,11 +29,12 @@ exports.newTransaction = async (req, res, next) => {
 //all Transactions
 exports.getTransactions = async (req, res, next) => {
   const sort = { _id: -1 };
-  if (req.body.fromDate) {
+  if (req.query.fromDate) {
+    console.log(req.query)
     const transactions = await Transaction.find({
       created_At: {
-        $gte: req.body.fromDate, // $gte means "greater than or equal to"
-        $lt: req.body.toDate,    // $lt means "less than"
+        $gte: req.query.fromDate, // $gte means "greater than or equal to"
+        $lte: req.query.toDate,    // $lte means "less than or equal to"
       }
     })
     res.status(200).json({
@@ -42,6 +43,7 @@ exports.getTransactions = async (req, res, next) => {
     });
   }
   else {
+    console.log(req, 'else')
     const transactions = await Transaction.find()
       .sort(sort)
       .populate([
@@ -159,7 +161,7 @@ exports.getSingleTransaction = async (req, res, next) => {
 };
 
 exports.PaymentSent = async (req, res, next) => {
-  console.log(req.body);
+  console.log(req.query);
   const statusData = {
     paymentSent: req.body.paymentSent,
   };
@@ -211,7 +213,7 @@ exports.PaymentSent = async (req, res, next) => {
   });
 };
 exports.PaymentReceived = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const statusData = {
     paymentReceived: req.body.paymentReceived,
   };
@@ -260,7 +262,7 @@ exports.PaymentReceived = async (req, res, next) => {
 };
 
 exports.transactionDone = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   if (req.body.freelancer === "true" && req.body.client === "true") {
     formData = {
