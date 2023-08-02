@@ -17,6 +17,7 @@ const {
   ServiceLeaderboards,
   getDashboardInfo,
   getDashboardCounts,
+  TransactionPerUser,
 
   //CODE SA MOBILE
   ClientCompleteTransaction,
@@ -44,6 +45,7 @@ router.route("/transaction/rated/:id").put(rateDone);
 router.route("/transaction/reported/:id").put(reportDone);
 router.route("/transaction-update/:id").put(updateTransaction);
 router.route("/transactionpercourses").get(TransactionPerCourses);
+router.route("/transactionperuser").get(TransactionPerUser);
 router.route("/transactionpermonth").get(TransactionPerMonth);
 router.route("/topservicepercourses").get(topTenServices);
 router.route("/serviceleaderboards").get(ServiceLeaderboards);

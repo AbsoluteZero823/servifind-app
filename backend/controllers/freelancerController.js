@@ -450,7 +450,32 @@ exports.getPremiumFreelancers = async (req, res, next) => {
         });
     }
 }
-
+exports.applicationPerMonth = async (req, res, next) => {
+    try {
+      // Use the MongoDB aggregation framework to group applications by month
+      const applicationsPerMonth = await Freelancer.aggregate([
+        {
+          $group: {
+            _id: { $month: "$approved_" }, // Group by the month (extracted from the joinedDate property)
+            count: { $sum: 1 }, // Count the number of applications in each group
+          },
+        },
+      ]);
+  
+      res.status(200).json({
+        success: true,
+        applicationsPerMonth,
+      });
+    } catch (err) {
+      // Handle any errors that occur during the execution
+      console.error(err);
+      res.status(500).json({
+        success: false,
+        error: "Internal Server Error",
+      });
+    }
+  };
+  
 
 // CODES SA MOBILE
 exports.initialasaFreelancer = async (req, res, next) => {
