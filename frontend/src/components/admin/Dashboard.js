@@ -11,7 +11,7 @@ import IncomeChart from './charts/IncomeChart';
 import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
-import { getDashboardInfo, getTransactions } from '../../actions/transactionActions';
+import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
 import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
 import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
@@ -34,6 +34,7 @@ const Dashboard = () => {
   const { loading, error, sortedService } = useSelector(state => state.serviLeaderboards);
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
+  const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
   const dispatch = useDispatch();
 
 
@@ -57,6 +58,7 @@ const Dashboard = () => {
     dispatch(getDashboardInfo())
     dispatch(getServiceLeaderboards());
     dispatch(getPremiumFreelancersPerMonth());
+    dispatch(getTransactionPerUsers());
     if (success) {
       console.log(result)
 
@@ -70,6 +72,11 @@ const Dashboard = () => {
       dispatch(clearErrors())
     }
 
+    if (successTopUsers) {
+      // dispatch(clearErrors())
+      console.log(sectionArr[0].section, 'ito yon-----------------------------------')
+    }
+
     if (successTransaction) {
       if (fromDate) {
         // $("#setupModal").modal('hide');
@@ -79,7 +86,7 @@ const Dashboard = () => {
       }
 
     }
-  }, [dispatch, success, incomeSuccess, incomeError, successTransaction])
+  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers])
 
 
   const handleTopServicesPdf = async () => {
@@ -409,28 +416,101 @@ const Dashboard = () => {
                 flex: '0 0 48%',
                 margin: '25px 0px',
 
-                minHeight: '500px'
+                minHeight: '300px'
               }} >
-              <h1 style={{ textAlign: 'center' }}>
+              <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>
                 Top Freelancers
               </h1>
+              {(loadingTopUsers && !sectionArr) ? <Loader /> : (
+
+
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <label>
+                    {sectionArr[0] ? sectionArr[0].section : "None"}
+                  </label>
+                  <label>
+                    {sectionArr[1] ? sectionArr[1].section : "None"}
+                  </label>
+                  <label>
+                    {sectionArr[2] ? sectionArr[2].section : "None"}
+                  </label>
+                </div>
+              )}
               <div style={{
+                // position: 'absolute',
                 display: 'flex',
                 justifyContent: 'center',
+                // width: "calc(100% - 30px)"
+
+
               }}>
-                <img src='../../images/gold_silver_bronzeMedal.png' style={{ height: '25vh', paddingTop: 40 }}></img>
+                <img src='../../images/gold_silver_bronzeMedal.png' style={{ height: '20vh' }}>
+
+
+                </img>
+                <div style={{
+                  position: 'absolute',
+                  display: "flex",
+                  // justifyContent: 'space-around',
+                  gap: '15%',
+                  width: '100%',
+                  padding: '23px 47px',
+                  width: 'calc(100% - 30px)'
+
+
+                }}>
+                  <img className='topGold' src='https://res.cloudinary.com/dawhmjhu1/image/upload/v1684903098/servifind/avatar/ubq38pnz4q73wmygai94.jpg'
+                    style={{
+                      height: '14vh',
+                      width: '14vh',
+                      paddingtop: '0px',
+                      borderRadius: '100%',
+
+                    }}>
+                  </img>
+
+
+                  <img className='topSilver' src='https://res.cloudinary.com/dawhmjhu1/image/upload/v1684903098/servifind/avatar/ubq38pnz4q73wmygai94.jpg'
+                    style={{
+                      height: '14vh',
+                      width: '14vh',
+                      paddingtop: '0px',
+                      borderRadius: '100%',
+
+                    }}>
+                  </img>
+
+
+                  <img className='topBronze' src='https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png'
+                    style={{
+                      height: '14vh',
+                      width: '14vh',
+                      paddingtop: '0px',
+                      borderRadius: '100%',
+
+                      marginLeft: '7px'
+                    }}>
+                  </img>
+                </div>
+
+
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <h4>
-                  Person 1
-                </h4>
-                <h4>
-                  Person 2
-                </h4>
-                <h4>
-                  Person 3
-                </h4>
-              </div>
+
+
+              {(loadingTopUsers && !sectionArr) ? <Loader /> : (
+                <div className='descriptions' style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                  <div>
+                    <label >Completed Transaction: {sectionArr[0] ? sectionArr[0].count : "None"}</label>
+                  </div>
+
+                  <div>
+                    <label>Completed Transaction: {sectionArr[1] ? sectionArr[1].count : "None"}</label>
+                  </div>
+                  <div>
+                    <label>Completed Transaction: {sectionArr[2] ? sectionArr[2].count : "None"}</label>
+                  </div>
+                </div>
+              )}
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
 

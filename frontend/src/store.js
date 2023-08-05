@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { authReducer, getUsersReducer, userReducer, UpDelUserReducer, newUserReducer, userDetailsReducer } from './reducers/userReducers'
 import { servicesReducer, freelancerServicesReducer, serviceDetailsReducer, newServiceReducer, UpDelServiceReducer } from './reducers/serviceReducers'
 import { newInquiryReducer, inquiriesReducer, inquiryDetailsReducer, statusReducer } from './reducers/inquiryReducers';
-import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, transactionDoneReducer, paymentReceivedReducer, reportDoneReducer, rateDoneReducer, updateTransactionReducer, getTransactionCoursesReducer, getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer, getDashboardInfoReducer } from './reducers/transactionReducers';
+import { getTransactionsReducer, newTransactionReducer, transactionDetailsReducer, paymentReducer, transactionDoneReducer, paymentReceivedReducer, reportDoneReducer, rateDoneReducer, updateTransactionReducer, getTransactionCoursesReducer, getServiceCoursesReducer, getTransactionMonthReducer, getServiceLeaderboardsReducer, getDashboardInfoReducer, getTransactionUsersReducer } from './reducers/transactionReducers';
 import { freelancerDetailsReducer, newFreelancerReducer, freelancersReducer, applicationFreelancerReducer, updateFreelancerReducer, premiumFreelancersReducer } from './reducers/freelancerReducers';
 import { getRequestsReducer, newRequestReducer, requestDetailsReducer } from './reducers/requestReducers';
 import { getCategoriesReducer } from './reducers/categoryReducers';
@@ -51,6 +51,7 @@ const reducer = combineReducers({
     topServicesArray: getServiceCoursesReducer,
     serviLeaderboards: getServiceLeaderboardsReducer,
     dashboardInfo: getDashboardInfoReducer,
+    topUsers: getTransactionUsersReducer,
 
     freelancerDetails: freelancerDetailsReducer,
     addFreelancer: newFreelancerReducer,
@@ -85,6 +86,7 @@ const reducer = combineReducers({
     notifications: getNotificationsReducer,
     addNotification: newNotificationReducer,
     readNotification: notificationReducer,
+
 
 })
 let initialState = {

@@ -4363,3 +4363,7 @@ a {
   opacity: 0.01;
   z-index: 100;
 }
+
+.descriptions label {
+  text-align: center;
+}

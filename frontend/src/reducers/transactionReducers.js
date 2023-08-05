@@ -67,6 +67,10 @@ import {
     GET_DASHBOARDCOUNTS_SUCCESS,
     GET_DASHBOARDCOUNTS_FAIL,
 
+    GET_TRANSACTIONUSERS_REQUEST,
+    GET_TRANSACTIONUSERS_SUCCESS,
+    GET_TRANSACTIONUSERS_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -589,6 +593,36 @@ export const getDashboardInfoReducer = (state = { result: [] }, action) => {
             }
         case GET_DASHBOARDINFO_FAIL:
         case GET_DASHBOARDCOUNTS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getTransactionUsersReducer = (state = { sectionArr: [] }, action) => {
+    switch (action.type) {
+        case GET_TRANSACTIONUSERS_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_TRANSACTIONUSERS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                sectionArr: action.payload.sectionArr,
+                success: action.payload.success,
+            }
+        case GET_TRANSACTIONUSERS_FAIL:
             return {
                 loading: false,
                 error: action.payload
