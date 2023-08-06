@@ -18,6 +18,7 @@ const {
   getDashboardInfo,
   getDashboardCounts,
   TransactionPerUser,
+  getTransactionDashboard,
 
   //CODE SA MOBILE
   ClientCompleteTransaction,
@@ -51,7 +52,7 @@ router.route("/topservicepercourses").get(topTenServices);
 router.route("/serviceleaderboards").get(ServiceLeaderboards);
 router.route("/dashboardinfo").get(getDashboardInfo);
 router.route("/dashboard/counts").get(isAuthenticatedUser, getDashboardCounts);
-
+router.route("/transaction-dashboard").get(getTransactionDashboard);
 //CODE SA MOBILE
 router
   .route("/mytransactions")

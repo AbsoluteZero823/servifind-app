@@ -8,7 +8,7 @@ const { now } = require('mongoose');
 // const  Category  = require('../models/category');
 
 exports.newRating = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // req.body.user = req.user.id;
     const rating = await Rating.create(req.body);
 
@@ -84,7 +84,7 @@ exports.getSingleRating = async (req, res, next) => {
 }
 
 exports.getMyServiceRatings = async (req, res, next) => {
-    console.log(req.body.service_id);
+    // console.log(req.body.service_id);
 
     try {
         const ratings = await Rating.find({ service_id: req.body.service_id }).populate('user');

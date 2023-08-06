@@ -261,7 +261,7 @@ exports.refuseaPrice = async (req, res, next) => {
 
 exports.acceptanOffer = async (req, res, next) => {
     const { offer_id, inquiry_id } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     try {
         if (inquiry_id) {
             // Update offer status

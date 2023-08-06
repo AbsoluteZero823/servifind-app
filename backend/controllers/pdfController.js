@@ -10,7 +10,7 @@ exports.topServicesPdf = (req, res) => {
         // Add more properties as needed for your template
     };
     const sortedService = req.body.sortedService || []
-    console.log(req.body, "nice")
+    // console.log(req.body, "nice")
 
     const options = {
         format: 'Letter',
@@ -46,7 +46,7 @@ exports.monthlyIncomePdf = (req, res) => {
         // Add more properties as needed for your template
     };
     const monthlyPremiumCounts = req.body.monthlyPremiumCounts || []
-    console.log(req.body, "nice")
+    // console.log(req.body, "nice")
 
     const options = { format: 'Letter' }; // You can customize the PDF options here
 
@@ -79,7 +79,7 @@ exports.transactionsPdf = (req, res) => {
         // Add more properties as needed for your template
     };
     const transactions = req.body.transactions || []
-    console.log(req.body, "nice")
+    // console.log(req.body, "nice")
 
     const options = {
         format: 'Letter',

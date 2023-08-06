@@ -35,7 +35,7 @@ const ServiceLeaderboards = ({ loading, error, sortedService }) => {
                         margin: '25px 0px',
                         padding: 0
                     }} >
-                    <div className='board' style={{ minHeight: 500 }}>
+                    <div className='board'>
                         <h2 className='leaderboard' style={{ fontSize: '1.5rem', backgroundColor: '#67abf4', padding: 20, borderRadius: '7px 7px 0px 0px' }}>Top Services </h2>
 
                         <div style={{ backgroundColor: 'gainsboro', minWidth: '85%', borderRadius: 10, padding: '12px 20px', margin: '10px', display: 'flex', justifyContent: 'space-between' }}>

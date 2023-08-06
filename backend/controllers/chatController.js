@@ -10,7 +10,7 @@ const ErrorHandler = require('../utils/errorHandler');
 //@route           POST /api/v1/chat/
 //@access          Protected
 exports.accessChat = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { userId, inquiryId, offerId } = req.body;
 
   if (!userId) {

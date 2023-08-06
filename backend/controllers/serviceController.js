@@ -40,7 +40,7 @@ exports.newService = async (req, res, next) => {
             req.body.freelancer_id = req.user.freelancer_id._id
         }
 
-        console.log(req.body);
+        // console.log(req.body);
         const service = await Service.create(req.body);
 
         res.status(201).json({
@@ -142,7 +142,7 @@ exports.deleteService = async (req, res, next) => {
 }
 
 exports.getFreelancerServices = async (req, res, next) => {
-    console.log(req.params.id)
+    // console.log(req.params.id)
 
     const services = await Service.find({ freelancer_id: req.params.id }).populate(['category', 'freelancer_id', 'user']);
     if (!services) {

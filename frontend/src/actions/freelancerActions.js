@@ -54,6 +54,10 @@ import {
     GET_PREMIUM_SUCCESS,
     GET_PREMIUM_FAIL,
 
+    GET_APPLICATIONMONTHLY_REQUEST,
+    GET_APPLICATIONMONTHLY_SUCCESS,
+    GET_APPLICATIONMONTHLY_FAIL,
+
 
     CLEAR_ERRORS
 } from '../constants/freelancerConstants';
@@ -379,6 +383,26 @@ export const getPremiumFreelancersPerMonth = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_PREMIUM_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getApplicationPerMonth = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_APPLICATIONMONTHLY_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/applicationpermonth`)
+
+        dispatch({
+            type: GET_APPLICATIONMONTHLY_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_APPLICATIONMONTHLY_FAIL,
             payload: error.response.data.message
         })
     }

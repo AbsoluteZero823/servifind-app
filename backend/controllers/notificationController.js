@@ -9,7 +9,7 @@ const { now } = require('mongoose');
 // const  Category  = require('../models/category');
 
 exports.newNotification = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // req.body.user = req.user.id;
     const existingNotification = await Notification.find({type_id: req.body.type_id});
     console.log(existingNotification)

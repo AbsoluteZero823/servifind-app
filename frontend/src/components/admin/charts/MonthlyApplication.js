@@ -19,7 +19,7 @@ ChartJS.register(
     ChartDataLabels,
     ...registerables
 )
-const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearErrors }) => {
+const MonthlyApplication = ({ loading, success, monthlyApplication }) => {
     const dispatch = useDispatch();
 
 
@@ -28,18 +28,18 @@ const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearError
 
 
     const state = {
-        labels: monthlyPremiumCounts.map((data) => data.month),
+        labels: monthlyApplication.map((data) => data._id),
         title: {
             display: true,
-            text: 'Monthly Income',
+            text: 'Freelancer Joined Per Month',
             font: {
                 size: 30
             }
         },
         datasets: [{
-            label: "Monthly Income",
+            label: "Freelancer Joined Per Month",
 
-            data: monthlyPremiumCounts.map((data) => data.count),
+            data: monthlyApplication.map((data) => data.count),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
@@ -88,7 +88,7 @@ const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearError
             },
             title: {
                 display: true,
-                text: 'Monthly Income',
+                text: 'Freelancer Joined Per Month',
                 font: {
                     size: 30
                 }
@@ -103,7 +103,7 @@ const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearError
                     const totalValue = datapoints.reduce(totalSum, 0);
                     // const percentageValue = (value / totalValue * 100).toFixed(1);
 
-                    return `₱${totalValue}`;
+                    return `${totalValue}`;
                 },
                 font: {
                     size: 12
@@ -133,4 +133,4 @@ const IncomeChart = ({ monthlyPremiumCounts, error, loading, success, clearError
     );
 }
 
-export default IncomeChart
+export default MonthlyApplication

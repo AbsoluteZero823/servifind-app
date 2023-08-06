@@ -8,12 +8,14 @@ import Loader from '../layout/Loader'
 import Sidebar from './Sidebar'
 import BarChart from './charts/BarChart';
 import IncomeChart from './charts/IncomeChart';
+import MonthlyApplication from './charts/MonthlyApplication';
 import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
 import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
-import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
+import { getPremiumFreelancersPerMonth} from '../../actions/freelancerActions';
+import { getApplicationPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
 import $ from 'jquery';
 
@@ -35,6 +37,7 @@ const Dashboard = () => {
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
   const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
+  const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication} = useSelector((state) => state.applicationMonthly);
   const dispatch = useDispatch();
 
 
@@ -59,6 +62,7 @@ const Dashboard = () => {
     dispatch(getServiceLeaderboards());
     dispatch(getPremiumFreelancersPerMonth());
     dispatch(getTransactionPerUsers());
+    dispatch(getApplicationPerMonth());
     if (success) {
       console.log(result)
 
@@ -86,7 +90,7 @@ const Dashboard = () => {
       }
 
     }
-  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers])
+  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication])
 
 
   const handleTopServicesPdf = async () => {
@@ -407,6 +411,7 @@ const Dashboard = () => {
             <PieChart />
             <BarChart />
             <IncomeChart loading={incomeLoading} error={incomeError} success={incomeSuccess} clearErrors={clearErrors} monthlyPremiumCounts={monthlyPremiumCounts} />
+            <MonthlyApplication loading={loadingMonthlyApplication} success={successMonthlyApplication} monthlyApplication={monthlyApplication} />
             <ServiceLeaderboards loading={loading} error={error} sortedService={sortedService} />
             <div className="col-md-6"
               style={{
@@ -416,7 +421,8 @@ const Dashboard = () => {
                 flex: '0 0 48%',
                 margin: '25px 0px',
 
-                minHeight: '300px'
+                // minHeight: '300px',
+                padding: '20px'
               }} >
               <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>
                 Top Freelancers
@@ -426,16 +432,17 @@ const Dashboard = () => {
 
                 <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                   <label>
-                    {sectionArr[0] ? sectionArr[0].section : "None"}
+                    {sectionArr[0] ? sectionArr[0].section : "?"}
                   </label>
                   <label>
-                    {sectionArr[1] ? sectionArr[1].section : "None"}
+                    {sectionArr[1] ? sectionArr[1].section : "?"}
                   </label>
                   <label>
-                    {sectionArr[2] ? sectionArr[2].section : "None"}
+                    {sectionArr[2] ? sectionArr[2].section : "?"}
                   </label>
                 </div>
               )}
+              
               <div style={{
                 // position: 'absolute',
                 display: 'flex',
@@ -448,6 +455,7 @@ const Dashboard = () => {
 
 
                 </img>
+                {(loadingTopUsers && !sectionArr) ? <Loader /> : (
                 <div style={{
                   position: 'absolute',
                   display: "flex",
@@ -459,7 +467,7 @@ const Dashboard = () => {
 
 
                 }}>
-                  <img className='topGold' src='https://res.cloudinary.com/dawhmjhu1/image/upload/v1684903098/servifind/avatar/ubq38pnz4q73wmygai94.jpg'
+                  <img className='topGold' src={sectionArr[0] ? sectionArr[0].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
                     style={{
                       height: '14vh',
                       width: '14vh',
@@ -470,7 +478,7 @@ const Dashboard = () => {
                   </img>
 
 
-                  <img className='topSilver' src='https://res.cloudinary.com/dawhmjhu1/image/upload/v1684903098/servifind/avatar/ubq38pnz4q73wmygai94.jpg'
+                  <img className='topSilver' src={sectionArr[1] ? sectionArr[1].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
                     style={{
                       height: '14vh',
                       width: '14vh',
@@ -481,7 +489,7 @@ const Dashboard = () => {
                   </img>
 
 
-                  <img className='topBronze' src='https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png'
+                  <img className='topBronze' src={sectionArr[2] ? sectionArr[2].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
                     style={{
                       height: '14vh',
                       width: '14vh',
@@ -492,7 +500,7 @@ const Dashboard = () => {
                     }}>
                   </img>
                 </div>
-
+                )}
 
               </div>
 
@@ -500,21 +508,21 @@ const Dashboard = () => {
               {(loadingTopUsers && !sectionArr) ? <Loader /> : (
                 <div className='descriptions' style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
                   <div>
-                    <label >Completed Transaction: {sectionArr[0] ? sectionArr[0].count : "None"}</label>
+                    <label >Completed Transaction: {sectionArr[0] ? sectionArr[0].count : "?"}</label>
                   </div>
 
                   <div>
-                    <label>Completed Transaction: {sectionArr[1] ? sectionArr[1].count : "None"}</label>
+                    <label>Completed Transaction: {sectionArr[1] ? sectionArr[1].count : "?"}</label>
                   </div>
                   <div>
-                    <label>Completed Transaction: {sectionArr[2] ? sectionArr[2].count : "None"}</label>
+                    <label>Completed Transaction: {sectionArr[2] ? sectionArr[2].count : "?"}</label>
                   </div>
                 </div>
               )}
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
 
-            <IncomeChart loading={incomeLoading} error={incomeError} success={incomeSuccess} clearErrors={clearErrors} monthlyPremiumCounts={monthlyPremiumCounts} />
+           
 
 
 
@@ -532,13 +540,34 @@ const Dashboard = () => {
                 flex: '0 0 48%',
                 margin: '25px 0px',
                 minWidth: '60vw',
-                minHeight: '500px'
+                // minHeight: '500px',
+                padding: '20px'
               }} >
-              <h1 style={{ textAlign: 'center' }}>
-                Top Freelancers
+              <h1 style={{ textAlign: 'center', padding:'20px' }}>
+                Transaction Counts
               </h1>
+<hr></hr>
 
 
+<div className='transaction_count' style={{display:'flex', justifyContent:'space-around'}}>
+<div className='on_process'>
+<img src='https://www.pngkit.com/png/full/335-3350147_process-icon-process-icon-blue-png.png' ></img>
+<label>On Process</label>
+</div>
+<div className='to_pay'>
+<img src='http://clipart-library.com/images_k/cash-icon-transparent/cash-icon-transparent-19.png' ></img>
+<label>To Pay</label>
+</div>
+
+<div className='to_confirm'>
+<img src='https://seeklogo.com/images/F/facebook-like-logo-84B75A1FCB-seeklogo.com.png' ></img>
+<label>To Confirm</label>
+</div>
+<div className='completed'>
+<img src='https://icon-library.com/images/completed-icon/completed-icon-6.jpg' ></img>
+<label>Completed</label>
+</div>
+</div>
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
           </div>

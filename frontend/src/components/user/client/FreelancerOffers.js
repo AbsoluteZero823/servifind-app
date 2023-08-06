@@ -277,7 +277,7 @@ const FreelancerOffers = () => {
 
     if (requestoffers) {
         console.log(requestoffers);
-        console.log(request_id);
+        // console.log(request_id);
     }
     else {
         console.log('no');

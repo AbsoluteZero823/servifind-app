@@ -4366,4 +4366,30 @@ a {
 
 .descriptions label {
   text-align: center;
+  font-size: 12px;
+}
+
+hr {
+  display: block;
+  height: 5px;
+  border: 0;
+  border-top: 2px solid #ccc;
+  margin: 1em 0;
+
+  padding: 0;
+}
+
+.transaction_count img{
+  height: 100px;
+  width: 100px;
+  margin: 10px;
+}
+
+.transaction_count div{
+display: flex;
+flex-direction: column;
+text-align: center;
+}
+.transaction_count label{
+  margin: 10px;
 }

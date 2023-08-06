@@ -9,7 +9,7 @@ const { now } = require('mongoose');
 // const  Category  = require('../models/category');
 
 exports.newReport = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // req.body.user = req.user.id;
     const report = await Report.create(req.body);
 

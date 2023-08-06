@@ -367,7 +367,8 @@ const BarChart  = () => {
                 backgroundColor: 'white',
                 borderRadius: '8px',
                 boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
-                flex: '0 0 48%'
+                flex: '0 0 48%',
+                padding: '20px'
                 }}>
 
                 <Bar

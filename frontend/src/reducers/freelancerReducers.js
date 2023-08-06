@@ -61,6 +61,10 @@ import {
     GET_PREMIUM_SUCCESS,
     GET_PREMIUM_FAIL,
 
+    GET_APPLICATIONMONTHLY_REQUEST,
+    GET_APPLICATIONMONTHLY_SUCCESS,
+    GET_APPLICATIONMONTHLY_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/freelancerConstants'
 
@@ -333,3 +337,32 @@ export const premiumFreelancersReducer = (state = { monthlyPremiumCounts: [] }, 
     }
 }
 
+export const getApplicationPerMonthReducer = (state = { monthlyApplication: [] }, action) => {
+    switch (action.type) {
+        case GET_APPLICATIONMONTHLY_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_APPLICATIONMONTHLY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                monthlyApplication: action.payload.monthlyApplication,
+                success: action.payload.success,
+            }
+        case GET_APPLICATIONMONTHLY_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}

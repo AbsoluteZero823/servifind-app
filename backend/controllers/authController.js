@@ -306,7 +306,7 @@ exports.getUserDetails = async (req, res, next) => {
 
 
 exports.updateUser = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     const newUserData = {
         name: req.body.name,
         age: req.body.age,

@@ -30,7 +30,7 @@ exports.newTransaction = async (req, res, next) => {
 exports.getTransactions = async (req, res, next) => {
   const sort = { _id: -1 };
   if (req.query.fromDate) {
-    console.log(req.query)
+    // console.log(req.query)
     const transactions = await Transaction.find({
       created_At: {
         $gte: req.query.fromDate, // $gte means "greater than or equal to"
@@ -43,7 +43,7 @@ exports.getTransactions = async (req, res, next) => {
     });
   }
   else {
-    console.log(req, 'else')
+    // console.log(req, 'else')
     const transactions = await Transaction.find()
       .sort(sort)
       .populate([
@@ -103,8 +103,6 @@ exports.getTransactions = async (req, res, next) => {
       transactions,
     });
   }
-
-
 };
 
 exports.getSingleTransaction = async (req, res, next) => {
@@ -161,7 +159,7 @@ exports.getSingleTransaction = async (req, res, next) => {
 };
 
 exports.PaymentSent = async (req, res, next) => {
-  console.log(req.query);
+  // console.log(req.query);
   const statusData = {
     paymentSent: req.body.paymentSent,
   };
@@ -768,6 +766,60 @@ exports.getDashboardCounts = async (req, res, next) => {
 };
 
 
+// exports.TransactionPerUser = async (req, res, next) => {
+//   try {
+//     const transactionCounts = {}; // Object to store transaction counts for each user
+
+//     const transactions = await Transaction.find({
+//       "transaction_done.client": true,
+//       "transaction_done.freelancer": true,
+//     }).populate([
+//       {
+//         path: "offer_id",
+//         model: "Offer",
+//         populate: {
+//           path: "offered_by",
+//           model: "user",
+//           populate: {
+//             path: "freelancer_id",
+//           },
+//         },
+//       },
+//     ]);
+
+//     for (let i = 0; i < transactions.length; i++) {
+//       const user = transactions[i].offer_id.offered_by.name;
+//       const avatar = transactions[i].offer_id.offered_by.avatar.url;
+//       // If the user is encountered for the first time, initialize the count to 1
+//       if (!transactionCounts[user]) {
+//         transactionCounts[user] = 1;
+        
+//       } else {
+//         // If the user has already been encountered, increment the count
+//         transactionCounts[user]++;
+//       }
+//     }
+
+//     // Convert the transactionCounts object into an array of objects
+//     const sectionArr = Object.entries(transactionCounts).map(([user, count,avatar]) => ({
+//       section: user,
+//       count: count,
+//       avatar: avatar
+//     }));
+
+//     res.status(200).json({
+//       success: true,
+//       sectionArr,
+//     });
+//   } catch (err) {
+//     // Handle any errors that occur during the execution
+//     console.error(err);
+//     res.status(500).json({
+//       success: false,
+//       error: "Internal Server Error",
+//     });
+//   }
+// };
 exports.TransactionPerUser = async (req, res, next) => {
   try {
     const transactionCounts = {}; // Object to store transaction counts for each user
@@ -790,20 +842,25 @@ exports.TransactionPerUser = async (req, res, next) => {
     ]);
 
     for (let i = 0; i < transactions.length; i++) {
-      const user = transactions[i].offer_id.offered_by.freelancer_id.gcash_name;
+      const user = transactions[i].offer_id.offered_by.name;
+
       // If the user is encountered for the first time, initialize the count to 1
       if (!transactionCounts[user]) {
-        transactionCounts[user] = 1;
+        transactionCounts[user] = {
+          count: 1,
+          avatar: transactions[i].offer_id.offered_by.avatar.url,
+        };
       } else {
         // If the user has already been encountered, increment the count
-        transactionCounts[user]++;
+        transactionCounts[user].count++;
       }
     }
 
     // Convert the transactionCounts object into an array of objects
-    const sectionArr = Object.entries(transactionCounts).map(([user, count]) => ({
+    const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
       section: user,
-      count: count,
+      count: data.count,
+      avatar: data.avatar,
     }));
 
     res.status(200).json({
@@ -819,6 +876,65 @@ exports.TransactionPerUser = async (req, res, next) => {
     });
   }
 };
+
+exports.getTransactionDashboard = async (req, res, next) => {
+  try {
+    const sort = { _id: -1 };
+    const transactions = await Transaction.find()
+      .sort(sort)
+      .populate([
+        // Your existing population code
+      ]);
+
+    const totalCount = await Transaction.countDocuments(); // Count all transactions
+
+    // Count transactions with status "processing"
+    const processingCount = await Transaction.countDocuments({
+      status: "processing",
+    });
+
+    // Count transactions with paymentSent set to false
+    const paymentNotSentCount = await Transaction.countDocuments({
+      paymentSent: false,
+    });
+
+    // Count transactions that satisfy all three conditions
+    const customConditionCount = await Transaction.countDocuments({
+      paymentSent: true,
+      "transaction_done.freelancer": true,
+      status: "processing",
+    });
+
+    // Count transactions with status "completed"
+    const completedCount = await Transaction.countDocuments({
+      status: "completed",
+    });
+
+    const transactionCounts = {
+      totalCount,
+      processingCount,
+      paymentNotSentCount,
+      customConditionCount,
+      completedCount,
+    };
+
+    res.status(200).json({
+      success: true,
+      transactionCounts
+      // transactions,
+    });
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+
+
 
 // CODES SA MOBILE BALIKAN PARA SA ROUTES
 exports.ClientFetchTransaction = async (req, res, next) => {

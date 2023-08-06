@@ -7,7 +7,7 @@ const { now } = require('mongoose');
 
 
 exports.newCategory = async (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     // req.body.user = req.user.id;
     const category = await Category.create(req.body);
 
