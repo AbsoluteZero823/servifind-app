@@ -71,6 +71,10 @@ import {
     GET_TRANSACTIONUSERS_SUCCESS,
     GET_TRANSACTIONUSERS_FAIL,
 
+    GET_TRANSACTIONDASHBOARD_REQUEST,
+    GET_TRANSACTIONDASHBOARD_SUCCESS,
+    GET_TRANSACTIONDASHBOARD_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -623,6 +627,36 @@ export const getTransactionUsersReducer = (state = { sectionArr: [] }, action) =
                 success: action.payload.success,
             }
         case GET_TRANSACTIONUSERS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getTransactionDashboard = (state = { transactionCounts: [] }, action) => {
+    switch (action.type) {
+        case GET_TRANSACTIONDASHBOARD_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_TRANSACTIONDASHBOARD_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                transactionCounts: action.payload.transactionCounts,
+                success: action.payload.success,
+            }
+        case GET_TRANSACTIONDASHBOARD_FAIL:
             return {
                 loading: false,
                 error: action.payload

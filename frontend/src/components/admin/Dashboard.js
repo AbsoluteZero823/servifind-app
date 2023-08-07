@@ -13,7 +13,7 @@ import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
-import { getServiceLeaderboards, clearErrors } from '../../actions/transactionActions';
+import { getServiceLeaderboards, clearErrors, getTransactionDashboard } from '../../actions/transactionActions';
 import { getPremiumFreelancersPerMonth} from '../../actions/freelancerActions';
 import { getApplicationPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
@@ -38,6 +38,7 @@ const Dashboard = () => {
   const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
   const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
   const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication} = useSelector((state) => state.applicationMonthly);
+  const { transactionCounts, success: successTransactionDashboard, loading: loadingTransactionDashboard} = useSelector((state) => state.transactionDashboard);
   const dispatch = useDispatch();
 
 
@@ -63,6 +64,7 @@ const Dashboard = () => {
     dispatch(getPremiumFreelancersPerMonth());
     dispatch(getTransactionPerUsers());
     dispatch(getApplicationPerMonth());
+    dispatch(getTransactionDashboard());
     if (success) {
       console.log(result)
 
@@ -89,8 +91,12 @@ const Dashboard = () => {
         setFromDate("");
       }
 
+      if(successTransactionDashboard){
+        console.log(transactionCounts)
+      }
+
     }
-  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication])
+  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication, successTransactionDashboard])
 
 
   const handleTopServicesPdf = async () => {
@@ -548,26 +554,32 @@ const Dashboard = () => {
               </h1>
 <hr></hr>
 
-
+{(loadingTransactionDashboard) ? <Loader /> : (
 <div className='transaction_count' style={{display:'flex', justifyContent:'space-around'}}>
 <div className='on_process'>
 <img src='https://www.pngkit.com/png/full/335-3350147_process-icon-process-icon-blue-png.png' ></img>
+<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.processingCount}</span>
 <label>On Process</label>
 </div>
 <div className='to_pay'>
 <img src='http://clipart-library.com/images_k/cash-icon-transparent/cash-icon-transparent-19.png' ></img>
+<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.paymentNotSentCount}</span>
 <label>To Pay</label>
 </div>
 
 <div className='to_confirm'>
 <img src='https://seeklogo.com/images/F/facebook-like-logo-84B75A1FCB-seeklogo.com.png' ></img>
+<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.customConditionCount}</span>
 <label>To Confirm</label>
 </div>
 <div className='completed'>
 <img src='https://icon-library.com/images/completed-icon/completed-icon-6.jpg' ></img>
+<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.completedCount}</span>
 <label>Completed</label>
 </div>
 </div>
+)}
+
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
           </div>

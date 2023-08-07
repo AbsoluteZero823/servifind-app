@@ -67,6 +67,10 @@ import {
     GET_TRANSACTIONUSERS_SUCCESS,
     GET_TRANSACTIONUSERS_FAIL,
 
+    GET_TRANSACTIONDASHBOARD_REQUEST,
+    GET_TRANSACTIONDASHBOARD_SUCCESS,
+    GET_TRANSACTIONDASHBOARD_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
 
@@ -462,6 +466,28 @@ export const getTransactionPerUsers = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_TRANSACTIONUSERS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+
+export const getTransactionDashboard = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_TRANSACTIONDASHBOARD_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transaction-dashboard`)
+
+        dispatch({
+            type: GET_TRANSACTIONDASHBOARD_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TRANSACTIONDASHBOARD_FAIL,
             payload: error.response.data.message
         })
     }
