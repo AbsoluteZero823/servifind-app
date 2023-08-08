@@ -13,7 +13,7 @@ import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
-import { getServiceLeaderboards, clearErrors, getTransactionDashboard } from '../../actions/transactionActions';
+import { getServiceLeaderboards, clearErrors, getTransactionDashboard, getProcessingData, getToPayData,getToConfirmData,getCompletedData } from '../../actions/transactionActions';
 import { getPremiumFreelancersPerMonth} from '../../actions/freelancerActions';
 import { getApplicationPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
@@ -39,6 +39,10 @@ const Dashboard = () => {
   const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
   const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication} = useSelector((state) => state.applicationMonthly);
   const { transactionCounts, success: successTransactionDashboard, loading: loadingTransactionDashboard} = useSelector((state) => state.transactionDashboard);
+  const{processingTransactions, success: successProcessing, loading:loadingProcessing} = useSelector((state)=> state.processingData);
+  const{notSentTransactions, success: successToPay, loading:loadingToPay} = useSelector((state)=> state.toPayData);
+  const{customConditionTransactions, success:successToConfirm, loading:loadingToConfirm} = useSelector((state)=> state.toConfirmData);
+  const{completedTransactions, success:successCompleted, loading:loadingCompleted} = useSelector((state)=> state.completedData);
   const dispatch = useDispatch();
 
 
@@ -65,6 +69,11 @@ const Dashboard = () => {
     dispatch(getTransactionPerUsers());
     dispatch(getApplicationPerMonth());
     dispatch(getTransactionDashboard());
+    
+    dispatch(getProcessingData());
+    dispatch(getToPayData());
+    dispatch(getToConfirmData());
+    dispatch(getCompletedData());
     if (success) {
       console.log(result)
 
@@ -95,10 +104,169 @@ const Dashboard = () => {
         console.log(transactionCounts)
       }
 
+      if(successProcessing){
+        console.log(processingTransactions)
+      }
+      if(successToPay){
+        console.log(notSentTransactions)
+      }
+      if(successToConfirm){
+        console.log(customConditionTransactions)
+      }
+      if(successCompleted){
+        console.log(completedTransactions)
+      }
     }
-  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication, successTransactionDashboard])
+  }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication, successTransactionDashboard, successProcessing, successToPay, successToConfirm, successCompleted])
 
+  const handleProcessingPdf = async () => {
+    setPdfLoading(true);
 
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/transactions-processing-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ processingTransactions }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'processingTransactions.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+
+  const handleToPayPdf = async () => {
+    setPdfLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/transactions-to-pay-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ notSentTransactions }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'toPayTransactions.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+
+  const handleToConfirmPdf = async () => {
+    setPdfLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/transactions-to-confirm-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ customConditionTransactions }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'toConfirmTransactions.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+
+  const handleCompletedPdf = async () => {
+    setPdfLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/transactions-completed-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ completedTransactions }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'completedTransactions.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+
+  const handleTopFreelancersPdf = async () => {
+    setPdfLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/top-freelancers-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sectionArr }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'topFreelancers.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
+  const handleFreelancerMonthlyPdf = async () => {
+    setPdfLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/freelancer-monthly-join-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ monthlyApplication }) // Serialize the array of objects to JSON string
+      });
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'monthlyJoin.pdf';
+      link.click();
+      setPdfLoading(false);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setPdfLoading(false);
+    }
+  };
   const handleTopServicesPdf = async () => {
     setPdfLoading(true);
 
@@ -302,6 +470,26 @@ const Dashboard = () => {
 
             <button className="dropdown-item" type="button" onClick={handleTopServicesPdf} disabled={pdfLoading}>
               {pdfLoading ? 'Top Services...' : 'Top Services'}
+            </button>
+
+            <button className="dropdown-item" type="button" onClick={handleFreelancerMonthlyPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Monthly Freelancer Join...' : 'Monthly Freelancer Join'}
+            </button>
+            <button className="dropdown-item" type="button" onClick={handleTopFreelancersPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Top Freelancers...' : 'Top Freelancers'}
+            </button>
+
+            <button className="dropdown-item" type="button" onClick={handleProcessingPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Processing Transactions...' : 'Processing Transactions'}
+            </button>
+            <button className="dropdown-item" type="button" onClick={handleToPayPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'To Pay Transactions...' : 'To Pay Transactions'}
+            </button>
+            <button className="dropdown-item" type="button" onClick={handleToConfirmPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'To Confirm Transactions...' : 'To Confirm Transactions'}
+            </button>
+            <button className="dropdown-item" type="button" onClick={handleCompletedPdf} disabled={pdfLoading}>
+              {pdfLoading ? 'Completed Transactions...' : 'Completed Transactions'}
             </button>
           </div>
         </div>

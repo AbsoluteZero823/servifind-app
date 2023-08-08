@@ -19,6 +19,10 @@ const {
   getDashboardCounts,
   TransactionPerUser,
   getTransactionDashboard,
+  getProcessingData,
+  getToPayData,
+  getToConfirmData,
+  getCompletedData,
 
   //CODE SA MOBILE
   ClientCompleteTransaction,
@@ -53,6 +57,11 @@ router.route("/serviceleaderboards").get(ServiceLeaderboards);
 router.route("/dashboardinfo").get(getDashboardInfo);
 router.route("/dashboard/counts").get(isAuthenticatedUser, getDashboardCounts);
 router.route("/transaction-dashboard").get(getTransactionDashboard);
+
+router.route("/transaction-processing").get(getProcessingData);
+router.route("/transaction-to-pay").get(getToPayData);
+router.route("/transaction-to-confirm").get(getToConfirmData);
+router.route("/transaction-completed").get(getCompletedData);
 //CODE SA MOBILE
 router
   .route("/mytransactions")

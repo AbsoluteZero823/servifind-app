@@ -910,12 +910,18 @@ exports.getTransactionDashboard = async (req, res, next) => {
       status: "completed",
     });
 
+
+
+   
+
+
+
     const transactionCounts = {
       totalCount,
       processingCount,
       paymentNotSentCount,
       customConditionCount,
-      completedCount,
+      completedCount
     };
 
     res.status(200).json({
@@ -934,7 +940,122 @@ exports.getTransactionDashboard = async (req, res, next) => {
 };
 
 
+exports.getProcessingData = async (req, res, next) => {
+  try {
+    const sort = { _id: -1 };
 
+    // Retrieve transactions with status "processing"
+    const processingTransactions = await Transaction.find({ status: "processing" })
+      .sort(sort)
+      .populate([
+        // Your existing population code
+      ]);
+
+ 
+
+    res.status(200).json({
+      success: true,
+      processingTransactions      
+    });
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+
+exports.getToPayData = async (req, res, next) => {
+  try {
+    const sort = { _id: -1 };
+
+    const notSentTransactions = await Transaction.find({ paymentSent: false })
+      .sort(sort)
+      .populate([
+        // Your existing population code
+      ]);
+
+ 
+
+    res.status(200).json({
+      success: true,
+      notSentTransactions      
+    });
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+
+
+exports.getToConfirmData = async (req, res, next) => {
+  try {
+    const sort = { _id: -1 };
+
+ // Retrieve transactions that satisfy all conditions
+ const customConditionTransactions = await Transaction.find({
+  paymentSent: true,
+  "transaction_done.freelancer": true,
+  status: "processing",
+})
+  .sort(sort)
+  .populate([
+    // Your existing population code
+  ]);
+
+
+ 
+
+    res.status(200).json({
+      success: true,
+      customConditionTransactions      
+    });
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
+
+
+
+exports.getCompletedData = async (req, res, next) => {
+  try {
+    const sort = { _id: -1 };
+
+     // Retrieve transactions with status "completed"
+     const completedTransactions = await Transaction.find({ status: "completed" })
+     .sort(sort)
+     .populate([
+       // Your existing population code
+     ]);
+
+ 
+
+    res.status(200).json({
+      success: true,
+      completedTransactions      
+    });
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+};
 
 // CODES SA MOBILE BALIKAN PARA SA ROUTES
 exports.ClientFetchTransaction = async (req, res, next) => {

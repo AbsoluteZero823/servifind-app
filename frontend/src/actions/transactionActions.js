@@ -71,6 +71,22 @@ import {
     GET_TRANSACTIONDASHBOARD_SUCCESS,
     GET_TRANSACTIONDASHBOARD_FAIL,
 
+    GET_PROCESSING_REQUEST,
+    GET_PROCESSING_SUCCESS,
+    GET_PROCESSING_FAIL,
+
+    GET_TOPAY_REQUEST,
+    GET_TOPAY_SUCCESS,
+    GET_TOPAY_FAIL,
+
+    GET_TOCONFIRM_REQUEST,
+    GET_TOCONFIRM_SUCCESS,
+    GET_TOCONFIRM_FAIL,
+
+    GET_COMPLETED_REQUEST,
+    GET_COMPLETED_SUCCESS,
+    GET_COMPLETED_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants';
 
@@ -488,6 +504,90 @@ export const getTransactionDashboard = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: GET_TRANSACTIONDASHBOARD_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getProcessingData = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_PROCESSING_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transaction-processing`)
+
+        dispatch({
+            type: GET_PROCESSING_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_PROCESSING_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getToPayData = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_TOPAY_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transaction-to-pay`)
+
+        dispatch({
+            type: GET_TOPAY_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TOPAY_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getToConfirmData = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_TOCONFIRM_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transaction-to-confirm`)
+
+        dispatch({
+            type: GET_TOCONFIRM_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TOCONFIRM_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getCompletedData = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_COMPLETED_REQUEST })
+
+        const { data } = await axios.get(`/api/v1/transaction-completed`)
+
+        dispatch({
+            type: GET_COMPLETED_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_COMPLETED_FAIL,
             payload: error.response.data.message
         })
     }

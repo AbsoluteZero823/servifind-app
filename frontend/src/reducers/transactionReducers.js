@@ -75,6 +75,22 @@ import {
     GET_TRANSACTIONDASHBOARD_SUCCESS,
     GET_TRANSACTIONDASHBOARD_FAIL,
 
+    GET_PROCESSING_REQUEST,
+    GET_PROCESSING_SUCCESS,
+    GET_PROCESSING_FAIL,
+    
+    GET_TOPAY_REQUEST,
+    GET_TOPAY_SUCCESS,
+    GET_TOPAY_FAIL,
+
+    GET_TOCONFIRM_REQUEST,
+    GET_TOCONFIRM_SUCCESS,
+    GET_TOCONFIRM_FAIL,
+
+    GET_COMPLETED_REQUEST,
+    GET_COMPLETED_SUCCESS,
+    GET_COMPLETED_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/transactionConstants'
 
@@ -670,3 +686,125 @@ export const getTransactionDashboard = (state = { transactionCounts: [] }, actio
             return state;
     }
 }
+
+export const getProcessingData = (state = { processingTransactions: [] }, action) => {
+    switch (action.type) {
+        case GET_PROCESSING_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_PROCESSING_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                processingTransactions: action.payload.processingTransactions,
+                success: action.payload.success,
+            }
+        case GET_PROCESSING_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getToPayData = (state = { notSentTransactions: [] }, action) => {
+    switch (action.type) {
+        case GET_TOPAY_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_TOPAY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                notSentTransactions: action.payload.notSentTransactions,
+                success: action.payload.success,
+            }
+        case GET_TOPAY_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getToConfirmData = (state = { customConditionTransactions: [] }, action) => {
+    switch (action.type) {
+        case GET_TOCONFIRM_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_TOCONFIRM_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                customConditionTransactions: action.payload.customConditionTransactions,
+                success: action.payload.success,
+            }
+        case GET_TOCONFIRM_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getCompletedData = (state = { completedTransactions: [] }, action) => {
+    switch (action.type) {
+        case GET_COMPLETED_REQUEST:
+            return {
+                ...state,
+                loading: true,
+
+            }
+        case GET_COMPLETED_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                completedTransactions: action.payload.completedTransactions,
+                success: action.payload.success,
+            }
+        case GET_COMPLETED_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+
