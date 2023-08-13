@@ -1,6 +1,8 @@
 const pdf = require('html-pdf');
 const fs = require('fs');
 const ejs = require('ejs');
+const { env } = require('process');
+const { ChildProcess } = require('child_process');
 
 exports.topServicesPdf = (req, res) => {
     // Mock data for demonstration purposes; Replace this with your database fetch logic
@@ -24,7 +26,14 @@ exports.topServicesPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, sortedService });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }
+            }).toStream((pdfErr, stream) => {
+
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
