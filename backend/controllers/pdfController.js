@@ -359,12 +359,12 @@ exports.toConfirmTransactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, customConditionTransactions });
 
-            pdf.create(html, {
+            pdf.create(html, options, {
                 childProcessOptions: {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }, options
+                }
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
