@@ -388,7 +388,7 @@ exports.completedTransactionsPdf = (req, res) => {
     };
     const completedTransactions = req.body.completedTransactions || []
     // console.log(req.body, "nice")
-    const mainContentFontSize = '14px';
+
     const options = {
         format: 'Letter',
         header: {
@@ -399,7 +399,7 @@ exports.completedTransactionsPdf = (req, res) => {
             height: '3cm', // Set the height of the footer
             contents: '<div style="text-align: center;">Your Custom Footer</div>', // Custom footer content (HTML)
         },
-        phantomArgs: [`--load-media-error-handling=ignore`, `--zoom=1`, `--javascript-delay=1000`, `--dpi=300`, `--font-size=${mainContentFontSize}`],
+
     }; // You can customize the PDF options here
 
     fs.readFile('./backend/htmls/completedTransactions.ejs', 'utf8', (err, template) => {
