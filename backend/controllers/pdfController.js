@@ -413,8 +413,8 @@ exports.completedTransactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }, options
-            }).toStream((pdfErr, stream) => {
+                }
+            }, options).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
