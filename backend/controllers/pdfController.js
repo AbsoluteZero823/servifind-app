@@ -31,7 +31,8 @@ exports.topServicesPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                    format: 'Letter'
+                }, options
             }).toStream((pdfErr, stream) => {
 
                 if (pdfErr) {
@@ -70,8 +71,8 @@ exports.monthlyIncomePdf = (req, res) => {
                 childProcessOptions: {
                     env: {
                         OPENSSL_CONF: '/dev/null',
-                    },
-                }
+                    }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -120,7 +121,7 @@ exports.transactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -167,8 +168,8 @@ exports.monthlyJoinPdf = (req, res) => {
                 childProcessOptions: {
                     env: {
                         OPENSSL_CONF: '/dev/null',
-                    },
-                }
+                    }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -216,7 +217,7 @@ exports.topFreelancersPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -265,7 +266,7 @@ exports.processingTransactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -314,7 +315,7 @@ exports.toPayTransactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -363,7 +364,7 @@ exports.toConfirmTransactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
@@ -412,7 +413,7 @@ exports.completedTransactionsPdf = (req, res) => {
                     env: {
                         OPENSSL_CONF: '/dev/null',
                     },
-                }
+                }, options
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
