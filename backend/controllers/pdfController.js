@@ -1,6 +1,8 @@
 const pdf = require('html-pdf');
 const fs = require('fs');
 const ejs = require('ejs');
+const { env } = require('process');
+const { ChildProcess } = require('child_process');
 
 exports.topServicesPdf = (req, res) => {
     // Mock data for demonstration purposes; Replace this with your database fetch logic
@@ -24,7 +26,15 @@ exports.topServicesPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, sortedService });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                    format: 'Letter'
+                }, options
+            }).toStream((pdfErr, stream) => {
+
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -57,7 +67,13 @@ exports.monthlyIncomePdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, monthlyPremiumCounts });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    }
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -100,7 +116,13 @@ exports.transactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, transactions });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -142,7 +164,13 @@ exports.monthlyJoinPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, monthlyApplication });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    }
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -184,7 +212,13 @@ exports.topFreelancersPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, sectionArr });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -227,7 +261,13 @@ exports.processingTransactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, processingTransactions });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -270,7 +310,13 @@ exports.toPayTransactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, notSentTransactions });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -313,7 +359,13 @@ exports.toConfirmTransactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, customConditionTransactions });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                }, options
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
@@ -347,6 +399,7 @@ exports.completedTransactionsPdf = (req, res) => {
             height: '3cm', // Set the height of the footer
             contents: '<div style="text-align: center;">Your Custom Footer</div>', // Custom footer content (HTML)
         },
+
     }; // You can customize the PDF options here
 
     fs.readFile('./backend/htmls/completedTransactions.ejs', 'utf8', (err, template) => {
@@ -356,7 +409,14 @@ exports.completedTransactionsPdf = (req, res) => {
         } else {
             const html = ejs.render(template, { data, completedTransactions });
 
-            pdf.create(html, options).toStream((pdfErr, stream) => {
+            pdf.create(html, {
+                childProcessOptions: {
+                    env: {
+                        OPENSSL_CONF: '/dev/null',
+                    },
+                },
+                ...options,
+            }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);
                     res.status(500).send('Something went wrong');
