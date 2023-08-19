@@ -65,7 +65,7 @@ const Service = ({ service }) => {
                             <div className="ratings mt-auto">
                                 <div className="rating-outer">
                                     {/* <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div> */}
-                                    <div className="rating-inner" style={{ width: `${Math.round((service.avgRating / 5) * 100)}%` }}></div>
+                                    <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div>
 
 
                                 </div>
@@ -73,7 +73,9 @@ const Service = ({ service }) => {
                             </div>
 
 
-                            <span style={{ paddingLeft: 10 }}>{service.avgRating}/5</span>
+                            {/* <span style={{ paddingLeft: 10 }}>{service.avgRating}/5</span> */}
+                            <span style={{ paddingLeft: 10 }}>{service && service.avgRating && service.avgRating.toFixed(1)}/5</span>
+
                         </div>
                         <span id="no_of_reviews">{service.ratingCount} client {service.ratingCount === 1 ? 'review' : 'reviews'} </span>
 
@@ -91,9 +93,9 @@ const Service = ({ service }) => {
                         </Link>
                     } */}
 
-<Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
-                            <button>View Details</button>
-                        </Link>
+                    <Link to={`/service/details/${service._id}`} style={{ color: 'white' }}>
+                        <button>View Details</button>
+                    </Link>
                     {/* <a href="#">More Info</a> */}
                 </div>
                 <div style={{ padding: '0px 30px' }}>

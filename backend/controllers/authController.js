@@ -216,17 +216,21 @@ exports.loginUser = async (req, res, next) => {
 
     // Checks if email and password is entered by user
     if (!email || !password) {
-        return next(new ErrorHandler('Please enter email & password', 400))
+        // return next(new ErrorHandler('Please enter email & password', 400))
+        return res.status(401).send({ message: "Please enter email & password" });
 
     }
     const user = await User.findOne({ email }).select('+password').populate('freelancer_id')
 
     if (!user) {
-        return next(new ErrorHandler('Invalid Email or Password', 401));
+        // return next(new ErrorHandler('Invalid Email or Password', 401));
+        return res.status(401).send({ message: "Invalid Email or Password" });
+
     }
 
     if (user.status === 'deactivated') {
-        return next(new ErrorHandler('Your account is deactivated by the admin', 401));
+        // return next(new ErrorHandler('Your account is deactivated', 401));
+        return res.status(401).send({ message: "Your account is deactivated" });
     }
 
     // Checks if password is correct or not

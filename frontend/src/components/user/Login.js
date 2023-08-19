@@ -28,9 +28,7 @@ const Login = () => {
         // if (isAuthenticated) {
         //     navigate('/')
         // }
-        if (message) {
-            swal("Email Sent!", message, "success")
-        }
+
 
         // if (error) {
 
@@ -38,6 +36,7 @@ const Login = () => {
 
         // }
         if (success) {
+
 
             swal("Success!", "Logged in Successfully!", "success");
             if (user.role === 'admin') {
@@ -51,6 +50,12 @@ const Login = () => {
             }
             setFetchNotificationAgain(!fetchNotificationAgain)
             // dispatch({ type: NEW_SERVICES_RESET })
+        } else {
+            if (message) {
+                swal("Error!", message, "warning")
+            }
+            // swal("Error", "something went wrong", "warning")
+
         }
 
     }, [dispatch, isAuthenticated, error, navigate, success, message])

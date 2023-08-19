@@ -481,7 +481,8 @@ const SingleService = () => {
                                         <div className="rating-outer">
                                             <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div>
                                         </div>
-                                        <span style={{ paddingLeft: 10 }}>{service.avgRating} out of 5</span>
+                                        <span style={{ paddingLeft: 10 }}>{service && service.avgRating && service.avgRating.toFixed(1)} out of 5</span>
+
                                     </div>
                                     <span id="no_of_reviews">{service.ratingCount} client {service.ratingCount === 1 ? 'review' : 'reviews'} </span>
                                 </div>
