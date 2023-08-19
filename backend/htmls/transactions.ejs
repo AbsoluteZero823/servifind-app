@@ -54,7 +54,7 @@
     <table>
         <thead>
             <tr>
-                <th>Date</th>
+                <th>ID</th>
                 <th>Income (₱)</th>
                  <th>Created At</th>
             </tr>
@@ -65,7 +65,9 @@
       <td>
         <%= item._id %>
       </td>
-      
+        <td>
+        <%= item._id %>
+      </td>
       <td>
         <% 
           const dateObject = new Date(item.created_At);
