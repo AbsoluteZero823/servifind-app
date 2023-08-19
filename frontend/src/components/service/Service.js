@@ -64,7 +64,10 @@ const Service = ({ service }) => {
                         <div className='rating' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <div className="ratings mt-auto">
                                 <div className="rating-outer">
-                                    <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div>
+                                    {/* <div className="rating-inner" style={{ width: `${(service.avgRating / 5) * 100}%` }}></div> */}
+                                    <div className="rating-inner" style={{ width: `${Math.round((service.avgRating / 5) * 100)}%` }}></div>
+
+
                                 </div>
 
                             </div>
