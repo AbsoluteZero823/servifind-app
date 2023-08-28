@@ -1,90 +1,111 @@
 <!DOCTYPE html>
-<html style="zoom: 0.55;">
+<html style="zoom: 1">
 
 <head>
-    <title>PDF Template</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+  <title>PDF Template</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        th,
-        td {
-            border: 1px solid #000;
-            padding: 8px;
-        }
-    </style>
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 8px;
+    }
+  </style>
 </head>
 
 <body>
-    <div>
-        <p id="datetime"></p>
+  <div>
+    <div class="row">
+      <img src="https://res.cloudinary.com/dawhmjhu1/image/upload/v1681209974/servifind/ServiFind-black_szgd1e.png"
+        style="height: 50px" />
 
-        <script>
-            // Function to update the date and time
-            function updateDateTime() {
-                var currentDateTime = new Date();
-                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
-                var formattedDateTime = currentDateTime.toLocaleString('en-US', options);
-                document.getElementById("datetime").textContent = formattedDateTime;
-            }
+      <p id="datetime"></p>
 
-            // Update the date and time immediately
-            updateDateTime();
+      <script>
+        // Function to update the date and time
+        function updateDateTime() {
+          var currentDateTime = new Date();
+          var options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true,
+          };
+          var formattedDateTime = currentDateTime.toLocaleString(
+            "en-US",
+            options
+          );
+          document.getElementById("datetime").textContent = formattedDateTime;
+        }
 
-            // Update the date and time every second (1000 milliseconds)
-            setInterval(updateDateTime, 1000);
-        </script>
+        // Update the date and time immediately
+        updateDateTime();
+
+        // Update the date and time every second (1000 milliseconds)
+        setInterval(updateDateTime, 1000);
+      </script>
     </div>
+  </div>
 
-    
+  <div style="display: flex; justify-content: center; text-align: center">
+    <h1 id="current_year">Transactions</h1>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Price</th>
+        <th>Paid?</th>
+        <th>Expected Date</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% transactions.forEach((item)=> { %>
+        <tr>
+          <td>
+            <%= item._id %>
+          </td>
+          <td>
+            <%= item.price %>
+          </td>
+          <td>
+            <%= item.paymentSent %>
+          </td>
+          <td>
+            <% 
+            const dateObject=new Date(item.expected_Date); 
+            // Check if dateObject is valid before formatting 
+            const formattedDate=dateObject instanceof Date ? dateObject.toLocaleDateString(undefined, { year: 'numeric' ,
+              month: 'numeric' , day: 'numeric' }) : '' ; %>
 
-
-
-
-    <div>
-        <img src="https://res.cloudinary.com/dawhmjhu1/image/upload/v1681209974/servifind/ServiFind-black_szgd1e.png"
-            style="height: 50px;" />
-    </div>
-    <div style="display: flex; justify-content: center; text-align: center;">
-        <h1 id="current_year">Transactions <%= new Date().getFullYear() %>
-        </h1>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Income (₱)</th>
-                 <th>Created At</th>
-            </tr>
-        </thead>
-       <tbody>
-  <% transactions.forEach((item) => { %>
-    <tr>
-      <td>
-        <%= item._id %>
-      </td>
-        <td>
-        <%= item._id %>
-      </td>
-      <td>
-        <% 
-          const dateObject = new Date(item.created_At);
-
-          // Check if dateObject is valid before formatting
-          const formattedDate = dateObject instanceof Date
-            ? dateObject.toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' })
-            : 'Invalid Date';
-        %>
-        <%= formattedDate %>
-      </td>
-    </tr>
-  <% }); %>
-</tbody>
-
-    </table>
-    <!-- Add more dynamic content if needed -->
+              <%= formattedDate %>
+                <!-- <%= item.expected_Date %> -->
+          </td>
+          <td>
+            <%= item.status %>
+          </td>
+          <td>
+            <% const dateObject1=new Date(item.created_At); // Check if dateObject is valid before formatting 
+            const formattedDate1=dateObject1 instanceof Date ? dateObject1.toLocaleDateString(undefined, { year: 'numeric' ,
+              month: 'numeric' , day: 'numeric' }) : '' ; %>
+              <%= formattedDate1 %>
+                <!-- <%= item.created_At %> -->
+          </td>
+        </tr>
+        <% }); %>
+    </tbody>
+  </table>
+  <!-- Add more dynamic content if needed -->
 </body>
 
 </html>

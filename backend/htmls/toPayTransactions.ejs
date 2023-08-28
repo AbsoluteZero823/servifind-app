@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="zoom: 0.55;">
+<html style="zoom: 1;">
 
 <head>
     <title>PDF Template</title>
@@ -74,16 +74,33 @@
         <%= item.price %>
       </td>
       <td>
-        <%= item.isPaid %>
+        <%= item.paymentSent %>
       </td>
       <td>
-        <%= item.expected_Date %>
+        <%
+        const dateObject = new Date(item.expected_Date);
+
+        // Check if dateObject is valid before formatting
+        const formattedDate = dateObject instanceof Date
+          ? dateObject.toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' })
+          : '';
+      %>
+      <%= formattedDate %>
       </td>
       <td>
         <%= item.status %>
       </td>
       <td>
-        <%= item.created_At %>
+        <%
+        const dateObject1 = new Date(item.created_At);
+
+        // Check if dateObject is valid before formatting
+        const formattedDate1 = dateObject1 instanceof Date
+          ? dateObject1.toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' })
+          : '';
+      %>
+      <%= formattedDate1 %>
+        <!-- <%= item.created_At %> -->
       </td>
     </tr>
  
