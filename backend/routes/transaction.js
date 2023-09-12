@@ -18,6 +18,7 @@ const {
   getDashboardInfo,
   getDashboardCounts,
   TransactionPerUser,
+  TransactionPerUserByMonth,
   getTransactionDashboard,
   getProcessingData,
   getToPayData,
@@ -51,6 +52,8 @@ router.route("/transaction/reported/:id").put(reportDone);
 router.route("/transaction-update/:id").put(updateTransaction);
 router.route("/transactionpercourses").get(TransactionPerCourses);
 router.route("/transactionperuser").get(TransactionPerUser);
+router.route("/transactionperuserbymonth").get(TransactionPerUserByMonth);
+
 router.route("/transactionpermonth").get(TransactionPerMonth);
 router.route("/topservicepercourses").get(topTenServices);
 router.route("/serviceleaderboards").get(ServiceLeaderboards);

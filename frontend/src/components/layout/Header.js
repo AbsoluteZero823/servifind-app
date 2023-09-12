@@ -207,14 +207,16 @@ const Header = () => {
                   {/* <span className="badge rounded-pill badge-notification bg-danger">{ (notification && notification[0] && ((user._id === notification[0].chat.users[0]._id) || (user._id === notification[0].chat.users[1]._id)) && user._id !== notification[0].sender._id) ? notification.length : ''}</span> */}
                   <span className="badge rounded-pill badge-notification bg-danger">{(notification.length > 0) ? notification.length : ''}</span>
                 </a>
+                
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"
                   style={{
                     top: '150%',
                     right: '-50%',
                     left: 'unset',
-                    overflowY: 'auto',
-                    maxHeight: "calc(100vh - 100px)"
+                    padding:0
                   }}>
+                    <div style={{ overflowY: 'auto',
+                    maxHeight: "calc(100vh - 150px)" }}>
                   {/* {(notification && notification[0] && ((user._id !== notification[0].chat.users[0]._id) || (user._id !== notification[0].chat.users[1]._id)) && user._id === notification[0].sender._id) && */}
                   {(notification.length === 0) &&
                     (<li>
@@ -262,8 +264,10 @@ const Header = () => {
                           )}
                         </li>
                       ))}
+                      
                       {/* NOTIFICATION MAP END */}
                     </Fragment>
+                    
                   )}
                   {/* <li>
                     <a className="dropdown-item" href="#">Kendrick Sent a message</a>
@@ -274,7 +278,14 @@ const Header = () => {
                   <li>
                     <a className="dropdown-item" href="#">Something else here</a>
                   </li> */}
+                 
+                </div>  <div>
+           
+                    <a style={{width: '100%', textAlign:'center', backgroundColor:'#add8e6', color:'black', fontSize:'0.8rem !important', display:'block'}}
+                    >Read All Notification</a>
+                  </div>
                 </ul>
+              
               </li>
 
 

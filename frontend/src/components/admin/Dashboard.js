@@ -13,7 +13,7 @@ import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
-import { getServiceLeaderboards, clearErrors, getTransactionDashboard, getProcessingData, getToPayData, getToConfirmData, getCompletedData } from '../../actions/transactionActions';
+import { getServiceLeaderboards, clearErrors, getTransactionDashboard, getProcessingData, getToPayData, getToConfirmData, getCompletedData, getTransactionPerUsersByMonth } from '../../actions/transactionActions';
 import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
 import { getApplicationPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
@@ -37,6 +37,8 @@ const Dashboard = () => {
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
   const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
+  const { topInSingleMonth, success: successTopUsersByMonth, loading: loadingTopUsersByMonth } = useSelector((state) => state.topUsersByMonth);
+  
   const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication } = useSelector((state) => state.applicationMonthly);
   const { transactionCounts, success: successTransactionDashboard, loading: loadingTransactionDashboard } = useSelector((state) => state.transactionDashboard);
   const { processingTransactions, success: successProcessing, loading: loadingProcessing } = useSelector((state) => state.processingData);
@@ -89,12 +91,7 @@ const Dashboard = () => {
     }
 
     if (successTopUsers) {
-      if (monthYear) {
-
-        handleTopFreelancersPdf();
-        setMonthYear("");
-
-      }
+    
 
     }
 
@@ -125,6 +122,33 @@ const Dashboard = () => {
     }
   }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication, successTransactionDashboard, successProcessing, successToPay, successToConfirm, successCompleted])
 
+
+  useEffect(() => {
+    
+    // dispatch(getTransactionPerUsersByMonth());
+   //here i am
+ 
+
+    if (successTopUsersByMonth) {
+      // console.log(monthlyPremiumCounts)
+    }
+    if (incomeError) {
+      alert.error(incomeError);
+      dispatch(clearErrors())
+    }
+
+    if (successTopUsersByMonth) {
+      if (monthYear) {
+
+        handleTopFreelancersPdf();
+        setMonthYear("");
+
+      }
+
+    }
+
+   
+  }, [dispatch, successTopUsersByMonth])
   const handleProcessingPdf = async () => {
     setPdfLoading(true);
 
@@ -244,7 +268,7 @@ const Dashboard = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ sectionArr }) // Serialize the array of objects to JSON string
+        body: JSON.stringify({ topInSingleMonth }) // Serialize the array of objects to JSON string
       });
 
       const blob = await response.blob();
@@ -460,7 +484,7 @@ const Dashboard = () => {
 
 
     console.log(monthYear)
-    dispatch(getTransactionPerUsers({ monthYear }));
+    dispatch(getTransactionPerUsersByMonth({ monthYear }));
     $('.modal-backdrop').hide();
 
     closeModal()

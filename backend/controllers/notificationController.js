@@ -75,7 +75,7 @@ exports.getmyNotifications = async (req, res, next) => {
     // console.log(req.user._id);
 
 try {
-    const notifications = await Notification.find({user_id: req.user._id, isRead : false})
+    const notifications = await Notification.find({user_id: req.user._id, isRead : false}).sort({ created_At: -1 });
     res.status(200).json({
                 success: true,
                 notifications

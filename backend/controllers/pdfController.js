@@ -190,7 +190,7 @@ exports.topFreelancersPdf = (req, res) => {
         description: 'This is a sample PDF generated from MERN stack.',
         // Add more properties as needed for your template
     };
-    const sectionArr = req.body.sectionArr || []
+    const topInSingleMonth = req.body.topInSingleMonth || []
     // console.log(req.body, "nice")
 
     const options = {
@@ -210,7 +210,7 @@ exports.topFreelancersPdf = (req, res) => {
             console.error('Error reading template file:', err);
             res.status(500).send('Something went wrong');
         } else {
-            const html = ejs.render(template, { data, sectionArr });
+            const html = ejs.render(template, { data, topInSingleMonth });
 
             pdf.create(html, {
                 childProcessOptions: {

@@ -67,6 +67,10 @@ import {
     GET_TRANSACTIONUSERS_SUCCESS,
     GET_TRANSACTIONUSERS_FAIL,
 
+    GET_TRANS_USERS_MONTH_REQUEST,
+    GET_TRANS_USERS_MONTH_SUCCESS,
+    GET_TRANS_USERS_MONTH_FAIL,
+
     GET_TRANSACTIONDASHBOARD_REQUEST,
     GET_TRANSACTIONDASHBOARD_SUCCESS,
     GET_TRANSACTIONDASHBOARD_FAIL,
@@ -466,16 +470,16 @@ export const getDashboardCounts = () => async (dispatch) => {
     }
 }
 
-export const getTransactionPerUsers = (formData) => async (dispatch) => {
+export const getTransactionPerUsers = () => async (dispatch) => {
 
     try {
 
         dispatch({ type: GET_TRANSACTIONUSERS_REQUEST })
 
-        // const { data } = await axios.get(`/api/v1/transactionperuser`)
-        const { data } = await axios.get(`/api/v1/transactionperuser`, {
-            params: formData // formData will be sent as query parameters
-        })
+        const { data } = await axios.get(`/api/v1/transactionperuser`)
+        // const { data } = await axios.get(`/api/v1/transactionperuser`, {
+        //     params: formData // formData will be sent as query parameters
+        // })
         dispatch({
             type: GET_TRANSACTIONUSERS_SUCCESS,
             payload: data
@@ -490,6 +494,29 @@ export const getTransactionPerUsers = (formData) => async (dispatch) => {
     }
 }
 
+export const getTransactionPerUsersByMonth = (formData) => async (dispatch) => {
+
+    try {
+
+        dispatch({ type: GET_TRANS_USERS_MONTH_REQUEST })
+
+        // const { data } = await axios.get(`/api/v1/transactionperuser`)
+        const { data } = await axios.get(`/api/v1/transactionperuserbymonth`, {
+            params: formData // formData will be sent as query parameters
+        })
+        dispatch({
+            type: GET_TRANS_USERS_MONTH_SUCCESS,
+            payload: data
+
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_TRANS_USERS_MONTH_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 export const getTransactionDashboard = () => async (dispatch) => {
     try {

@@ -71,6 +71,10 @@ import {
     GET_TRANSACTIONUSERS_SUCCESS,
     GET_TRANSACTIONUSERS_FAIL,
 
+    GET_TRANS_USERS_MONTH_REQUEST,
+    GET_TRANS_USERS_MONTH_SUCCESS,
+    GET_TRANS_USERS_MONTH_FAIL,
+
     GET_TRANSACTIONDASHBOARD_REQUEST,
     GET_TRANSACTIONDASHBOARD_SUCCESS,
     GET_TRANSACTIONDASHBOARD_FAIL,
@@ -643,6 +647,36 @@ export const getTransactionUsersReducer = (state = { sectionArr: [] }, action) =
                 success: action.payload.success,
             }
         case GET_TRANSACTIONUSERS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const getTransactionUsersMonthReducer = (state = { topInSingleMonth: [] }, action) => {
+    switch (action.type) {
+        case GET_TRANS_USERS_MONTH_REQUEST:
+            return {
+                ...state,
+                loading: true,
+//here i am
+            }
+        case GET_TRANS_USERS_MONTH_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                topInSingleMonth: action.payload.topInSingleMonth,
+                success: action.payload.success,
+            }
+        case GET_TRANS_USERS_MONTH_FAIL:
             return {
                 loading: false,
                 error: action.payload

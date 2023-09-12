@@ -825,6 +825,67 @@ exports.TransactionPerUser = async (req, res, next) => {
     const transactionCounts = {}; // Object to store transaction counts for each user
     //balik
     console.log(req.query, 'wow')
+      const transactions = await Transaction.find({
+
+        "transaction_done.client": true,
+        "transaction_done.freelancer": true,
+      }).populate([
+        {
+          path: "offer_id",
+          model: "Offer",
+          populate: {
+            path: "offered_by",
+            model: "user",
+            populate: {
+              path: "freelancer_id",
+            },
+          },
+        },
+      ]);
+
+      for (let i = 0; i < transactions.length; i++) {
+        const user = transactions[i].offer_id.offered_by.name;
+
+        // If the user is encountered for the first time, initialize the count to 1
+        if (!transactionCounts[user]) {
+          transactionCounts[user] = {
+            count: 1,
+            avatar: transactions[i].offer_id.offered_by.avatar.url,
+          };
+        } else {
+          // If the user has already been encountered, increment the count
+          transactionCounts[user].count++;
+        }
+      }
+
+      // Convert the transactionCounts object into an array of objects
+      const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
+        section: user,
+        count: data.count,
+        avatar: data.avatar,
+      }));
+
+      res.status(200).json({
+        success: true,
+        sectionArr,
+      });
+    
+  } catch (err) {
+    // Handle any errors that occur during the execution
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+
+};
+
+exports.TransactionPerUserByMonth = async (req, res, next) => {
+  try {
+    const transactionCounts = {}; // Object to store transaction counts for each user
+    //balik
+    console.log(req.query, 'wow')
     if (req.query.monthYear) {
       console.log(req.query.monthYear, 'adw')
 
@@ -879,7 +940,7 @@ exports.TransactionPerUser = async (req, res, next) => {
       }
 
       // Convert the transactionCounts object into an array of objects
-      const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
+      const topInSingleMonth = Object.entries(transactionCounts).map(([user, data]) => ({
         section: user,
         count: data.count,
         avatar: data.avatar,
@@ -887,52 +948,7 @@ exports.TransactionPerUser = async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        sectionArr,
-      });
-    } else {
-      const transactions = await Transaction.find({
-
-        "transaction_done.client": true,
-        "transaction_done.freelancer": true,
-      }).populate([
-        {
-          path: "offer_id",
-          model: "Offer",
-          populate: {
-            path: "offered_by",
-            model: "user",
-            populate: {
-              path: "freelancer_id",
-            },
-          },
-        },
-      ]);
-
-      for (let i = 0; i < transactions.length; i++) {
-        const user = transactions[i].offer_id.offered_by.name;
-
-        // If the user is encountered for the first time, initialize the count to 1
-        if (!transactionCounts[user]) {
-          transactionCounts[user] = {
-            count: 1,
-            avatar: transactions[i].offer_id.offered_by.avatar.url,
-          };
-        } else {
-          // If the user has already been encountered, increment the count
-          transactionCounts[user].count++;
-        }
-      }
-
-      // Convert the transactionCounts object into an array of objects
-      const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
-        section: user,
-        count: data.count,
-        avatar: data.avatar,
-      }));
-
-      res.status(200).json({
-        success: true,
-        sectionArr,
+        topInSingleMonth,
       });
     }
   } catch (err) {
