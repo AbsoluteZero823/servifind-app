@@ -29,8 +29,8 @@ const PieChart = () => {
     const refEnd = useRef();
     useEffect(() => {
         dispatch(getTransactionPerCourses());
-        console.log(sectionDataPoints);
-        console.log(courseCountLength);
+        // console.log(sectionDataPoints);
+        // console.log(courseCountLength);
         if (error) {
             alert.error(error);
             dispatch(clearErrors())
@@ -39,8 +39,8 @@ const PieChart = () => {
     }, [dispatch, alert, error,])
     useEffect(() => {
 
-        console.log(sectionDataPoints);
-        console.log(courseCountLength);
+        // console.log(sectionDataPoints);
+        // console.log(courseCountLength);
         if (courseCountLength[0]) {
             filterData1();
             filterData2();
@@ -93,17 +93,17 @@ const PieChart = () => {
             return Dategroups;
         }, {}
     )
-    console.log(Dategroups);
+    // console.log(Dategroups);
 
     const arrGroups = Object.entries(Dategroups)
-    console.log(arrGroups);
+    // console.log(arrGroups);
     //----------------------------------------------------------------------
     function filterData1() {
-        console.log('i am called')
-        console.log(refStart)
+        // console.log('i am called')
+        // console.log(refStart)
         var valueStart = ''
         if (refStart.current === null) {
-            console.log('this is null')
+            // console.log('this is null')
             valueStart = startDate
         } else {
             valueStart = refStart.current.value;

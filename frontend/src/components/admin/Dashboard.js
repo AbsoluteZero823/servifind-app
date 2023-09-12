@@ -13,8 +13,8 @@ import PieChart from './charts/PieChart';
 import ServiceLeaderboards from './leaderboards/ServiceLeaderboards';
 import LineChart from './charts/LineChart';
 import { getDashboardInfo, getTransactions, getTransactionPerUsers } from '../../actions/transactionActions';
-import { getServiceLeaderboards, clearErrors, getTransactionDashboard, getProcessingData, getToPayData,getToConfirmData,getCompletedData } from '../../actions/transactionActions';
-import { getPremiumFreelancersPerMonth} from '../../actions/freelancerActions';
+import { getServiceLeaderboards, clearErrors, getTransactionDashboard, getProcessingData, getToPayData, getToConfirmData, getCompletedData } from '../../actions/transactionActions';
+import { getPremiumFreelancersPerMonth } from '../../actions/freelancerActions';
 import { getApplicationPerMonth } from '../../actions/freelancerActions';
 import socket from '../../Context/socket';
 import $ from 'jquery';
@@ -37,12 +37,12 @@ const Dashboard = () => {
   const { monthlyPremiumCounts, clearErrors, success: incomeSuccess, error: incomeError, loading: incomeLoading } = useSelector(state => state.premiumFreelancers);
   const { loading: transactionLoading, error: transactionError, transactions, success: successTransaction } = useSelector((state) => state.transactions);
   const { sectionArr, success: successTopUsers, loading: loadingTopUsers } = useSelector((state) => state.topUsers);
-  const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication} = useSelector((state) => state.applicationMonthly);
-  const { transactionCounts, success: successTransactionDashboard, loading: loadingTransactionDashboard} = useSelector((state) => state.transactionDashboard);
-  const{processingTransactions, success: successProcessing, loading:loadingProcessing} = useSelector((state)=> state.processingData);
-  const{notSentTransactions, success: successToPay, loading:loadingToPay} = useSelector((state)=> state.toPayData);
-  const{customConditionTransactions, success:successToConfirm, loading:loadingToConfirm} = useSelector((state)=> state.toConfirmData);
-  const{completedTransactions, success:successCompleted, loading:loadingCompleted} = useSelector((state)=> state.completedData);
+  const { monthlyApplication, success: successMonthlyApplication, loading: loadingMonthlyApplication } = useSelector((state) => state.applicationMonthly);
+  const { transactionCounts, success: successTransactionDashboard, loading: loadingTransactionDashboard } = useSelector((state) => state.transactionDashboard);
+  const { processingTransactions, success: successProcessing, loading: loadingProcessing } = useSelector((state) => state.processingData);
+  const { notSentTransactions, success: successToPay, loading: loadingToPay } = useSelector((state) => state.toPayData);
+  const { customConditionTransactions, success: successToConfirm, loading: loadingToConfirm } = useSelector((state) => state.toConfirmData);
+  const { completedTransactions, success: successCompleted, loading: loadingCompleted } = useSelector((state) => state.completedData);
   const dispatch = useDispatch();
 
 
@@ -60,6 +60,7 @@ const Dashboard = () => {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [monthYear, setMonthYear] = useState("");
 
 
   useEffect(() => {
@@ -69,18 +70,18 @@ const Dashboard = () => {
     dispatch(getTransactionPerUsers());
     dispatch(getApplicationPerMonth());
     dispatch(getTransactionDashboard());
-    
+
     dispatch(getProcessingData());
     dispatch(getToPayData());
     dispatch(getToConfirmData());
     dispatch(getCompletedData());
     if (success) {
-      console.log(result)
+      // console.log(result)
 
     }
 
     if (incomeSuccess) {
-      console.log(monthlyPremiumCounts)
+      // console.log(monthlyPremiumCounts)
     }
     if (incomeError) {
       alert.error(incomeError);
@@ -88,8 +89,13 @@ const Dashboard = () => {
     }
 
     if (successTopUsers) {
-      // dispatch(clearErrors())
-      console.log(sectionArr[0].section, 'ito yon-----------------------------------')
+      if (monthYear) {
+
+        handleTopFreelancersPdf();
+        setMonthYear("");
+
+      }
+
     }
 
     if (successTransaction) {
@@ -100,21 +106,21 @@ const Dashboard = () => {
         setFromDate("");
       }
 
-      if(successTransactionDashboard){
-        console.log(transactionCounts)
+      if (successTransactionDashboard) {
+        // console.log(transactionCounts)
       }
 
-      if(successProcessing){
-        console.log(processingTransactions)
+      if (successProcessing) {
+        // console.log(processingTransactions)
       }
-      if(successToPay){
-        console.log(notSentTransactions)
+      if (successToPay) {
+        // console.log(notSentTransactions)
       }
-      if(successToConfirm){
-        console.log(customConditionTransactions)
+      if (successToConfirm) {
+        // console.log(customConditionTransactions)
       }
-      if(successCompleted){
-        console.log(completedTransactions)
+      if (successCompleted) {
+        // console.log(completedTransactions)
       }
     }
   }, [dispatch, success, incomeSuccess, incomeError, successTransaction, successTopUsers, successMonthlyApplication, successTransactionDashboard, successProcessing, successToPay, successToConfirm, successCompleted])
@@ -123,9 +129,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/transactions-processing-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-processing-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/transactions-processing-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-processing-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -150,9 +156,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/transactions-to-pay-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-pay-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/transactions-to-pay-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-pay-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -177,9 +183,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/transactions-to-confirm-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-confirm-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/transactions-to-confirm-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-confirm-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -204,9 +210,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/transactions-completed-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-completed-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/transactions-completed-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-completed-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -231,9 +237,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/top-freelancers-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/top-freelancers-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/top-freelancers-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/top-freelancers-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -257,9 +263,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/freelancer-monthly-join-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/freelancer-monthly-join-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/freelancer-monthly-join-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/freelancer-monthly-join-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -283,9 +289,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/top-services-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/top-services-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/top-services-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/top-services-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -310,9 +316,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/monthly-income-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/monthly-income-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/monthly-income-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/monthly-income-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -336,9 +342,9 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      // const response = await fetch('http://localhost:3000/api/v1/transactions-pdf', {
-        const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-pdf', {
-        
+      const response = await fetch('http://localhost:3000/api/v1/transactions-pdf', {
+        // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-pdf', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -369,11 +375,11 @@ const Dashboard = () => {
       socket.off('message received');
     };
   }, []);
-  console.log(notification, 'waaaah')
+  // console.log(notification, 'waaaah')
   useEffect(() => {
     if (newMessageReceivedLocal && newMessageReceivedLocal !== null) {
       // Execute your code when a new message is received
-      console.log('New message received:', newMessageReceivedLocal);
+      // console.log('New message received:', newMessageReceivedLocal);
 
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
@@ -383,7 +389,7 @@ const Dashboard = () => {
       } else {
         // setFetchAgain(!fetchAgain);
         // setMessages([...messages, newMessageReceived]);
-        console.log("over")
+        // console.log("over")
       }
 
       // Reset the newMessageReceived state
@@ -394,7 +400,7 @@ const Dashboard = () => {
 
 
   const addNotif = async () => {
-    console.log("awot")
+    // console.log("awot")
 
     let userid = ""
 
@@ -425,7 +431,7 @@ const Dashboard = () => {
         },
         config
       );
-      console.log(data);
+      // console.log(data);
       // socket.emit("new message", data.message);
       // setMessages([...messages, data.message]);
 
@@ -441,15 +447,28 @@ const Dashboard = () => {
     const formData = new FormData();
     formData.set("toDate", toDate);
     formData.set("fromDate", fromDate);
-    console.log(fromDate, toDate)
+    // console.log(fromDate, toDate)
     dispatch(getTransactions({ fromDate, toDate }));
     $('.modal-backdrop').hide();
 
     closeModal()
   };
+  const submitTopFreelancerHandler = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.set("monthYear", monthYear);
+
+
+    console.log(monthYear)
+    dispatch(getTransactionPerUsers({ monthYear }));
+    $('.modal-backdrop').hide();
+
+    closeModal()
+  };
+
 
   const closeModal = () => {
-    $("#setupModal").hide();
+    $("#topFreelancerModalMonth").hide();
   }
   return (
     <Fragment>
@@ -493,8 +512,12 @@ const Dashboard = () => {
             <button className="dropdown-item" type="button" onClick={handleFreelancerMonthlyPdf} disabled={pdfLoading}>
               {pdfLoading ? 'Monthly Freelancer Join...' : 'Monthly Freelancer Join'}
             </button>
-            <button className="dropdown-item" type="button" onClick={handleTopFreelancersPdf} disabled={pdfLoading}>
-              {pdfLoading ? 'Top Freelancers...' : 'Top Freelancers'}
+            <button type="button"
+
+              className="dropdown-item"
+              data-toggle="modal"
+              data-target="#topFreelancerModalMonth">
+              Top Freelancers
             </button>
 
             <button className="dropdown-item" type="button" onClick={handleProcessingPdf} disabled={pdfLoading}>
@@ -654,7 +677,7 @@ const Dashboard = () => {
                   </label>
                 </div>
               )}
-              
+
               <div style={{
                 // position: 'absolute',
                 display: 'flex',
@@ -668,50 +691,50 @@ const Dashboard = () => {
 
                 </img>
                 {(loadingTopUsers && !sectionArr) ? <Loader /> : (
-                <div style={{
-                  position: 'absolute',
-                  display: "flex",
-                  // justifyContent: 'space-around',
-                  gap: '15%',
-                  width: '100%',
-                  padding: '23px 47px',
-                  width: 'calc(100% - 30px)'
+                  <div style={{
+                    position: 'absolute',
+                    display: "flex",
+                    // justifyContent: 'space-around',
+                    gap: '15%',
+                    width: '100%',
+                    padding: '23px 47px',
+                    width: 'calc(100% - 30px)'
 
 
-                }}>
-                  <img className='topGold' src={sectionArr[0] ? sectionArr[0].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
-                    style={{
-                      height: '14vh',
-                      width: '14vh',
-                      paddingtop: '0px',
-                      borderRadius: '100%',
+                  }}>
+                    <img className='topGold' src={sectionArr[0] ? sectionArr[0].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
+                      style={{
+                        height: '14vh',
+                        width: '14vh',
+                        paddingtop: '0px',
+                        borderRadius: '100%',
 
-                    }}>
-                  </img>
-
-
-                  <img className='topSilver' src={sectionArr[1] ? sectionArr[1].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
-                    style={{
-                      height: '14vh',
-                      width: '14vh',
-                      paddingtop: '0px',
-                      borderRadius: '100%',
-
-                    }}>
-                  </img>
+                      }}>
+                    </img>
 
 
-                  <img className='topBronze' src={sectionArr[2] ? sectionArr[2].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
-                    style={{
-                      height: '14vh',
-                      width: '14vh',
-                      paddingtop: '0px',
-                      borderRadius: '100%',
+                    <img className='topSilver' src={sectionArr[1] ? sectionArr[1].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
+                      style={{
+                        height: '14vh',
+                        width: '14vh',
+                        paddingtop: '0px',
+                        borderRadius: '100%',
 
-                      marginLeft: '7px'
-                    }}>
-                  </img>
-                </div>
+                      }}>
+                    </img>
+
+
+                    <img className='topBronze' src={sectionArr[2] ? sectionArr[2].avatar : "https://media.istockphoto.com/vectors/vector-illustration-male-silhouette-profile-picture-with-question-on-vector-id937695038?k=6&m=937695038&s=170667a&w=0&h=qev78TH1j74fdL6DmGxbRN3cPf2xqFHgF4fCYGcL8-8="}
+                      style={{
+                        height: '14vh',
+                        width: '14vh',
+                        paddingtop: '0px',
+                        borderRadius: '100%',
+
+                        marginLeft: '7px'
+                      }}>
+                    </img>
+                  </div>
                 )}
 
               </div>
@@ -734,7 +757,7 @@ const Dashboard = () => {
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
 
-           
+
 
 
 
@@ -755,36 +778,36 @@ const Dashboard = () => {
                 // minHeight: '500px',
                 padding: '20px'
               }} >
-              <h1 style={{ textAlign: 'center', padding:'20px' }}>
+              <h1 style={{ textAlign: 'center', padding: '20px' }}>
                 Transaction Counts
               </h1>
-<hr></hr>
+              <hr></hr>
 
-{(loadingTransactionDashboard) ? <Loader /> : (
-<div className='transaction_count' style={{display:'flex', justifyContent:'space-around'}}>
-<div className='on_process'>
-<img src='https://www.pngkit.com/png/full/335-3350147_process-icon-process-icon-blue-png.png' ></img>
-<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.processingCount}</span>
-<label>On Process</label>
-</div>
-<div className='to_pay'>
-<img src='http://clipart-library.com/images_k/cash-icon-transparent/cash-icon-transparent-19.png' ></img>
-<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.paymentNotSentCount}</span>
-<label>To Pay</label>
-</div>
+              {(loadingTransactionDashboard) ? <Loader /> : (
+                <div className='transaction_count' style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <div className='on_process'>
+                    <img src='https://www.pngkit.com/png/full/335-3350147_process-icon-process-icon-blue-png.png' ></img>
+                    <span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.processingCount}</span>
+                    <label>On Process</label>
+                  </div>
+                  <div className='to_pay'>
+                    <img src='http://clipart-library.com/images_k/cash-icon-transparent/cash-icon-transparent-19.png' ></img>
+                    <span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.paymentNotSentCount}</span>
+                    <label>To Pay</label>
+                  </div>
 
-<div className='to_confirm'>
-<img src='https://seeklogo.com/images/F/facebook-like-logo-84B75A1FCB-seeklogo.com.png' ></img>
-<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.customConditionCount}</span>
-<label>To Confirm</label>
-</div>
-<div className='completed'>
-<img src='https://icon-library.com/images/completed-icon/completed-icon-6.jpg' ></img>
-<span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.completedCount}</span>
-<label>Completed</label>
-</div>
-</div>
-)}
+                  <div className='to_confirm'>
+                    <img src='https://seeklogo.com/images/F/facebook-like-logo-84B75A1FCB-seeklogo.com.png' ></img>
+                    <span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.customConditionCount}</span>
+                    <label>To Confirm</label>
+                  </div>
+                  <div className='completed'>
+                    <img src='https://icon-library.com/images/completed-icon/completed-icon-6.jpg' ></img>
+                    <span className="transaction_badge rounded-pill badge-notification bg-danger">{transactionCounts && transactionCounts.completedCount}</span>
+                    <label>Completed</label>
+                  </div>
+                </div>
+              )}
 
               {/* <img src='../images/students-college.png' ></img> */}
             </div>
@@ -842,6 +865,68 @@ const Dashboard = () => {
                       onChange={(e) => setToDate(e.target.value)}
                     />
                   </div>
+                </div>
+
+
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Generate
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* GENERATE TOP FREELANCER PDF MODAL */}
+
+      <div
+        className="modal fade"
+        id="topFreelancerModalMonth"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalCenterTitle">
+                Generate Top Freelancer
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+
+              </button>
+            </div>
+            <form
+              className="a"
+              onSubmit={submitTopFreelancerHandler}
+              encType="multipart/form-data"
+            >
+              <div className="modal-body">
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 10 }}>
+                  <div className="form-group">
+                    <label htmlFor="month-year">Select Month & Year: </label>
+
+                    <input type="month" id="month-year" name="month-year" className='form-control' value={monthYear}
+                      onChange={(e) => setMonthYear(e.target.value)} />
+                  </div>
+
                 </div>
 
 

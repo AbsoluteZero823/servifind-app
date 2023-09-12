@@ -18,23 +18,23 @@ ChartJS.register(
     ...registerables
 )
 
-const BarChart  = () => {
-	const alert = useAlert();
-	const dispatch = useDispatch();
-    const { completionDate, clearErrors,success, error, loading} = useSelector(state => state.completionDateTo);
+const BarChart = () => {
+    const alert = useAlert();
+    const dispatch = useDispatch();
+    const { completionDate, clearErrors, success, error, loading } = useSelector(state => state.completionDateTo);
 
     useEffect(() => {
         dispatch(getTransactionPerMonth());
- if(success){
-    console.log(completionDate)
- }
+        if (success) {
+            // console.log(completionDate)
+        }
         if (error) {
             alert.error(error);
             dispatch(clearErrors())
         }
 
 
-        if(appointmentDateCountLength[0]){
+        if (appointmentDateCountLength[0]) {
             filterData1();
             filterData2();
         }
@@ -42,13 +42,13 @@ const BarChart  = () => {
     }, [dispatch, alert, error, success])
 
 
-//----------------------------------------------------------------------
+    //----------------------------------------------------------------------
     //this is for filtering data to be regroup into months
     const groups = completionDate.reduce(
         (groups, borrow_appointment) => {
             const borroweddate = borrow_appointment.created_At;
             if (!groups[borroweddate]) {
-                groups[borroweddate]=[]
+                groups[borroweddate] = []
             }
             groups[borroweddate].push(borrow_appointment);
             return groups;
@@ -62,20 +62,20 @@ const BarChart  = () => {
 
     // Fetching Date Counts from roups -- debug
     const appointmentCount = Object.values(groups)
-    const appointmentCountLength = Object.values(appointmentCount).map((testvariable)=> {
+    const appointmentCountLength = Object.values(appointmentCount).map((testvariable) => {
         return testvariable.length
     })
     // console.log(appointmentCountLength);
-//----------------------------------------------------------------------
+    //----------------------------------------------------------------------
 
-//----------------------------------------------------------------------
+    //----------------------------------------------------------------------
     // Regrouping Books Borrowed into Month name
 
     const appointmentDateMonth = appointmentDate.reduce(
         (appointmentDateMonth, borrow_appointment) => {
             const appointment_date = dateFormat(borrow_appointment, "yyyy-mm-dd")
             if (!appointmentDateMonth[appointment_date]) {
-                appointmentDateMonth[appointment_date]=[]
+                appointmentDateMonth[appointment_date] = []
             }
             appointmentDateMonth[appointment_date].push(borrow_appointment);
             return appointmentDateMonth;
@@ -83,15 +83,15 @@ const BarChart  = () => {
     )
     // console.log(appointmentDateMonth);
 
-    const appointmentDateGroup  = Object.keys(appointmentDateMonth)
+    const appointmentDateGroup = Object.keys(appointmentDateMonth)
     // console.log(appointmentDateGroup);
 
     const appointmentDateCount = Object.values(appointmentDateMonth)
-    const appointmentDateCountLength = Object.values(appointmentDateCount).map((appointment)=> {
+    const appointmentDateCountLength = Object.values(appointmentDateCount).map((appointment) => {
         return appointment.length
     })
     // console.log(appointmentDateCountLength);
-//----------------------------------------------------------------------
+    //----------------------------------------------------------------------
 
     // Setting States
 
@@ -110,7 +110,7 @@ const BarChart  = () => {
     //converting Obj into Array via Entries (keys and values included)
     const arrGroups = Object.entries(groups);
     // const arrGroups = Object.entries(animalDateMonth);
-    console.log(arrGroups);
+    // console.log(arrGroups);
 
     //Function for changing the state of start date
     function filterData1() {
@@ -121,7 +121,7 @@ const BarChart  = () => {
         newValueStart.setDate(newValueStart.getDate())
         newValueStart.setMonth(newValueStart.getMonth())
         newValueStart.setFullYear(newValueStart.getFullYear())
-     //    console.log(newValueEnd);
+        //    console.log(newValueEnd);
         const convertValueStart = dateFormat(newValueStart, "yyyy-mm-dd")
 
         setAppointmentStart(valueStart);
@@ -133,8 +133,8 @@ const BarChart  = () => {
         // console.log(arrGroups);
         // const newgroups = arrGroups.filter(
         const newgroups = arrGroups.filter(
-            (obj) =>{
-                return  obj >= convertValueStart &&  obj <= valueEnd
+            (obj) => {
+                return obj >= convertValueStart && obj <= valueEnd
             }
         )
         // console.log(newgroups);
@@ -143,14 +143,14 @@ const BarChart  = () => {
         // console.log(newData);
 
 
-        const appointmentDateGroup  = Object.keys(newData)
+        const appointmentDateGroup = Object.keys(newData)
         // const animalDateGroup  = Object.entries(newData)
         // console.log(appointmentDateGroup);
 
-        const newAppointmentDateGroup = appointmentDateGroup.reduce((newAppointmentDateGroup, appointment )=>{
+        const newAppointmentDateGroup = appointmentDateGroup.reduce((newAppointmentDateGroup, appointment) => {
             const appointmentdate = dateFormat(appointment, "mmmm")
             if (!newAppointmentDateGroup[appointmentdate]) {
-                newAppointmentDateGroup[appointmentdate]=[]
+                newAppointmentDateGroup[appointmentdate] = []
             }
             newAppointmentDateGroup[appointmentdate].push(appointment);
 
@@ -166,7 +166,7 @@ const BarChart  = () => {
         setAppointmentDates(uniqueDates);
 
         const newAppointmentCount = Object.values(newAppointmentDateGroup)
-        const newAppointmentCountLength = Object.values(newAppointmentCount).map((appointment)=> {
+        const newAppointmentCountLength = Object.values(newAppointmentCount).map((appointment) => {
             return appointment.length
         })
         // console.log(newAppointmentCountLength);
@@ -181,13 +181,13 @@ const BarChart  = () => {
         // let newValueEnd = valueEnd + 1;
         let newValueEnd = new Date(valueEnd);
         // console.log(newValueEnd);
-        
-       newValueEnd.setDate(newValueEnd.getDate() + 1)
-       newValueEnd.setMonth(newValueEnd.getMonth())
-       newValueEnd.setFullYear(newValueEnd.getFullYear())
-    //    console.log(newValueEnd);
-       const convertValueEnd = dateFormat(newValueEnd, "yyyy-mm-dd")
-    //    console.log(convertValueEnd );
+
+        newValueEnd.setDate(newValueEnd.getDate() + 1)
+        newValueEnd.setMonth(newValueEnd.getMonth())
+        newValueEnd.setFullYear(newValueEnd.getFullYear())
+        //    console.log(newValueEnd);
+        const convertValueEnd = dateFormat(newValueEnd, "yyyy-mm-dd")
+        //    console.log(convertValueEnd );
         setAppointmentEnd(valueEnd);
         // let valueStart = dateFormat(rescuedRefStart.current.value, "mmmm");
         let valueStart = appointmentStart;
@@ -198,8 +198,8 @@ const BarChart  = () => {
         // console.log(arrGroups);
         // const newgroups = arrGroups.filter(
         const newgroups = arrGroups.filter(
-            (obj) =>{
-                return  obj >= valueStart &&  obj <= convertValueEnd
+            (obj) => {
+                return obj >= valueStart && obj <= convertValueEnd
             }
         )
         // console.log(newgroups);
@@ -208,14 +208,14 @@ const BarChart  = () => {
         // console.log(newData);
 
 
-        const appointmentDateGroup  = Object.keys(newData)
+        const appointmentDateGroup = Object.keys(newData)
         // const animalDateGroup  = Object.entries(newData)
         // console.log(appointmentDateGroup);
 
-        const newAppointmentDateGroup = appointmentDateGroup.reduce((newAppointmentDateGroup, appointment )=>{
+        const newAppointmentDateGroup = appointmentDateGroup.reduce((newAppointmentDateGroup, appointment) => {
             const appointmentdate = dateFormat(appointment, "mmmm")
             if (!newAppointmentDateGroup[appointmentdate]) {
-                newAppointmentDateGroup[appointmentdate]=[]
+                newAppointmentDateGroup[appointmentdate] = []
             }
             newAppointmentDateGroup[appointmentdate].push(appointment);
 
@@ -231,7 +231,7 @@ const BarChart  = () => {
         setAppointmentDates(uniqueDates);
 
         const newAppointmentCount = Object.values(newAppointmentDateGroup)
-        const newAppointmentCountLength = Object.values(newAppointmentCount).map((appointment)=> {
+        const newAppointmentCountLength = Object.values(newAppointmentCount).map((appointment) => {
             return appointment.length
         })
         // console.log(newAppointmentCountLength);
@@ -243,39 +243,39 @@ const BarChart  = () => {
     const state = {
         labels: appointmentDates,
         datasets: [{
-          label: 'Returned',
-          data: appointmentDataPoints,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          hoverBackgroundColor: [
-            'rgba(255, 99, 132, 0.5)',
-            'rgba(255, 159, 64, 0.5)',
-            'rgba(255, 205, 86, 0.5)',
-            'rgba(75, 192, 192, 0.5)',
-            'rgba(54, 162, 235, 0.5)',
-            'rgba(153, 102, 255, 0.5)',
-            'rgba(201, 203, 207, 0.5)'
-          ],
-          borderWidth: 1
+            label: 'Returned',
+            data: appointmentDataPoints,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+            hoverBackgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(255, 159, 64, 0.5)',
+                'rgba(255, 205, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(153, 102, 255, 0.5)',
+                'rgba(201, 203, 207, 0.5)'
+            ],
+            borderWidth: 1
         }],
         plugins: [ChartDataLabels]
-      };
+    };
 
     const options = {
         // indexAxis: 'x',
@@ -294,7 +294,7 @@ const BarChart  = () => {
                         size: 16,
                     },
                     display: false,
-                    
+
                 },
                 // reverse: true
             },
@@ -306,7 +306,7 @@ const BarChart  = () => {
                     }
                 }
             },
-          },
+        },
         plugins: {
             legend: {
                 // labels: {
@@ -326,7 +326,7 @@ const BarChart  = () => {
                     generateLabels: (chart) => {
                         let visibility = [];
                         for (let i = 0; i < chart.data.labels.length; i++) {
-                            if(chart.getDataVisibility(i) === true) {
+                            if (chart.getDataVisibility(i) === true) {
                                 visibility.push(false)
                             } else {
                                 visibility.push(true)
@@ -342,7 +342,7 @@ const BarChart  = () => {
                             })
                         )
                     }
-                 }
+                }
             },
             title: {
                 display: true,
@@ -355,37 +355,37 @@ const BarChart  = () => {
                 display: false
             }
         },
-        
-    };
-    
-    return (
-    	<Fragment>
-        <MetaData title={'Dashboard'} />
-    	{loading ? <Loader /> : (
-            <div className="col-md-6" 
-            style={{
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
-                flex: '0 0 48%',
-                padding: '20px'
-                }}>
 
-                <Bar
-                    // labels={appointmentDates}
-                    data={state}
-                    options={options}
-                />
-<div style={{display:'flex', justifyContent:'center', paddingTop:10}}>
-                <div className="form-group">
-                    <label >From: </label>
-                    <input type="date" ref={appointmentRefStart} onChange={filterData1} value={appointmentStart}/>
-                    <label > To: </label>
-                    <input type="date" ref={appointmentRefEnd} onChange={filterData2} value={appointmentEnd}/>
+    };
+
+    return (
+        <Fragment>
+            <MetaData title={'Dashboard'} />
+            {loading ? <Loader /> : (
+                <div className="col-md-6"
+                    style={{
+                        backgroundColor: 'white',
+                        borderRadius: '8px',
+                        boxShadow: '0 0 15px 1px rgba(0, 0, 0, 0.4)',
+                        flex: '0 0 48%',
+                        padding: '20px'
+                    }}>
+
+                    <Bar
+                        // labels={appointmentDates}
+                        data={state}
+                        options={options}
+                    />
+                    <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10 }}>
+                        <div className="form-group">
+                            <label >From: </label>
+                            <input type="date" ref={appointmentRefStart} onChange={filterData1} value={appointmentStart} />
+                            <label > To: </label>
+                            <input type="date" ref={appointmentRefEnd} onChange={filterData2} value={appointmentEnd} />
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-        )}
+            )}
         </Fragment>
     )
 }

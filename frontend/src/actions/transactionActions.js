@@ -466,13 +466,16 @@ export const getDashboardCounts = () => async (dispatch) => {
     }
 }
 
-export const getTransactionPerUsers = () => async (dispatch) => {
+export const getTransactionPerUsers = (formData) => async (dispatch) => {
+
     try {
 
         dispatch({ type: GET_TRANSACTIONUSERS_REQUEST })
 
-        const { data } = await axios.get(`/api/v1/transactionperuser`)
-
+        // const { data } = await axios.get(`/api/v1/transactionperuser`)
+        const { data } = await axios.get(`/api/v1/transactionperuser`, {
+            params: formData // formData will be sent as query parameters
+        })
         dispatch({
             type: GET_TRANSACTIONUSERS_SUCCESS,
             payload: data

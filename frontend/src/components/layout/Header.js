@@ -81,7 +81,7 @@ const Header = () => {
     if (notification) {
 
 
-      console.log(notification)
+      // console.log(notification)
 
     }
   }, [dispatch, fetchNotificationAgain])
@@ -110,8 +110,8 @@ const Header = () => {
       );
       setNotification(data.notifications);
 
-      console.log(data.notifications);
-      console.log(notification);
+      // console.log(data.notifications);
+      // console.log(notification);
       // setLoading(false);
 
 

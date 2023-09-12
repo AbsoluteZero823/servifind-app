@@ -793,7 +793,7 @@ exports.getDashboardCounts = async (req, res, next) => {
 //       // If the user is encountered for the first time, initialize the count to 1
 //       if (!transactionCounts[user]) {
 //         transactionCounts[user] = 1;
-        
+
 //       } else {
 //         // If the user has already been encountered, increment the count
 //         transactionCounts[user]++;
@@ -823,50 +823,118 @@ exports.getDashboardCounts = async (req, res, next) => {
 exports.TransactionPerUser = async (req, res, next) => {
   try {
     const transactionCounts = {}; // Object to store transaction counts for each user
+    //balik
+    console.log(req.query, 'wow')
+    if (req.query.monthYear) {
+      console.log(req.query.monthYear, 'adw')
 
-    const transactions = await Transaction.find({
-      "transaction_done.client": true,
-      "transaction_done.freelancer": true,
-    }).populate([
-      {
-        path: "offer_id",
-        model: "Offer",
-        populate: {
-          path: "offered_by",
-          model: "user",
+      // Parse the monthYear value from the query string
+      const [year, month] = req.query.monthYear.split('-'); // Assuming the format is "MM-YYYY"
+
+      // Convert month and year to numbers
+      const monthNumber = parseInt(month);
+      const yearNumber = parseInt(year);
+
+      // Create a date range for the selected month and year
+      const startDate = new Date(yearNumber, monthNumber - 1, 1);
+      const endDate = new Date(yearNumber, monthNumber, 0);
+      console.log(startDate);
+      console.log(endDate)
+
+      const transactions = await Transaction.find({
+        "expected_Date": {
+          $gte: startDate,
+          $lte: endDate,
+        },
+        "transaction_done.client": true,
+        "transaction_done.freelancer": true,
+      }).populate([
+        {
+          path: "offer_id",
+          model: "Offer",
           populate: {
-            path: "freelancer_id",
+            path: "offered_by",
+            model: "user",
+            populate: {
+              path: "freelancer_id",
+            },
           },
         },
-      },
-    ]);
+      ]);
 
-    for (let i = 0; i < transactions.length; i++) {
-      const user = transactions[i].offer_id.offered_by.name;
+      for (let i = 0; i < transactions.length; i++) {
+        const user = transactions[i].offer_id.offered_by.name;
 
-      // If the user is encountered for the first time, initialize the count to 1
-      if (!transactionCounts[user]) {
-        transactionCounts[user] = {
-          count: 1,
-          avatar: transactions[i].offer_id.offered_by.avatar.url,
-        };
-      } else {
-        // If the user has already been encountered, increment the count
-        transactionCounts[user].count++;
+        // If the user is encountered for the first time, initialize the count to 1
+        if (!transactionCounts[user]) {
+          transactionCounts[user] = {
+            count: 1,
+            avatar: transactions[i].offer_id.offered_by.avatar.url,
+            monthYear: req.query.monthYear,
+          };
+        } else {
+          // If the user has already been encountered, increment the count
+          transactionCounts[user].count++;
+        }
       }
+
+      // Convert the transactionCounts object into an array of objects
+      const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
+        section: user,
+        count: data.count,
+        avatar: data.avatar,
+      }));
+
+      res.status(200).json({
+        success: true,
+        sectionArr,
+      });
+    } else {
+      const transactions = await Transaction.find({
+
+        "transaction_done.client": true,
+        "transaction_done.freelancer": true,
+      }).populate([
+        {
+          path: "offer_id",
+          model: "Offer",
+          populate: {
+            path: "offered_by",
+            model: "user",
+            populate: {
+              path: "freelancer_id",
+            },
+          },
+        },
+      ]);
+
+      for (let i = 0; i < transactions.length; i++) {
+        const user = transactions[i].offer_id.offered_by.name;
+
+        // If the user is encountered for the first time, initialize the count to 1
+        if (!transactionCounts[user]) {
+          transactionCounts[user] = {
+            count: 1,
+            avatar: transactions[i].offer_id.offered_by.avatar.url,
+          };
+        } else {
+          // If the user has already been encountered, increment the count
+          transactionCounts[user].count++;
+        }
+      }
+
+      // Convert the transactionCounts object into an array of objects
+      const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
+        section: user,
+        count: data.count,
+        avatar: data.avatar,
+      }));
+
+      res.status(200).json({
+        success: true,
+        sectionArr,
+      });
     }
-
-    // Convert the transactionCounts object into an array of objects
-    const sectionArr = Object.entries(transactionCounts).map(([user, data]) => ({
-      section: user,
-      count: data.count,
-      avatar: data.avatar,
-    }));
-
-    res.status(200).json({
-      success: true,
-      sectionArr,
-    });
   } catch (err) {
     // Handle any errors that occur during the execution
     console.error(err);
@@ -875,6 +943,7 @@ exports.TransactionPerUser = async (req, res, next) => {
       error: "Internal Server Error",
     });
   }
+
 };
 
 exports.getTransactionDashboard = async (req, res, next) => {
@@ -912,7 +981,7 @@ exports.getTransactionDashboard = async (req, res, next) => {
 
 
 
-   
+
 
 
 
@@ -951,11 +1020,11 @@ exports.getProcessingData = async (req, res, next) => {
         // Your existing population code
       ]);
 
- 
+
 
     res.status(200).json({
       success: true,
-      processingTransactions      
+      processingTransactions
     });
   } catch (err) {
     // Handle any errors that occur during the execution
@@ -978,11 +1047,11 @@ exports.getToPayData = async (req, res, next) => {
         // Your existing population code
       ]);
 
- 
+
 
     res.status(200).json({
       success: true,
-      notSentTransactions      
+      notSentTransactions
     });
   } catch (err) {
     // Handle any errors that occur during the execution
@@ -1000,23 +1069,23 @@ exports.getToConfirmData = async (req, res, next) => {
   try {
     const sort = { _id: -1 };
 
- // Retrieve transactions that satisfy all conditions
- const customConditionTransactions = await Transaction.find({
-  paymentSent: true,
-  "transaction_done.freelancer": true,
-  status: "processing",
-})
-  .sort(sort)
-  .populate([
-    // Your existing population code
-  ]);
+    // Retrieve transactions that satisfy all conditions
+    const customConditionTransactions = await Transaction.find({
+      paymentSent: true,
+      "transaction_done.freelancer": true,
+      status: "processing",
+    })
+      .sort(sort)
+      .populate([
+        // Your existing population code
+      ]);
 
 
- 
+
 
     res.status(200).json({
       success: true,
-      customConditionTransactions      
+      customConditionTransactions
     });
   } catch (err) {
     // Handle any errors that occur during the execution
@@ -1034,18 +1103,18 @@ exports.getCompletedData = async (req, res, next) => {
   try {
     const sort = { _id: -1 };
 
-     // Retrieve transactions with status "completed"
-     const completedTransactions = await Transaction.find({ status: "completed" })
-     .sort(sort)
-     .populate([
-       // Your existing population code
-     ]);
+    // Retrieve transactions with status "completed"
+    const completedTransactions = await Transaction.find({ status: "completed" })
+      .sort(sort)
+      .populate([
+        // Your existing population code
+      ]);
 
- 
+
 
     res.status(200).json({
       success: true,
-      completedTransactions      
+      completedTransactions
     });
   } catch (err) {
     // Handle any errors that occur during the execution
