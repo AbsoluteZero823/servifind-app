@@ -18,6 +18,10 @@ import {
     READ_MYNOTIFICATION_SUCCESS,
     READ_MYNOTIFICATION_FAIL,
 
+    READ_ALLMYNOTIFICATION_REQUEST,
+    READ_ALLMYNOTIFICATION_SUCCESS,
+    READ_ALLMYNOTIFICATION_FAIL,
+
     CLEAR_ERRORS
 } from '../constants/notificationConstants';
 
@@ -101,7 +105,7 @@ export const getMyUnreadNotifications = () => async (dispatch) => {
     }
 }
 
-export const readMyNotification = (id, formData) => async (dispatch) => {
+export const readMyNotification = (id) => async (dispatch) => {
     try {
 
         dispatch({ type: READ_MYNOTIFICATION_REQUEST })
@@ -112,7 +116,7 @@ export const readMyNotification = (id, formData) => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.put(`/api/v1/read-notification/${id}`, formData, config)
+        const { data } = await axios.put(`/api/v1/read-notification/${id}`, config)
 
         dispatch({
             type: READ_MYNOTIFICATION_SUCCESS,
@@ -122,6 +126,32 @@ export const readMyNotification = (id, formData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: READ_MYNOTIFICATION_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const ReadAllMyNotif = () => async (dispatch) => {
+    try {
+
+        dispatch({ type: READ_ALLMYNOTIFICATION_REQUEST })
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+
+        const { data } = await axios.put(`/api/v1/read-all-notification`, config)
+
+        dispatch({
+            type: READ_ALLMYNOTIFICATION_SUCCESS,
+            payload: data.success
+        })
+
+    } catch (error) {
+        dispatch({
+            type: READ_ALLMYNOTIFICATION_FAIL,
             payload: error.response.data.message
         })
     }

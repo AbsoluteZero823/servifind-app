@@ -20,6 +20,11 @@ import {
     READ_MYNOTIFICATION_FAIL,
     READ_MYNOTIFICATION_RESET,
 
+    READ_ALLMYNOTIFICATION_REQUEST,
+    READ_ALLMYNOTIFICATION_SUCCESS,
+    READ_ALLMYNOTIFICATION_FAIL,
+    READ_ALLMYNOTIFICATION_RESET,
+
     CLEAR_ERRORS
 } from '../constants/notificationConstants'
 
@@ -123,6 +128,41 @@ export const notificationReducer = (state = {}, action) => {
                 isUpdated: false
             }
             case READ_MYNOTIFICATION_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state;
+    }
+}
+
+export const readAllMyNotificationReducer = (state = {}, action) => {
+    switch (action.type) {
+        case READ_ALLMYNOTIFICATION_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+            case READ_ALLMYNOTIFICATION_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+                isUpdated: action.payload
+            }
+            case READ_ALLMYNOTIFICATION_RESET:
+            return {
+                ...state,
+                isUpdated: false
+            }
+            case READ_ALLMYNOTIFICATION_FAIL:
             return {
                 ...state,
                 loading: false,

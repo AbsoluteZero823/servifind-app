@@ -123,6 +123,27 @@ exports.MakeNotificationRead = async (req, res, next) => {
  
 }
 
+exports.ReadAllMyNotif = async (req, res, next) => {
+    const userId = req.user._id; // Assuming you have the user's ID
+console.log(userId)
+    const formData = {
+      isRead: true,
+    };
+    
+    const filter = { user_id: userId }; // Define the filter to match the user's notifications
+    const update = { $set: formData }; // Use $set to update the 'isRead' field to true
+    try{
+    // Update all notifications for the given user to mark them as read
+    const notifications = await Notification.updateMany(filter, update);
+    res.status(200).json({
+                success: true,
+                notifications
+            })
+} catch (error) {
+    return next(new ErrorHandler(error, 401));
+}
+
+};
 
 
 

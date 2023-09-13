@@ -6,6 +6,7 @@ const {
   getNotifications,
   getmyNotifications,
   MakeNotificationRead,
+  ReadAllMyNotif,
 } = require("../controllers/notificationController");
 const { isAuthenticatedUser, authorizeRoles } = require("../middlewares/auth");
 
@@ -13,6 +14,7 @@ router.route("/notifications").get(getNotifications);
 router.route("/notification/new").post(newNotification);
 router.route("/my-notifications").get(isAuthenticatedUser, getmyNotifications);
 router.route("/read-notification/:id").put(isAuthenticatedUser,MakeNotificationRead);
+router.route("/read-all-notification").put(isAuthenticatedUser,ReadAllMyNotif);
 // router.route("/report/:id").get(getSingleReport);
 // router.route("/user-reports/:id").get(getUserReports);
 

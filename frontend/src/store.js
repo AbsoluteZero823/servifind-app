@@ -13,7 +13,7 @@ import { getOffersReducer, newOfferReducer, offerDetailsReducer, getRequestOffer
 import { chatsReducer, newChatReducer } from './reducers/chatReducers';
 import { messagesReducer, newMessageReducer } from './reducers/messageReducers';
 import { getReportsReducer, getUserReportsReducer } from './reducers/reportReducers';
-import { getNotificationsReducer, newNotificationReducer, notificationReducer } from './reducers/notificationReducers';
+import { getNotificationsReducer, newNotificationReducer, notificationReducer, readAllMyNotificationReducer } from './reducers/notificationReducers';
 
 // import { getTransactions } from '../../backend/controllers/transactionController';
 const reducer = combineReducers({
@@ -94,6 +94,7 @@ const reducer = combineReducers({
     notifications: getNotificationsReducer,
     addNotification: newNotificationReducer,
     readNotification: notificationReducer,
+    readAllMyNotification: readAllMyNotificationReducer,
 
 
 })

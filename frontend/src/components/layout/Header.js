@@ -5,8 +5,9 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
-import { getMyUnreadNotifications, readMyNotification, newNotification } from "../../actions/notificationActions";
-
+import { getMyUnreadNotifications, readMyNotification, newNotification, ReadAllMyNotif} from "../../actions/notificationActions";
+import { READ_MYNOTIFICATION_RESET } from "../../constants/notificationConstants";
+import { READ_ALLMYNOTIFICATION_RESET } from "../../constants/notificationConstants";
 
 
 import swal from "sweetalert";
@@ -41,6 +42,9 @@ const Header = () => {
   const { user, loading, isAuthenticated } = useSelector((state) => state.auth);
   const { notifications } = useSelector((state) => state.notifications)
   const { notification: newNotif } = useSelector((state) => state.addNotification);
+
+  const { isUpdated : isUpdatedSingleNotif } = useSelector(state => state.readNotification)
+  const { isUpdated : isUpdatedAllMyNotif } = useSelector(state => state.readAllMyNotification)
 
   // useEffect(() => {
 
@@ -84,7 +88,17 @@ const Header = () => {
       // console.log(notification)
 
     }
-  }, [dispatch, fetchNotificationAgain])
+    if (isUpdatedSingleNotif) {
+      getMyNotifications();
+      dispatch({ type: READ_MYNOTIFICATION_RESET })
+      
+  }
+  if (isUpdatedAllMyNotif) {
+    getMyNotifications();
+    dispatch({ type: READ_ALLMYNOTIFICATION_RESET })
+  
+}
+  }, [dispatch, fetchNotificationAgain, isUpdatedSingleNotif, isUpdatedAllMyNotif])
 
   // useEffect(() => {
 
@@ -120,7 +134,11 @@ const Header = () => {
     }
   };
 
-
+  const readAllMyNotif = () => {
+    
+    dispatch(ReadAllMyNotif());
+    swal("Success!", "Nice", "success");
+  };
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -239,10 +257,12 @@ const Header = () => {
 
                               // SetNotification(notification.filter((n) => n._id !== notif._id));
 
-
-
+console.log(notif._id,'awit')
+                              // readMyNotification(notif._id)
+                              dispatch(readMyNotification(notif._id));
                               setSelectedChat(notif.chat);
-                              setNotification(notification.filter(n => n._id !== notif._id));
+                              // setNotification(notification.filter(n => n._id !== notif._id));
+                              
 
                               // console.log(notification)
                             }}>{`${notif.message}`}</a>
@@ -252,11 +272,12 @@ const Header = () => {
                             <a className="dropdown-item" href="#" onClick={() => {
 
                               // SetNotification(notification.filter((n) => n._id !== notif._id));
-
-
+                              console.log(notif._id,'awit')
+                              dispatch(readMyNotification(notif._id));
 
                               setSelectedChat(notif.chat);
-                              setNotification(notification.filter(n => n._id !== notif._id));
+                              // setNotification(notification.filter(n => n._id !== notif._id));
+                              
                               navigate(`/chat`)
 
                               // console.log(notification)
@@ -280,8 +301,9 @@ const Header = () => {
                   </li> */}
                  
                 </div>  <div>
-           
-                    <a style={{width: '100%', textAlign:'center', backgroundColor:'#add8e6', color:'black', fontSize:'0.8rem !important', display:'block'}}
+    
+                    <a style={{width: '100%', textAlign:'center', backgroundColor:'#add8e6', color:'black', fontSize:'0.7rem !important', display:'block', height:"30px", padding:'7px 0 !important'}}
+                    onClick={readAllMyNotif}
                     >Read All Notification</a>
                   </div>
                 </ul>
