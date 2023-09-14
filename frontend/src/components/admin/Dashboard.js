@@ -268,7 +268,7 @@ const Dashboard = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ topInSingleMonth }) // Serialize the array of objects to JSON string
+        body: JSON.stringify({ topInSingleMonth, monthYear }) // Serialize the array of objects to JSON string
       });
 
       const blob = await response.blob();
@@ -373,7 +373,7 @@ const Dashboard = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ transactions }) // Serialize the array of objects to JSON string
+        body: JSON.stringify({ transactions, fromDate, toDate }) // Serialize the array of objects to JSON string
       });
 
       const blob = await response.blob();

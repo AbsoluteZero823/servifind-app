@@ -94,6 +94,8 @@ exports.transactionsPdf = (req, res) => {
         description: 'This is a sample PDF generated from MERN stack.',
         // Add more properties as needed for your template
     };
+    const fromDate = req.body.fromDate;
+    const toDate = req.body.toDate;
     const transactions = req.body.transactions || []
     // console.log(req.body, "nice")
 
@@ -114,7 +116,8 @@ exports.transactionsPdf = (req, res) => {
             console.error('Error reading template file:', err);
             res.status(500).send('Something went wrong');
         } else {
-            const html = ejs.render(template, { data, transactions });
+            //balik
+            const html = ejs.render(template, { data, transactions, fromDate, toDate });
 
             pdf.create(html, {
                 childProcessOptions: {
@@ -191,6 +194,7 @@ exports.topFreelancersPdf = (req, res) => {
         // Add more properties as needed for your template
     };
     const topInSingleMonth = req.body.topInSingleMonth || []
+    const monthYear = req.body.monthYear
     // console.log(req.body, "nice")
 
     const options = {
@@ -210,7 +214,7 @@ exports.topFreelancersPdf = (req, res) => {
             console.error('Error reading template file:', err);
             res.status(500).send('Something went wrong');
         } else {
-            const html = ejs.render(template, { data, topInSingleMonth });
+            const html = ejs.render(template, { data, topInSingleMonth, monthYear });
 
             pdf.create(html, {
                 childProcessOptions: {
@@ -415,7 +419,7 @@ exports.completedTransactionsPdf = (req, res) => {
                         OPENSSL_CONF: '/dev/null',
                     },
                 },
-                ...options,
+                options,
             }).toStream((pdfErr, stream) => {
                 if (pdfErr) {
                     console.error('Error generating PDF:', pdfErr);

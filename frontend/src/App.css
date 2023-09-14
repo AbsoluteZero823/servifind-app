@@ -4400,3 +4400,7 @@ text-align: center;
 .transaction_count label{
   margin: 10px;
 }
+
+.fontsize_80p{
+  font-size: 80% !important;
+}

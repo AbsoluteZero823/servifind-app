@@ -48,7 +48,13 @@
             style="height: 50px;" />
     </div>
     <div style="display: flex; justify-content: center; text-align: center;">
-        <h1 id="current_year">Top Freelancers <%= new Date().getFullYear() %>
+        <% const monthYearParts = monthYear.split('-'); %>
+<% const year = monthYearParts[0]; %>
+<% const month = parseInt(monthYearParts[1]) - 1; %>
+<% const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; %>
+
+
+        <h1 id="current_year">Top Freelancers for the Month of <%= monthNames[month] %> <%= year %>
         </h1>
     </div>
     <table>

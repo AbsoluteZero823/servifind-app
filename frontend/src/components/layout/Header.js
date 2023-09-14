@@ -137,7 +137,7 @@ const Header = () => {
   const readAllMyNotif = () => {
     
     dispatch(ReadAllMyNotif());
-    swal("Success!", "Nice", "success");
+    // swal("Success!", "Nice", "success");
   };
 
   const logoutHandler = () => {
@@ -302,7 +302,7 @@ console.log(notif._id,'awit')
                  
                 </div>  <div>
     
-                    <a style={{width: '100%', textAlign:'center', backgroundColor:'#add8e6', color:'black', fontSize:'0.7rem !important', display:'block', height:"30px", padding:'7px 0 !important'}}
+                    <a className="fontsize_80p" style={{width: '100%', textAlign:'center', backgroundColor:'#add8e6', color:'black', display:'block', height:"30px", padding:'7px 0 !important', fontSize:"80% !important"}}
                     onClick={readAllMyNotif}
                     >Read All Notification</a>
                   </div>
