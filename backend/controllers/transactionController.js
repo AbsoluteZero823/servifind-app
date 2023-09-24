@@ -258,10 +258,11 @@ exports.PaymentReceived = async (req, res, next) => {
     updatedTransaction: transaction
   });
 };
-
+//balik
 exports.transactionDone = async (req, res, next) => {
-  // console.log(req.body);
-
+  console.log(req.body);
+  
+ 
   if (req.body.freelancer === "true" && req.body.client === "true") {
     formData = {
       status: "completed",
@@ -290,6 +291,9 @@ exports.transactionDone = async (req, res, next) => {
   const transaction = await Transaction.findByIdAndUpdate(
     req.params.id,
     formData,
+    // req.body._id,
+ 
+   
     {
       new: true,
       runValidators: true,
@@ -330,7 +334,8 @@ exports.transactionDone = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    updatedTransaction: transaction
+    updatedTransaction: transaction,
+    message: "Transaction Completed!"
   });
 };
 
@@ -823,7 +828,7 @@ exports.getDashboardCounts = async (req, res, next) => {
 exports.TransactionPerUser = async (req, res, next) => {
   try {
     const transactionCounts = {}; // Object to store transaction counts for each user
-    //balik
+    
     console.log(req.query, 'wow')
       const transactions = await Transaction.find({
 
@@ -884,7 +889,7 @@ exports.TransactionPerUser = async (req, res, next) => {
 exports.TransactionPerUserByMonth = async (req, res, next) => {
   try {
     const transactionCounts = {}; // Object to store transaction counts for each user
-    //balik
+   
     console.log(req.query, 'wow')
     if (req.query.monthYear) {
       console.log(req.query.monthYear, 'adw')
@@ -1174,6 +1179,7 @@ exports.ClientFetchTransaction = async (req, res, next) => {
 };
 
 exports.ClientCompleteTransaction = async (req, res, next) => {
+  // balik
   if (req.body.gcashreceipt) {
     const result = await cloudinary.v2.uploader.upload(req.body.gcashreceipt, {
       folder: "servifind/gcashreceipts",
@@ -1185,17 +1191,24 @@ exports.ClientCompleteTransaction = async (req, res, next) => {
   req.body.isPaid = true;
   req.body.paymentSent = true;
   req.body.created_at = new Date();
-  req.body.transaction_done = { client: true };
-
-  const transactionexist = await Transaction.findOneAndUpdate(
-    {
-      offer_id: req.body.offer_id,
-    },
+  req.body.transaction_done = { client: true, freelancer: true, workCompleted: req.body.workCompleted, transactionCompleted: new Date()};
+  const transactionexist = await Transaction.findByIdAndUpdate(
+    req.body.trans_id,
     req.body,
     {
       new: true,
-    }
-  );
+      runValidators: true,
+      // useFindandModify:false
+    });
+  // const transactionexist = await Transaction.findOneAndUpdate(
+  //   {
+  //     offer_id: req.body.offer_id,
+  //   },
+  //   req.body,
+  //   {
+  //     new: true,
+  //   }
+  // );
 
   if (transactionexist) {
     return res
@@ -1315,24 +1328,22 @@ exports.FreelancerGenerateTransaction = async (req, res, next) => {
     transaction,
   });
 };
-
+//balik
 exports.FreelancerCompleteTransaction = async (req, res, next) => {
-  const params = {};
-  params.isPaid = "true";
-  params.paymentSent = "true";
-  params.paymentReceived = "true";
-  params.transaction_done = {
-    client: "true",
-    freelancer: "true",
-    workCompleted: new Date(),
-    transactionCompleted: new Date(),
-  };
-  params.finished_At = new Date();
-  params.status = "completed";
+
+ 
+
+
+req.body.status = "completed"
+  req.body.isPaid = true;
+  req.body.paymentSent = "true";
+  req.body.paymentReceived = true;
+  req.body.transaction_done = { client: true, freelancer: true, workCompleted: req.body.workCompleted, transactionCompleted: new Date()};
+  
   try {
     const updatedTransaction = await Transaction.findByIdAndUpdate(
-      req.body._id,
-      params,
+      req.body.trans_id,
+      req.body,
       { new: true }
     );
     return res

@@ -40,7 +40,7 @@ import io from 'socket.io-client';
 
 
 import Swal from "sweetalert2";
-const ENDPOINT = "http://localhost:4002"; //localhost
+const ENDPOINT = process.env.API; //localhost
 // const ENDPOINT = "https://servifind-app.onrender.com" //website
 
 
@@ -921,7 +921,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain, offers, setFetchOffersAgain, fe
                               }}
                             ></i>
                             <div style={{ width: "80%" }}>
-                              <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
+                              <p style={{ padding: '10px' }}>Freelancer made an offer with the price at ₱{OfferExists[0].transaction[0].price ? OfferExists[0].transaction[0].price : 0} that supposed to be done on {moment(OfferExists[0].transaction[0].expected_Date).format('MMM/DD/yy')}, would you like to proceed?</p>
                               {/* <p style={{ padding: '10px' }}>Description: {OfferExists[0].description}</p> */}
                             </div>
                           </div>

@@ -153,7 +153,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/transactions-processing-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/transactions-processing-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-processing-pdf', {
 
         method: 'POST',
@@ -180,7 +180,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/transactions-to-pay-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/transactions-to-pay-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-pay-pdf', {
 
         method: 'POST',
@@ -207,7 +207,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/transactions-to-confirm-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/transactions-to-confirm-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-to-confirm-pdf', {
 
         method: 'POST',
@@ -234,7 +234,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/transactions-completed-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/transactions-completed-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-completed-pdf', {
 
         method: 'POST',
@@ -261,7 +261,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/top-freelancers-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/top-freelancers-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/top-freelancers-pdf', {
 
         method: 'POST',
@@ -287,7 +287,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/freelancer-monthly-join-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/freelancer-monthly-join-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/freelancer-monthly-join-pdf', {
 
         method: 'POST',
@@ -313,7 +313,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/top-services-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/top-services-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/top-services-pdf', {
 
         method: 'POST',
@@ -340,7 +340,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/monthly-income-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/monthly-income-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/monthly-income-pdf', {
 
         method: 'POST',
@@ -366,7 +366,7 @@ const Dashboard = () => {
     setPdfLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/transactions-pdf', {
+      const response = await fetch('http://10.0.2.15:3000/api/v1/transactions-pdf', {
         // const response = await fetch('https://servifind-app.onrender.com/api/v1/transactions-pdf', {
 
         method: 'POST',

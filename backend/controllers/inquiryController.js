@@ -9,7 +9,7 @@ const Category = require('../models/category');
 
 exports.newInquiry = async (req, res, next) => {
     try {
-
+        console.log(req.body)
         // req.body.customer = req.user._id;
         if (!req.body.instruction) {
             return next(new ErrorHandler('Please Provide inquiry', 404));

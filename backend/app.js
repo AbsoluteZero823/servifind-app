@@ -26,7 +26,7 @@ app.use(
     cors({
 
         // origin: "https://servifind-app.onrender.com", //website
-        origin: "http://localhost:3000", //localhost
+        origin: process.env.BASE_URL, //localhost
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
 
